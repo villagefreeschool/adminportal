@@ -4,13 +4,13 @@ A modern React application for the Village Free School administration.
 
 ## Tech Stack
 
-- React 18.2.0
-- TypeScript 5.4.2
+- React 19.0.0
+- TypeScript 5.8.2
 - Vite 6.2.2
-- Vitest 3.0.8
-- TailwindCSS 4.0.14
-- ESLint 9.22.0
-- Prettier 3.2.5
+- Vitest 3.0.9
+- TailwindCSS 4.0.15
+- ESLint 8.57.1
+- Prettier 3.5.3
 - Husky 9.1.7
 
 ## Getting Started
