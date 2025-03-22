@@ -2,13 +2,21 @@
 
 ## Executive Summary
 
-The Village Free School Admin Portal is a web application designed to streamline the administration of the Village Free School, a progressive educational institution. The application serves two primary user groups: administrative staff and families. The portal facilitates family registration, student enrollment, tuition calculation, and administrative functions.
+The Village Free School Admin Portal is a web application designed to streamline the administration
+of the Village Free School, a progressive educational institution. The application serves two
+primary user groups: administrative staff and families. The portal facilitates family registration,
+student enrollment, tuition calculation, and administrative functions.
 
-This document outlines the requirements for building a comprehensive administrative system that will improve operational efficiency and enhance the experience for both staff and families.
+This document outlines the requirements for building a comprehensive administrative system that will
+improve operational efficiency and enhance the experience for both staff and families.
 
 ## Background
 
-The Village Free School (VFS) is a progressive educational institution that requires a robust administrative system to manage family registrations, student enrollments, and tuition calculations. The school operates on a sliding scale tuition model to ensure accessibility for families of all income levels. This system will replace manual processes and provide a centralized platform for all administrative functions.
+The Village Free School (VFS) is a progressive educational institution that requires a robust
+administrative system to manage family registrations, student enrollments, and tuition calculations.
+The school operates on a sliding scale tuition model to ensure accessibility for families of all
+income levels. This system will replace manual processes and provide a centralized platform for all
+administrative functions.
 
 ## User Personas
 
@@ -33,7 +41,8 @@ The Village Free School (VFS) is a progressive educational institution that requ
 
 #### User Authentication
 
-- Single-sign-on integration with auth mechanisms supported by Firebase Auth (Google, Apple, Facebook, etc)
+- Single-sign-on integration with auth mechanisms supported by Firebase Auth (Google, Apple,
+  Facebook, etc)
 - Email/password authentication
 - Password reset functionality
 - Anonymous access for public-facing calculators
@@ -95,7 +104,8 @@ The Village Free School (VFS) is a progressive educational institution that requ
 #### Sliding Scale Calculation
 
 - Calculate tuition based on family income using a sliding scale algorithm
-- Ability to pay above or below the sliding scale recommendation, with soft and hard limits (soft limit triggers a tuition assistance request)
+- Ability to pay above or below the sliding scale recommendation, with soft and hard limits (soft
+  limit triggers a tuition assistance request)
 - Support for sibling discounts
 - Support for part-time enrollment discounts
 - Minimum and maximum tuition thresholds
