@@ -127,6 +127,74 @@ export default [
 ];
 ```
 
+## External Libraries
+
+The project uses several external libraries to enhance functionality:
+
+### Firebase
+Firebase provides authentication, database, and storage capabilities:
+```tsx
+// Initialize Firebase services
+import { auth, db, storage } from '../utils/firebase';
+
+// Example: Get data from Firestore
+import { collection, getDocs } from 'firebase/firestore';
+
+async function fetchStudents() {
+  const studentsCollection = collection(db, 'students');
+  const snapshot = await getDocs(studentsCollection);
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+```
+
+### ExcelJS
+ExcelJS is used for Excel file generation and parsing:
+```tsx
+import { exportToExcel, importFromExcel } from '../utils/excel';
+
+// Export data to Excel
+const handleExport = () => {
+  exportToExcel(students, 'students-report', 'Students');
+};
+
+// Import data from Excel
+const handleImport = async (file: File) => {
+  try {
+    const data = await importFromExcel(file);
+    console.log('Imported data:', data);
+  } catch (error) {
+    console.error('Import error:', error);
+  }
+};
+```
+
+### PDFMake
+PDFMake is used for PDF generation:
+```tsx
+import { generateTablePDF } from '../utils/pdf';
+
+// Generate a PDF report
+const handleGeneratePDF = () => {
+  generateTablePDF('Student Report', students, 'student-report');
+};
+```
+
+### Lodash
+Lodash provides utility functions for data manipulation:
+```tsx
+import { groupBy, sortBy, debounce } from '../utils/helpers';
+
+// Group students by grade
+const studentsByGrade = groupBy(students, 'grade');
+
+// Sort students by name
+const sortedStudents = sortBy(students, 'lastName');
+
+// Debounce search function
+const debouncedSearch = debounce((term) => {
+  // Search logic here
+}, 300);
+```
 ## Future Enhancements
 
 Potential areas for future development:
