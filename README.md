@@ -27,15 +27,16 @@ A modern React application for the Village Free School administration.
 npm install
 
 # Start development server
-npm run dev
+npm start
 ```
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
+- `npm start` - Start development server
 - `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run test` - Run tests
+- `npm run serve` - Preview production build
+- `npm test` - Run tests once
+- `npm run test:watch` - Run tests in watch mode
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 
@@ -46,10 +47,19 @@ npm run dev
 ├── .husky/             # Git hooks
 ├── public/             # Static assets
 ├── src/                # Source code
-│   ├── components/     # React components
+│   ├── assets/         # Images, fonts, and other static assets
+│   ├── components/     # Reusable React components
+│   │   └── ui/         # UI components (buttons, inputs, etc.)
+│   ├── constants/      # Application constants and configuration
+│   ├── context/        # React context providers
+│   ├── hooks/          # Custom React hooks
+│   ├── layouts/        # Page layout components
+│   ├── pages/          # Page components
+│   ├── services/       # API and external service integrations
+│   ├── types/          # TypeScript type definitions
+│   ├── utils/          # Utility functions
 │   ├── App.tsx         # Main App component
-│   ├── main.tsx        # Entry point
-│   └── ...
+│   └── main.tsx        # Entry point
 ├── .gitignore          # Git ignore file
 ├── index.html          # HTML entry point
 ├── package.json        # Project dependencies and scripts
