@@ -1,2 +1,10 @@
-// This is a placeholder file for the initial commit
-// The actual implementation will be added in future commits
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
