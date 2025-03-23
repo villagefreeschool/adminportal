@@ -17,20 +17,26 @@
     "ts-script": "tsx"
   },
   "dependencies": {
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "firebase": "^11.5.0",
+    "lodash": "^4.17.21",
+    "pdfmake": "^0.2.10",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tsx": "^4.19.3"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
+    "@types/file-saver": "^2.0.7",
+    "@types/lodash": "^4.14.202",
+    "@types/pdfmake": "^0.2.9",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@typescript-eslint/eslint-plugin": "^8.27.0",
     "@typescript-eslint/parser": "^8.27.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.18",
+    "autoprefixer": "^10.4.19",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
@@ -41,6 +47,7 @@
     "husky": "^9.1.7",
     "jsdom": "^24.0.0",
     "prettier": "^3.5.3",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "vite": "^6.2.2",
     "vitest": "^3.0.9"
