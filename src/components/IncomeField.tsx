@@ -1,5 +1,8 @@
-import React from 'react';
-import { TextField, InputAdornment } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, InputAdornment, Grid, Button, Box } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
+import BlockIcon from '@mui/icons-material/Block';
 
 interface IncomeFieldProps {
   value: number | null | undefined;
@@ -13,6 +16,7 @@ interface IncomeFieldProps {
 /**
  * A component for handling income input with proper formatting
  * Migrated from Vue IncomeField component
+ * Includes privacy features to obscure income values
  */
 const IncomeField: React.FC<IncomeFieldProps> = ({
   value,
@@ -22,8 +26,44 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   error = false,
   helperText,
 }) => {
-  // Format the value for display (strip commas and non-numeric characters)
-  const displayValue = value !== null && value !== undefined ? value.toString() : '';
+  const [isLocked, setIsLocked] = useState(false);
+  const [initialValue, setInitialValue] = useState<number | null | undefined>(null);
+  const [displayedValue, setDisplayedValue] = useState<number | null | undefined>(null);
+
+  // Initialize component state
+  useEffect(() => {
+    setDisplayedValue(value);
+
+    // Lock the field if it has a value initially
+    if (value !== null && value !== undefined) {
+      setInitialValue(value);
+      setIsLocked(true);
+    }
+  }, [value]);
+
+  // Update displayed value when parent value changes
+  useEffect(() => {
+    setDisplayedValue(value);
+  }, [value]);
+
+  // Handle unlocking the field for editing
+  const handleUnlock = () => {
+    setIsLocked(false);
+    setDisplayedValue(null);
+  };
+
+  // Handle canceling edits
+  const handleCancel = () => {
+    setIsLocked(true);
+    setDisplayedValue(null);
+    onChange(initialValue);
+  };
+
+  // Handle confirming edits
+  const handleConfirm = () => {
+    setInitialValue(displayedValue);
+    setIsLocked(true);
+  };
 
   // Handle change and convert to number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,39 +72,94 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
     const numbers = input.replace(/[^0-9]/g, '');
 
     if (numbers === '') {
+      setDisplayedValue(null);
       onChange(null);
     } else {
-      onChange(parseInt(numbers, 10));
+      const numericValue = parseInt(numbers, 10);
+      setDisplayedValue(numericValue);
+      onChange(numericValue);
     }
   };
 
   // Format the value for display
-  const formatValue = (input: string): string => {
-    if (!input) return '';
+  const formatValue = (input: number | null | undefined): string => {
+    if (input === null || input === undefined) return '';
 
-    const numbers = input.replace(/[^0-9]/g, '');
-    if (numbers === '') return '';
-
-    const parsed = parseInt(numbers, 10);
     return new Intl.NumberFormat('en-US', {
       style: 'decimal',
       maximumFractionDigits: 0,
-    }).format(parsed);
+    }).format(input);
   };
 
   return (
-    <TextField
-      label={label}
-      value={formatValue(displayValue)}
-      onChange={handleChange}
-      fullWidth
-      required={required}
-      error={error}
-      helperText={helperText}
-      InputProps={{
-        startAdornment: <InputAdornment position="start">$</InputAdornment>,
-      }}
-    />
+    <Grid container spacing={1} alignItems="center">
+      <Grid item xs={isLocked ? 8 : 12} sm={isLocked ? 9 : 12}>
+        {isLocked ? (
+          <TextField
+            label={label}
+            value="Previously Entered"
+            disabled
+            fullWidth
+            required={required}
+            error={error}
+            helperText={helperText}
+          />
+        ) : (
+          <TextField
+            label={label}
+            value={formatValue(displayedValue)}
+            onChange={handleChange}
+            fullWidth
+            required={required}
+            error={error}
+            helperText={helperText}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+            }}
+          />
+        )}
+      </Grid>
+
+      {isLocked && (
+        <Grid item xs={4} sm={3}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleUnlock}
+            startIcon={<EditIcon />}
+            color="primary"
+          >
+            Edit
+          </Button>
+        </Grid>
+      )}
+
+      {!isLocked && initialValue !== null && initialValue !== undefined && (
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="flex-end" gap={1}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleConfirm}
+              startIcon={<CheckIcon />}
+              color="success"
+              disabled={displayedValue === initialValue}
+            >
+              OK
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleCancel}
+              startIcon={<BlockIcon />}
+              color="error"
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Grid>
+      )}
+    </Grid>
   );
 };
 
