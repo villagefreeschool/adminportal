@@ -1,0 +1,126 @@
+import { useState, useEffect } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  CircularProgress,
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  IconButton,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
+import YearForm from '../YearForm';
+import { Year } from '../../services/firebase/years';
+
+interface YearDialogProps {
+  open: boolean;
+  title: string;
+  year: Partial<Year>;
+  loading?: boolean;
+  onClose: () => void;
+  onSave: (year: Partial<Year>) => Promise<void>;
+}
+
+export default function YearDialog({
+  open,
+  title,
+  year,
+  loading = false,
+  onClose,
+  onSave,
+}: YearDialogProps) {
+  const [formData, setFormData] = useState<Partial<Year>>(year);
+  const [saving, setSaving] = useState(false);
+  const [formValid, setFormValid] = useState(false);
+
+  // Update form data when year prop changes
+  useEffect(() => {
+    if (open) {
+      setFormData(year);
+    }
+  }, [year, open]);
+
+  // Validate form whenever data changes
+  useEffect(() => {
+    const isValid =
+      !!formData.name &&
+      !!formData.minimumTuition &&
+      !!formData.maximumTuition &&
+      !!formData.minimumIncome &&
+      !!formData.maximumIncome;
+
+    setFormValid(isValid);
+  }, [formData]);
+
+  // Handle form changes
+  const handleChange = (updatedYear: Partial<Year>) => {
+    setFormData(updatedYear);
+  };
+
+  // Handle save button click
+  const handleSave = async () => {
+    if (!formValid) return;
+
+    setSaving(true);
+    try {
+      await onSave(formData);
+      onClose();
+    } catch (error) {
+      console.error('Error saving year:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      aria-labelledby="year-dialog-title"
+    >
+      <AppBar position="static" color="primary" sx={{ bgcolor: 'green.900' }}>
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} id="year-dialog-title">
+            {title}
+          </Typography>
+          <IconButton edge="end" color="inherit" onClick={onClose} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <DialogContent dividers>
+        {loading ? (
+          <Box display="flex" justifyContent="center" my={4}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <YearForm year={formData} onChange={handleChange} />
+        )}
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={onClose} color="error" variant="text">
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSave}
+          color="primary"
+          variant="contained"
+          startIcon={<SaveIcon />}
+          disabled={!formValid || saving}
+          sx={{ bgcolor: 'brown.500', '&:hover': { bgcolor: 'brown.700' } }}
+        >
+          {saving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
