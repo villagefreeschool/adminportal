@@ -1,6 +1,7 @@
 # Firebase Services
 
-This directory contains a TypeScript implementation of the Firebase services used in the original Vue.js app. The code has been refactored to use a more maintainable structure while maintaining full API compatibility.
+This directory contains a TypeScript implementation of the Firebase services used in the VFS Admin
+Portal application.
 
 ## Directory Structure
 
@@ -17,7 +18,8 @@ This directory contains a TypeScript implementation of the Firebase services use
 
 ## API Compatibility
 
-This implementation maintains full compatibility with the original Vue app's `firestoredb.js` file while adding TypeScript type safety:
+This implementation maintains full compatibility with the original Vue app's `firestoredb.js` file
+while adding TypeScript type safety:
 
 - Collection references use the same names (`userDB`, `familyDB`, etc.)
 - Helper functions have the same signatures (`saveFamily`, `deleteFamily`, etc.)
@@ -42,15 +44,15 @@ Firebase configuration is managed through:
 ## Usage Example
 
 ```typescript
-import { 
-  saveFamily, 
+import {
+  saveFamily,
   fetchStudentsWithIDs,
   enrolledStudentsInYear,
-  Family 
+  Family
 } from 'src/services';
 
 // Create or update a family
-const family: Family = { 
+const family: Family = {
   id: '123',
   name: 'Smith Family',
   guardians: [...],
