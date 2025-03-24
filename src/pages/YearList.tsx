@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Container,
   Paper,
   Typography,
   Table,
@@ -191,7 +190,7 @@ function YearList() {
   }, [years, order, orderBy]);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 3 }}>
+    <>
       <Paper elevation={2} sx={{ overflow: 'hidden' }}>
         <AppBar position="relative" sx={{ bgcolor: 'green.900' }}>
           <Toolbar variant="dense">
@@ -344,7 +343,7 @@ function YearList() {
         onClose={() => setEditDialogOpen(false)}
         onSave={handleUpdateYear}
       />
-    </Container>
+    </>
   );
 }
 
