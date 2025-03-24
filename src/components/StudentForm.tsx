@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Grid, TextField, MenuItem, FormControlLabel, Switch, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -21,12 +21,15 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
   const pronouns = ['He', 'She', 'They', 'Rather Not Say'];
 
   // Handle field changes
-  const handleChange = (field: keyof Student, value: unknown) => {
-    onChange({
-      ...student,
-      [field]: value,
-    });
-  };
+  const handleChange = useCallback(
+    (field: keyof Student, value: unknown) => {
+      onChange({
+        ...student,
+        [field]: value,
+      });
+    },
+    [student, onChange],
+  );
 
   // Update preferred name if first name changes and preferred name is empty
   useEffect(() => {
