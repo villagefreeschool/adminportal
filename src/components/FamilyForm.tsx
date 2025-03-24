@@ -214,7 +214,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       {/* Family Nickname */}
       <Grid item xs={12}>
         <Card>
-          <CardHeader title="Family Nickname" sx={{ bgcolor: theme.palette.green[900], color: 'white' }} />
+          <CardHeader
+            title="Family Nickname"
+            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+          />
           <CardContent>
             <TextField
               label="What Should We Call Your Family?"
@@ -234,9 +237,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
       {/* Students */}
       <Grid item xs={12}>
-        <Typography variant="h6">
-          Students
-        </Typography>
+        <Typography variant="h6">Students</Typography>
         <Typography variant="body2">
           <strong>Instructions</strong>: Enter at least the children who are planning to attend
           Village Free School. It is helpful for the staff to know the names of siblings, so
@@ -295,9 +296,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
       {/* Parents and Guardians */}
       <Grid item xs={12}>
-        <Typography variant="h6">
-          Parents and Guardians
-        </Typography>
+        <Typography variant="h6">Parents and Guardians</Typography>
         <Typography variant="body2">Enter all parents and legal guardians.</Typography>
       </Grid>
 
@@ -353,9 +352,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
       {/* Pick Up List */}
       <Grid item xs={12}>
-        <Typography variant="h6">
-          Pick Up List
-        </Typography>
+        <Typography variant="h6">Pick Up List</Typography>
       </Grid>
 
       <Grid item xs={12}>
@@ -387,9 +384,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
       {/* Emergency Contacts */}
       <Grid item xs={12}>
-        <Typography variant="h6">
-          Emergency Contacts
-        </Typography>
+        <Typography variant="h6">Emergency Contacts</Typography>
         <Typography variant="body2">
           Please enter at least {MIN_EMERGENCY_CONTACTS} emergency contacts.
         </Typography>
@@ -460,14 +455,15 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
       {/* Medical and Insurance */}
       <Grid item xs={12}>
-        <Typography variant="h6">
-          Medical and Insurance
-        </Typography>
+        <Typography variant="h6">Medical and Insurance</Typography>
       </Grid>
 
       <Grid item xs={12}>
         <Card>
-          <CardHeader title="Medical Insurance" sx={{ bgcolor: theme.palette.green[900], color: 'white' }} />
+          <CardHeader
+            title="Medical Insurance"
+            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+          />
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -561,7 +557,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       {/* Sliding Scale */}
       <Grid item xs={12}>
         <Card>
-          <CardHeader title="Sliding Scale" sx={{ bgcolor: theme.palette.green[900], color: 'white' }} />
+          <CardHeader
+            title="Sliding Scale"
+            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+          />
           <CardContent>
             <Grid container justifyContent="center">
               <Grid item xs={12} sm={8} md={6}>

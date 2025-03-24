@@ -190,12 +190,12 @@ function FamilyShow() {
 
       <Paper elevation={2} sx={{ mb: 3 }}>
         <Box
-          sx={{ 
-            p: 2, 
-            bgcolor: theme.palette.green[900], 
-            color: 'white', 
-            display: 'flex', 
-            alignItems: 'center' 
+          sx={{
+            p: 2,
+            bgcolor: theme.palette.green[900],
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
           <Typography variant="h5" component="h1" sx={{ flexGrow: 1 }}>

@@ -126,7 +126,10 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
           variant="contained"
           disabled={saving || loading}
           startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
-          sx={{ bgcolor: theme.palette.brown[500], '&:hover': { bgcolor: theme.palette.brown[700] } }}
+          sx={{
+            bgcolor: theme.palette.brown[500],
+            '&:hover': { bgcolor: theme.palette.brown[700] },
+          }}
         >
           Save
         </Button>

@@ -5,12 +5,12 @@ declare module '@mui/material/styles' {
     dark?: string;
     light?: string;
   }
-  
+
   interface Palette {
     green: Palette['primary'];
     brown: Palette['primary'];
   }
-  
+
   interface PaletteOptions {
     green?: PaletteOptions['primary'];
     brown?: PaletteOptions['primary'];
