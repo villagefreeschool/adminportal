@@ -17,13 +17,11 @@ import MyFamily from './pages/MyFamily';
 import FamilyList from './pages/FamilyList';
 import FamilyShow from './pages/FamilyShow';
 import YearList from './pages/YearList';
+import YearRoster from './pages/YearRoster';
 import Users from './pages/Users';
 
 // TODO: Create FamilyRegistrations component
 const FamilyRegistrations = () => <div>Family Registrations Page (Not yet implemented)</div>;
-
-// TODO: Create YearRoster component
-const YearRoster = () => <div>Year Roster Page (Not yet implemented)</div>;
 
 // TODO: Create YearContracts component
 const YearContracts = () => <div>Year Contracts Page (Not yet implemented)</div>;
