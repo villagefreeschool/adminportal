@@ -1,5 +1,16 @@
 import _ from 'lodash';
-import { collection, doc, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  addDoc,
+  query,
+  orderBy,
+  DocumentData,
+  QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import moment from 'moment';
 import { Enrollment, Family } from './models/types';
 import { fetchFamiliesWithIDs } from './families';
@@ -7,6 +18,84 @@ import { fetchStudentsWithIDs } from './students';
 
 // Import collection references
 import { yearDB } from './collections';
+
+// Default values for year properties
+export const DefaultMinimumIncome = 28000;
+export const DefaultMaximumIncome = 120000;
+export const DefaultMinimumTuition = 1000;
+export const DefaultMaximumTuition = 12500;
+
+// Year interface definition
+export interface Year {
+  id: string;
+  name: string;
+  minimumTuition: number;
+  maximumTuition: number;
+  minimumIncome: number;
+  maximumIncome: number;
+  isAcceptingRegistrations: boolean;
+  isAcceptingIntentToReturns?: boolean;
+}
+
+/**
+ * Fetches all school years from Firestore
+ * @returns Promise resolving to an array of Year objects
+ */
+export async function fetchYears(): Promise<Year[]> {
+  const yearsQuery = query(yearDB, orderBy('name', 'desc'));
+  const snapshot = await getDocs(yearsQuery);
+
+  return snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
+    const data = doc.data();
+    return {
+      ...data,
+      id: doc.id,
+    } as Year;
+  });
+}
+
+/**
+ * Fetches a specific year by ID
+ * @param id Year ID to fetch
+ * @returns Promise resolving to a Year object or null if not found
+ */
+export async function fetchYear(id: string): Promise<Year | null> {
+  const yearRef = doc(yearDB, id);
+  const snapshot = await getDoc(yearRef);
+
+  if (!snapshot.exists()) {
+    return null;
+  }
+
+  return {
+    ...snapshot.data(),
+    id: snapshot.id,
+  } as Year;
+}
+
+/**
+ * Creates a new school year
+ * @param year Year data to save (without ID)
+ * @returns Promise resolving to the created Year with ID
+ */
+export async function createYear(year: Omit<Year, 'id'>): Promise<Year> {
+  const docRef = await addDoc(yearDB, year);
+  return {
+    ...year,
+    id: docRef.id,
+  } as Year;
+}
+
+/**
+ * Updates an existing school year
+ * @param year Year data to update (must include ID)
+ * @returns Promise that resolves when the update completes
+ */
+export async function updateYear(year: Year): Promise<void> {
+  const { id, ...yearData } = year;
+  const yearRef = doc(yearDB, id);
+  return setDoc(yearRef, yearData);
+}
 
 /**
  * enrolledStudentsInYear fetches a read-only array of "Enrolled Students".
