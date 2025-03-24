@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   Container,
@@ -12,9 +12,10 @@ import {
   CardHeader,
   Alert,
   Box,
-  Grid,
   Link,
 } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import { FirebaseError } from 'firebase/app';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
@@ -24,12 +25,22 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGooglePopup, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
+  // If the user is already authenticated, redirect to the family page
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      navigate('/my-family');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
+
   // Get the redirect path from location state or default to home
-  const from = (location.state as any)?.from?.pathname || '/my-family';
+  const from =
+    location.state && 'from' in location.state
+      ? (location.state.from as { pathname: string }).pathname
+      : '/my-family';
 
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {};
@@ -62,15 +73,19 @@ export default function Login() {
     try {
       await login(email, password);
       navigate(from);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Login error:', error);
       // Map Firebase error codes to user-friendly messages
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      const firebaseError = error as FirebaseError;
+      if (
+        firebaseError.code === 'auth/user-not-found' ||
+        firebaseError.code === 'auth/wrong-password'
+      ) {
         setErrorMessage('Invalid email or password');
-      } else if (error.code === 'auth/invalid-email') {
+      } else if (firebaseError.code === 'auth/invalid-email') {
         setErrorMessage('Invalid email format');
       } else {
-        setErrorMessage(error.message);
+        setErrorMessage(firebaseError.message);
       }
     } finally {
       setIsLoading(false);
@@ -82,12 +97,15 @@ export default function Login() {
     setErrorMessage(null);
 
     try {
-      await loginWithGoogle();
-      navigate(from);
-    } catch (error: any) {
+      console.log('Starting Google login from Login component');
+      // Switch to popup for better user experience
+      await loginWithGooglePopup();
+      console.log('Google login completed');
+      setIsLoading(false);
+    } catch (error) {
       console.error('Google login error:', error);
-      setErrorMessage(error.message);
-    } finally {
+      const firebaseError = error as FirebaseError;
+      setErrorMessage(firebaseError.message);
       setIsLoading(false);
     }
   };
@@ -107,28 +125,54 @@ export default function Login() {
             </Alert>
           )}
 
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body1" sx={{ pt: 1 }}>
-                Have a Google Account? Register and login with one click:
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} sx={{ textAlign: 'center' }}>
-              <Box
-                component="img"
-                src="/btn_google_signin_dark_normal_web@2x.png"
-                alt="Sign in with Google"
-                sx={{
-                  maxWidth: 200,
-                  cursor: 'pointer',
-                  '&:hover': {
-                    opacity: 0.9,
-                  },
-                }}
-                onClick={handleGoogleLogin}
-              />
-            </Grid>
-          </Grid>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Sign in with Google:
+          </Typography>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+              sx={{
+                bgcolor: '#4285F4',
+                color: 'white',
+                fontWeight: 'medium',
+                '&:hover': { bgcolor: '#3367D6' },
+                px: 3,
+                py: 1.5,
+                fontSize: '1rem',
+                boxShadow: 3,
+              }}
+              startIcon={
+                isLoading ? (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box
+                      sx={{
+                        display: 'inline-block',
+                        width: 20,
+                        height: 20,
+                        border: '2px solid currentColor',
+                        borderRadius: '50%',
+                        borderTopColor: 'transparent',
+                        animation: 'spin 1s linear infinite',
+                      }}
+                    />
+                  </Box>
+                ) : (
+                  <GoogleIcon />
+                )
+              }
+            >
+              {isLoading ? 'Signing in...' : 'Sign in with Google'}
+            </Button>
+          </Box>
+
+          <Box sx={{ textAlign: 'center', my: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              You&apos;ll be redirected to Google to sign in securely
+            </Typography>
+          </Box>
 
           <Divider sx={{ my: 2 }} />
 
@@ -184,8 +228,8 @@ export default function Login() {
 
       <Box sx={{ mt: 3, textAlign: 'center' }}>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          If you haven't created an account on the VFS Portal yet, and you don't have a Google
-          Account, then you'll need to create one:
+          If you haven&apos;t created an account on the VFS Portal yet, and you don&apos;t have a
+          Google Account, then you&apos;ll need to create one:
         </Typography>
         <Button
           component={RouterLink}

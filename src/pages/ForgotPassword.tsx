@@ -14,6 +14,7 @@ import {
   Link,
 } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
+import { FirebaseError } from 'firebase/app';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -47,12 +48,13 @@ export default function ForgotPassword() {
     try {
       await sendPasswordReset(email);
       setIsSent(true);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Password reset error:', error);
-      if (error.code === 'auth/user-not-found') {
+      const firebaseError = error as FirebaseError;
+      if (firebaseError.code === 'auth/user-not-found') {
         setErrorMessage('No account found with this email address');
       } else {
-        setErrorMessage(error.message);
+        setErrorMessage(firebaseError.message);
       }
     } finally {
       setIsSending(false);
@@ -145,8 +147,8 @@ export default function ForgotPassword() {
 
       <Box sx={{ mt: 3, textAlign: 'center' }}>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          If you haven't created an account on the VFS Portal yet, and you don't have a Google
-          Account, then you'll need to create one:
+          If you haven&apos;t created an account on the VFS Portal yet, and you don&apos;t have a
+          Google Account, then you&apos;ll need to create one:
         </Typography>
         <Button
           component={RouterLink}

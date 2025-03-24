@@ -2,15 +2,15 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import {
   User,
   signInWithEmail,
-  signInWithGoogle,
+  signInWithGooglePopup,
   resetPassword,
   logoutUser,
   subscribeToAuthChanges,
-  getUserData,
 } from '../services/firebase/auth';
 import { userFamilyDB, familyDB } from '../services/firebase/collections';
 import { useNavigate } from 'react-router-dom';
 import { Family, UserFamily } from '../services/firebase/models/types';
+import { FirebaseError } from 'firebase/app';
 import { doc, getDoc } from 'firebase/firestore';
 
 interface AuthContextType {
@@ -21,7 +21,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
+  loginWithGooglePopup: () => Promise<void>;
   logout: () => Promise<void>;
   sendPasswordReset: (email: string) => Promise<void>;
   error: string | null;
@@ -45,7 +45,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     setIsLoading(true);
 
+    // Set up the auth state listener
     const unsubscribe = subscribeToAuthChanges(async (user) => {
+      console.log('Auth state changed:', user ? 'User logged in' : 'No user');
       setCurrentUser(user);
 
       if (user && user.email) {
@@ -80,39 +82,46 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   // Login with email/password
   const login = async (email: string, password: string) => {
     try {
       setError(null);
-      const user = await signInWithEmail(email, password);
+      await signInWithEmail(email, password);
       // Navigation happens in the auth state change listener
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
       throw err;
     }
   };
 
-  // Login with Google
-  const loginWithGoogle = async () => {
+  // Login with Google (popup)
+  const loginWithGooglePopup = async () => {
     try {
       setError(null);
-      const user = await signInWithGoogle();
+      await signInWithGooglePopup();
       // Navigation happens in the auth state change listener
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
       throw err;
     }
   };
+
+  // Removed redirect authentication in favor of popup method
+
+  // Other OAuth providers removed to simplify the implementation
 
   // Logout
   const logout = async () => {
     try {
       await logoutUser();
       navigate('/login');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
       throw err;
     }
   };
@@ -122,8 +131,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setError(null);
       await resetPassword(email);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
       throw err;
     }
   };
@@ -136,7 +146,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isAuthenticated: !!currentUser && !currentUser.isAnonymous,
     isLoading,
     login,
-    loginWithGoogle,
+    loginWithGooglePopup,
     logout,
     sendPasswordReset,
     error,
@@ -145,6 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// Extract to a separate file later to avoid the react-refresh/only-export-components warning
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
