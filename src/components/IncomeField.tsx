@@ -56,7 +56,8 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   const handleCancel = () => {
     setIsLocked(true);
     setDisplayedValue(null);
-    onChange(initialValue);
+    // Ensure we don't pass undefined to onChange
+    onChange(initialValue !== undefined ? initialValue : null);
   };
 
   // Handle confirming edits
