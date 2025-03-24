@@ -108,7 +108,17 @@ export interface Contract {
   id: string;
   yearID: string;
   familyID: string;
+  familyName?: string;
+  familyNameAndGuardians?: string;
   studentDecisions: Record<string, string>;
+  tuition?: number;
+  assistanceAmount?: number;
+  tuitionAssistanceRequested?: boolean;
+  tuitionAssistanceGranted?: boolean;
+  isSigned?: boolean;
+  family?: Family;
+  fullTimeNames?: string;
+  partTimeNames?: string;
 }
 
 export interface Year {
