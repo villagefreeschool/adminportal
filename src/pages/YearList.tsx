@@ -236,7 +236,10 @@ function YearList() {
                         key={headCell.id}
                         align={headCell.align || 'left'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
+                        sx={{
+                          fontWeight: 'bold',
+                          whiteSpace: 'nowrap',
+                        }}
                       >
                         {headCell.sortable ? (
                           <TableSortLabel
@@ -265,7 +268,14 @@ function YearList() {
                         )}
                       </TableCell>
                       <TableCell align="center">
-                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 1,
+                          }}
+                        >
                           <Tooltip title="View contracts">
                             <Link
                               component={RouterLink}

@@ -118,7 +118,7 @@ function YearRoster() {
       const studentName = enrollment.studentName?.toLowerCase() || '';
       const familyName = enrollment.familyName?.toLowerCase() || '';
       const enrollmentType = enrollment.enrollmentType?.toLowerCase() || '';
-      
+
       return (
         studentName.includes(searchLower) ||
         familyName.includes(searchLower) ||
@@ -135,7 +135,7 @@ function YearRoster() {
     const workbook = new ExcelJS.Workbook();
     workbook.creator = 'admin.villagefreeschool.org';
     workbook.created = new Date();
-    
+
     const worksheet = workbook.addWorksheet(year.name);
 
     // Define columns
@@ -179,7 +179,9 @@ function YearRoster() {
 
     // Generate the Excel file
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new window.Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
     const filename = `${year.name} - Roster - ${moment().format()}.xlsx`;
     saveAs(blob, filename);
   };
@@ -189,7 +191,7 @@ function YearRoster() {
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h5" color="error">
-          You don't have permission to access this page
+          You don&apos;t have permission to access this page
         </Typography>
       </Paper>
     );
@@ -255,12 +257,7 @@ function YearRoster() {
         </Toolbar>
         <Toolbar variant="dense">
           <Box sx={{ flexGrow: 1 }} />
-          <Button
-            size="small"
-            color="inherit"
-            onClick={downloadExcel}
-            startIcon={<DownloadIcon />}
-          >
+          <Button size="small" color="inherit" onClick={downloadExcel} startIcon={<DownloadIcon />}>
             Download
           </Button>
         </Toolbar>

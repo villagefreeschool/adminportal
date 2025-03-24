@@ -48,12 +48,12 @@ const columns: Column[] = [
 function UserList() {
   const theme = useTheme();
   const { isAdmin } = useAuth();
-  
+
   // State
   const [users, setUsers] = useState<VFSAdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState<string | undefined>(undefined);
@@ -96,7 +96,7 @@ function UserList() {
   const handleSave = (user: VFSAdminUser) => {
     // If editing an existing user, replace it in the list
     if (selectedEmail) {
-      setUsers(users.map(u => u.email === selectedEmail ? user : u));
+      setUsers(users.map((u) => (u.email === selectedEmail ? user : u)));
     } else {
       // If creating a new user, add it to the list
       setUsers([...users, user].sort((a, b) => a.firstName.localeCompare(b.firstName)));
@@ -112,7 +112,7 @@ function UserList() {
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h5" color="error">
-          You don't have permission to access this page
+          You don&apos;t have permission to access this page
         </Typography>
       </Paper>
     );
@@ -183,14 +183,10 @@ function UserList() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{displayName(user)}</TableCell>
                       <TableCell align="center">
-                        {user.isAdmin && (
-                          <CheckIcon color="success" fontSize="small" />
-                        )}
+                        {user.isAdmin && <CheckIcon color="success" fontSize="small" />}
                       </TableCell>
                       <TableCell align="center">
-                        {user.isStaff && (
-                          <CheckIcon color="success" fontSize="small" />
-                        )}
+                        {user.isStaff && <CheckIcon color="success" fontSize="small" />}
                       </TableCell>
                       <TableCell align="center">
                         <IconButton
