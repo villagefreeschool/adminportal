@@ -3,10 +3,10 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 
 describe('App', () => {
-  it('renders welcome message', () => {
+  it('renders the app header', () => {
     render(<App />);
 
-    // Check if the welcome message is rendered
-    expect(screen.getByText(/Welcome to the Village Free School Admin Portal/)).toBeInTheDocument();
+    // Check if the header is rendered
+    expect(screen.getByText('VFS Admin Portal')).toBeInTheDocument();
   });
 });

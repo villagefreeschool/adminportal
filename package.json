@@ -18,6 +18,11 @@
     "ts-script": "tsx"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.2.5",
+    "@mui/icons-material": "^6.4.8",
+    "@mui/material": "^6.4.8",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "firebase": "^11.5.0",
@@ -25,6 +30,7 @@
     "pdfmake": "^0.2.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.4.0",
     "terser": "^5.39.0"
   },
   "devDependencies": {
