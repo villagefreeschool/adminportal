@@ -555,7 +555,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               <Grid item xs={12} sm={8} md={6}>
                 <Typography variant="body2" paragraph>
                   To make Village Free School affordable to all families, tuition is based on a
-                  percentage of family income. Please enter your family's annual gross income.
+                  percentage of family income. Please enter your family&apos;s annual gross income.
                 </Typography>
                 <Typography variant="body2" paragraph>
                   If income has changed recently, or if income varies from month to month, enter the
