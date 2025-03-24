@@ -44,8 +44,6 @@ const MainContent = styled('main')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
-    // Add left margin to account for permanent drawer width
-    marginLeft: drawerWidth,
   },
 }));
 
