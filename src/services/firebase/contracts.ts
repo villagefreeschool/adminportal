@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { collection, doc, getDoc, getDocs, setDoc, Firestore } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, Firestore } from 'firebase/firestore';
 import { db } from './core';
 import { yearDB } from './collections';
 import { Contract, Enrollment, Family } from './models/types';
@@ -79,6 +79,53 @@ export async function saveContract(contract: Contract): Promise<Contract> {
   } catch (error) {
     console.error('Error saving contract:', error);
     throw error;
+  }
+}
+
+/**
+ * Delete a contract from Firestore
+ * @param yearID The year ID
+ * @param familyID The family ID (also used as the contract ID)
+ * @returns Promise that resolves when the contract is deleted
+ */
+export async function deleteContract(yearID: string, familyID: string): Promise<void> {
+  try {
+    const contractRef = doc(collection(doc(yearDB, yearID), 'contracts'), familyID);
+    await deleteDoc(contractRef);
+  } catch (error) {
+    console.error('Error deleting contract:', error);
+    throw error;
+  }
+}
+
+/**
+ * Fetch a contract from the previous school year
+ * @param yearID The current year ID
+ * @param familyID The family ID
+ * @returns Promise resolving to the previous year's contract or null if not found
+ */
+export async function fetchPreviousYearContract(
+  yearID: string,
+  familyID: string,
+): Promise<Contract | null> {
+  try {
+    // Import findPreviousYearId to avoid circular dependencies
+    const { findPreviousYearId } = await import('./years');
+
+    // Find the previous year ID
+    const previousYearID = await findPreviousYearId(yearID);
+
+    if (!previousYearID) {
+      console.log('No previous year found for year ID:', yearID);
+      return null;
+    }
+
+    // Fetch contract from previous year
+    const previousContract = await fetchContract(previousYearID, familyID);
+    return previousContract;
+  } catch (error) {
+    console.error('Error fetching previous year contract:', error);
+    return null;
   }
 }
 
