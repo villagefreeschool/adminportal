@@ -16,14 +16,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import MyFamily from './pages/MyFamily';
 import FamilyList from './pages/FamilyList';
 import FamilyShow from './pages/FamilyShow';
+import Registration from './pages/Registration';
 import YearList from './pages/YearList';
 import YearRoster from './pages/YearRoster';
 import Users from './pages/Users';
-
-// TODO: Create FamilyRegistrations component
-const FamilyRegistrations = () => <div>Family Registrations Page (Not yet implemented)</div>;
-
-// Import YearContracts component
 import YearContracts from './pages/YearContracts';
 
 function App() {
@@ -83,7 +79,17 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <FamilyRegistrations />
+                  <Registration />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/registration"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Registration />
                 </Layout>
               </ProtectedRoute>
             }
