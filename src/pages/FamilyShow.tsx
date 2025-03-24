@@ -29,7 +29,7 @@ import {
 } from '../services/firebase/families';
 import FamilyDialog from '../components/dialogs/FamilyDialog';
 import FamilyDeleteDialog from '../components/dialogs/FamilyDeleteDialog';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 import LabeledData from '../components/LabeledData';
 import Guardian from '../components/Guardian';
 import Student from '../components/Student';

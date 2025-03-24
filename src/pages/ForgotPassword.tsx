@@ -13,7 +13,7 @@ import {
   Box,
   Link,
 } from '@mui/material';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 import { FirebaseError } from 'firebase/app';
 
 export default function ForgotPassword() {

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import {
   User,
   signInWithEmail,
@@ -14,24 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { Family, UserFamily } from '../services/firebase/models/types';
 import { FirebaseError } from 'firebase/app';
 import { doc, getDoc } from 'firebase/firestore';
-
-interface AuthContextType {
-  currentUser: User | null;
-  userFamily: UserFamily | null;
-  myFamily: Family | null;
-  isAdmin: boolean;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  loginWithGooglePopup: () => Promise<void>;
-  loginWithGoogleRedirect: () => Promise<void>;
-  checkRedirectResult: () => Promise<User | null>;
-  logout: () => Promise<void>;
-  sendPasswordReset: (email: string) => Promise<void>;
-  error: string | null;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from './AuthContextTypes';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -184,11 +167,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// Extract to a separate file later to avoid the react-refresh/only-export-components warning
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+// The useAuth hook has been moved to its own file: useAuth.ts

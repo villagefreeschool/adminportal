@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { FirebaseError } from 'firebase/app';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 
 export default function Login() {
   const [email, setEmail] = useState('');

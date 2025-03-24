@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+// Remove useNavigate since we're not using it
 import {
   Paper,
   Typography,
@@ -38,8 +39,7 @@ import {
   calculatedNameForFamily,
   guardianNamesForFamily,
 } from '../services/firebase/families';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/useAuth';
 import { doc } from 'firebase/firestore';
 import { familyDB } from '../services/firebase/collections';
 
@@ -76,7 +76,6 @@ const headCells: HeadCell[] = [
 
 function FamilyList() {
   const { isAdmin } = useAuth();
-  const navigate = useNavigate(); // Kept for future use
 
   // State variables
   const [families, setFamilies] = useState<Family[]>([]);

@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 
 function Home() {
   const { currentUser, myFamily, isAdmin } = useAuth();
