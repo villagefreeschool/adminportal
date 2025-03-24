@@ -151,16 +151,12 @@ function Layout({ children }: LayoutProps) {
 
       <MainContent>
         <Container
+          maxWidth="lg"
+          disableGutters={false}
           sx={{
             flexGrow: 1,
-            width: '100%',
-            maxWidth: {
-              xs: '100%',
-              sm: '100%',
-              md: '900px',
-              lg: '1100px',
-            },
-            px: { xs: 1, sm: 2, md: 3 },
+            py: { xs: 2, sm: 3 },
+            px: { xs: 2, sm: 3, md: 4 },
           }}
         >
           {children}
