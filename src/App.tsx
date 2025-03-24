@@ -23,8 +23,8 @@ import Users from './pages/Users';
 // TODO: Create FamilyRegistrations component
 const FamilyRegistrations = () => <div>Family Registrations Page (Not yet implemented)</div>;
 
-// TODO: Create YearContracts component
-const YearContracts = () => <div>Year Contracts Page (Not yet implemented)</div>;
+// Import YearContracts component
+import YearContracts from './pages/YearContracts';
 
 function App() {
   return (
