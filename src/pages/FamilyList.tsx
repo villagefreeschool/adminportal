@@ -454,6 +454,7 @@ function FamilyList() {
         }
         onClose={() => setNewDialogOpen(false)}
         onSave={handleSaveNewFamily}
+        fullScreen={true}
       />
 
       {/* Edit Family Dialog */}
@@ -473,6 +474,7 @@ function FamilyList() {
         loading={fetchingFamily}
         onClose={() => setEditDialogOpen(false)}
         onSave={handleUpdateFamily}
+        fullScreen={true}
       />
 
       {/* Delete Family Dialog */}
