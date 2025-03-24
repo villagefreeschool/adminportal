@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Paper,
   Typography,
@@ -16,11 +15,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Family } from '../services/firebase/models/types';
-import {
-  fetchFamily,
-  saveFamily,
-  calculatedNameForFamily,
-} from '../services/firebase/families';
+import { fetchFamily, saveFamily, calculatedNameForFamily } from '../services/firebase/families';
 import FamilyDialog from '../components/dialogs/FamilyDialog';
 import { useAuth } from '../contexts/useAuth';
 import LabeledData from '../components/LabeledData';
@@ -28,7 +23,6 @@ import Guardian from '../components/Guardian';
 import Student from '../components/Student';
 
 function MyFamily() {
-  const navigate = useNavigate();
   const { myFamily: contextFamily, isLoading: authLoading } = useAuth();
 
   // State variables
@@ -42,7 +36,7 @@ function MyFamily() {
   // Fetch family on mount or when ID changes
   useEffect(() => {
     if (authLoading) return;
-    
+
     if (contextFamily) {
       // If myFamily is already in the auth context, use it
       setFamily(contextFamily);
@@ -121,10 +115,7 @@ function MyFamily() {
           </Typography>
           <Box>
             <Tooltip title="Edit Family">
-              <IconButton
-                onClick={() => setEditDialogOpen(true)}
-                sx={{ color: 'white', mr: 1 }}
-              >
+              <IconButton onClick={() => setEditDialogOpen(true)} sx={{ color: 'white', mr: 1 }}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
@@ -222,7 +213,7 @@ function MyFamily() {
                     <Grid container spacing={2}>
                       {family.emergencyContacts.map((contact, index) => (
                         <LabeledData key={index} label={`Contact #${index + 1}`} xs={12} md={6}>
-                          {contact.firstName} {contact.lastName} 
+                          {contact.firstName} {contact.lastName}
                           {contact.relationship && ` (${contact.relationship})`}
                           {contact.cellPhone && `, ${contact.cellPhone}`}
                         </LabeledData>
