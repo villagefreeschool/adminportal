@@ -6,7 +6,9 @@ import {
   getDoc,
   setDoc,
   addDoc,
+  deleteDoc,
   query,
+  where,
   orderBy,
   DocumentData,
   QueryDocumentSnapshot,
@@ -52,6 +54,27 @@ export async function fetchYears(): Promise<Year[]> {
       id: doc.id,
     } as Year;
   });
+}
+
+/**
+ * Finds the previous year ID given a year ID
+ * @param yearId The current year ID
+ * @returns Promise resolving to the previous year ID or null if not found
+ */
+export async function findPreviousYearId(yearId: string): Promise<string | null> {
+  try {
+    const years = await fetchYears();
+    const currentYearIndex = years.findIndex((year) => year.id === yearId);
+
+    if (currentYearIndex === -1 || currentYearIndex === years.length - 1) {
+      return null; // Year not found or it's the oldest year
+    }
+
+    return years[currentYearIndex + 1].id;
+  } catch (error) {
+    console.error('Error finding previous year:', error);
+    return null;
+  }
 }
 
 /**
@@ -173,4 +196,76 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
 
   const results = await fetchFamiliesWithIDs(familyIDs);
   return results;
+}
+
+/**
+ * Fetch enrollments for a specific year and family
+ * @param yearId The year ID
+ * @param familyId The family ID (optional)
+ * @returns Promise resolving to an array of Enrollment objects
+ */
+export async function fetchEnrollments(yearId: string, familyId?: string): Promise<Enrollment[]> {
+  try {
+    let enrollmentsCollection = collection(doc(yearDB, yearId), 'enrollments');
+    let enrollmentsQuery;
+
+    // If familyId is provided, filter by family
+    if (familyId) {
+      enrollmentsQuery = query(enrollmentsCollection, where('familyID', '==', familyId));
+    } else {
+      enrollmentsQuery = enrollmentsCollection;
+    }
+
+    const querySnapshot = await getDocs(enrollmentsQuery);
+    const enrollments: Enrollment[] = [];
+
+    querySnapshot.forEach((doc) => {
+      enrollments.push({
+        id: doc.id,
+        ...doc.data(),
+      } as Enrollment);
+    });
+
+    return enrollments;
+  } catch (error) {
+    console.error('Error fetching enrollments:', error);
+    throw error;
+  }
+}
+
+/**
+ * Save an enrollment to Firestore
+ * @param enrollment The enrollment data to save
+ * @returns Promise resolving to the saved enrollment
+ */
+export async function saveEnrollment(enrollment: Enrollment): Promise<Enrollment> {
+  try {
+    const { id, yearID, ...enrollmentData } = enrollment;
+
+    const enrollmentRef = doc(collection(doc(yearDB, yearID), 'enrollments'), id);
+
+    await setDoc(enrollmentRef, enrollmentData);
+
+    return enrollment;
+  } catch (error) {
+    console.error('Error saving enrollment:', error);
+    throw error;
+  }
+}
+
+/**
+ * Delete an enrollment from Firestore
+ * @param yearId The year ID
+ * @param enrollmentId The enrollment ID (same as student ID)
+ * @returns Promise that resolves when the enrollment is deleted
+ */
+export async function deleteEnrollment(yearId: string, enrollmentId: string): Promise<void> {
+  try {
+    const enrollmentRef = doc(collection(doc(yearDB, yearId), 'enrollments'), enrollmentId);
+
+    await deleteDoc(enrollmentRef);
+  } catch (error) {
+    console.error('Error deleting enrollment:', error);
+    throw error;
+  }
 }
