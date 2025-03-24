@@ -29,9 +29,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DescriptionIcon from '@mui/icons-material/Description';
 import FamilyDialog from '../components/dialogs/FamilyDialog';
 import FamilyDeleteDialog from '../components/dialogs/FamilyDeleteDialog';
-import { 
-  Family
-} from '../services/firebase/models/types';
+import { Family } from '../services/firebase/models/types';
 import {
   fetchFamilies,
   fetchFamily,
@@ -79,14 +77,14 @@ const headCells: HeadCell[] = [
 function FamilyList() {
   const { isAdmin } = useAuth();
   const navigate = useNavigate(); // Kept for future use
-  
+
   // State variables
   const [families, setFamilies] = useState<Family[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<OrderBy>('familyName');
-  
+
   // Dialog states
   const [newDialogOpen, setNewDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -205,37 +203,37 @@ function FamilyList() {
 
   // Transform families with additional display fields
   const extendedFamilies: ExtendedFamily[] = useMemo(() => {
-    return families.map(family => {
+    return families.map((family) => {
       const calculatedName = calculatedNameForFamily(family);
       const guardianNames = guardianNamesForFamily(family);
-      const studentNames = family.students.map(student => 
-        student.preferredName || student.firstName
-      ).join(', ');
-      
+      const studentNames = family.students
+        .map((student) => student.preferredName || student.firstName)
+        .join(', ');
+
       // Get authorized emails from guardians and otherEmails
       let authorizedEmails: string[] = [];
-      
+
       // Add guardian emails
-      authorizedEmails.push(...family.guardians.map(g => g.email));
-      
+      authorizedEmails.push(...family.guardians.map((g) => g.email));
+
       // Add other emails from guardians
-      family.guardians.forEach(guardian => {
+      family.guardians.forEach((guardian) => {
         if (guardian.otherEmails) {
-          const otherEmails = guardian.otherEmails.split(',').map(e => e.trim());
+          const otherEmails = guardian.otherEmails.split(',').map((e) => e.trim());
           authorizedEmails.push(...otherEmails);
         }
       });
-      
+
       // Add student emails
-      family.students.forEach(student => {
+      family.students.forEach((student) => {
         if (student.email) {
           authorizedEmails.push(student.email);
         }
       });
-      
+
       // Clean up emails - remove duplicates and empty values
       authorizedEmails = [...new Set(authorizedEmails.filter(Boolean))];
-      
+
       return {
         ...family,
         familyName: calculatedName,
@@ -249,25 +247,23 @@ function FamilyList() {
   // Sort families based on current sort settings
   const sortedFamilies = useMemo(() => {
     // Filter based on search term
-    const filtered = extendedFamilies.filter(family => {
+    const filtered = extendedFamilies.filter((family) => {
       if (!search) return true;
-      
+
       const searchLower = search.toLowerCase();
       return (
         family.familyName.toLowerCase().includes(searchLower) ||
         family.studentNames.toLowerCase().includes(searchLower) ||
         family.guardianNames.toLowerCase().includes(searchLower) ||
-        family.authorizedEmails.some(email => 
-          email.toLowerCase().includes(searchLower)
-        )
+        family.authorizedEmails.some((email) => email.toLowerCase().includes(searchLower))
       );
     });
-    
+
     // Sort filtered results
     return [...filtered].sort((a, b) => {
       let aValue: string = '';
       let bValue: string = '';
-      
+
       // Handle email array for authorizedEmails
       if (orderBy === 'authorizedEmails') {
         aValue = a.authorizedEmails.join(', ');
@@ -276,7 +272,7 @@ function FamilyList() {
         aValue = String(a[orderBy] || '');
         bValue = String(b[orderBy] || '');
       }
-      
+
       // Compare values based on sort direction
       const result = aValue.localeCompare(bValue);
       return order === 'asc' ? result : -result;
@@ -322,7 +318,7 @@ function FamilyList() {
               }}
             />
           </Toolbar>
-          
+
           {/* Toolbar extension with the FAB */}
           {isAdmin && (
             <Box sx={{ position: 'relative', height: '28px' }}>
@@ -366,8 +362,8 @@ function FamilyList() {
                       >
                         {headCell.sortable ? (
                           <TableSortLabel
-                            active={orderBy === headCell.id as OrderBy}
-                            direction={orderBy === headCell.id as OrderBy ? order : 'asc'}
+                            active={orderBy === (headCell.id as OrderBy)}
+                            direction={orderBy === (headCell.id as OrderBy) ? order : 'asc'}
                             onClick={() => handleRequestSort(headCell.id as OrderBy)}
                           >
                             {headCell.label}
@@ -401,8 +397,8 @@ function FamilyList() {
                           component={RouterLink}
                           to={`/families/${family.id}/registrations`}
                           startIcon={<DescriptionIcon />}
-                          sx={{ 
-                            bgcolor: 'brown.500', 
+                          sx={{
+                            bgcolor: 'brown.500',
                             '&:hover': { bgcolor: 'brown.700' },
                             fontSize: '0.75rem',
                           }}
@@ -447,14 +443,16 @@ function FamilyList() {
       <FamilyDialog
         open={newDialogOpen}
         title="New Family"
-        family={selectedFamily || {
-          id: '',
-          name: '',
-          guardians: [],
-          students: [],
-          emergencyContacts: [],
-          medicalProviders: [],
-        }}
+        family={
+          selectedFamily || {
+            id: '',
+            name: '',
+            guardians: [],
+            students: [],
+            emergencyContacts: [],
+            medicalProviders: [],
+          }
+        }
         onClose={() => setNewDialogOpen(false)}
         onSave={handleSaveNewFamily}
       />
@@ -463,14 +461,16 @@ function FamilyList() {
       <FamilyDialog
         open={editDialogOpen}
         title={`Edit Family ${selectedFamily?.name || ''}`}
-        family={selectedFamily || {
-          id: '',
-          name: '',
-          guardians: [],
-          students: [],
-          emergencyContacts: [],
-          medicalProviders: [],
-        }}
+        family={
+          selectedFamily || {
+            id: '',
+            name: '',
+            guardians: [],
+            students: [],
+            emergencyContacts: [],
+            medicalProviders: [],
+          }
+        }
         loading={fetchingFamily}
         onClose={() => setEditDialogOpen(false)}
         onSave={handleUpdateFamily}

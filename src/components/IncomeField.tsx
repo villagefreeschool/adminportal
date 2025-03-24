@@ -29,7 +29,7 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const input = e.target.value;
     const numbers = input.replace(/[^0-9]/g, '');
-    
+
     if (numbers === '') {
       onChange(null);
     } else {
@@ -40,10 +40,10 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   // Format the value for display
   const formatValue = (input: string): string => {
     if (!input) return '';
-    
+
     const numbers = input.replace(/[^0-9]/g, '');
     if (numbers === '') return '';
-    
+
     const parsed = parseInt(numbers, 10);
     return new Intl.NumberFormat('en-US', {
       style: 'decimal',

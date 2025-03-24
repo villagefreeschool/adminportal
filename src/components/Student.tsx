@@ -26,19 +26,11 @@ const Student: React.FC<StudentProps> = ({ student }) => {
       </Grid>
 
       <Grid container item spacing={2} justifyContent="space-around">
-        <LabeledData label="First">
-          {student.firstName}
-        </LabeledData>
-        
-        {student.middleName && (
-          <LabeledData label="Middle">
-            {student.middleName}
-          </LabeledData>
-        )}
-        
-        <LabeledData label="Last">
-          {student.lastName}
-        </LabeledData>
+        <LabeledData label="First">{student.firstName}</LabeledData>
+
+        {student.middleName && <LabeledData label="Middle">{student.middleName}</LabeledData>}
+
+        <LabeledData label="Last">{student.lastName}</LabeledData>
       </Grid>
 
       {student.email && (

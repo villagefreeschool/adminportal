@@ -20,11 +20,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DescriptionIcon from '@mui/icons-material/Description';
-import {
-  Family,
-  EmergencyContact,
-  MedicalProvider,
-} from '../services/firebase/models/types';
+import { Family, EmergencyContact, MedicalProvider } from '../services/firebase/models/types';
 import {
   fetchFamily,
   deleteFamily,
@@ -42,12 +38,12 @@ function FamilyShow() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
-  
+
   // State variables
   const [family, setFamily] = useState<Family | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Dialog states
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -63,7 +59,7 @@ function FamilyShow() {
   const loadFamily = async (familyId: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const data = await fetchFamily(familyId);
       if (data) {
@@ -104,7 +100,7 @@ function FamilyShow() {
   // Format address for display
   const formatAddress = (family: Family): string => {
     if (!family.address) return 'No address on file';
-    
+
     let address = family.address;
     if (family.city || family.state || family.zip) {
       address += `, ${family.city || ''} ${family.state || ''} ${family.zip || ''}`;
@@ -191,7 +187,9 @@ function FamilyShow() {
       </Box>
 
       <Paper elevation={2} sx={{ mb: 3 }}>
-        <Box sx={{ p: 2, bgcolor: 'green.900', color: 'white', display: 'flex', alignItems: 'center' }}>
+        <Box
+          sx={{ p: 2, bgcolor: 'green.900', color: 'white', display: 'flex', alignItems: 'center' }}
+        >
           <Typography variant="h5" component="h1" sx={{ flexGrow: 1 }}>
             {familyName}
           </Typography>
@@ -216,10 +214,7 @@ function FamilyShow() {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete Family">
-                  <IconButton 
-                    onClick={() => setDeleteDialogOpen(true)}
-                    sx={{ color: 'white' }}
-                  >
+                  <IconButton onClick={() => setDeleteDialogOpen(true)} sx={{ color: 'white' }}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
@@ -233,10 +228,7 @@ function FamilyShow() {
             {/* Basic Family Information */}
             <Grid item xs={12}>
               <Card variant="outlined">
-                <CardHeader 
-                  title="Family Information" 
-                  sx={{ bgcolor: 'grey.100' }}
-                />
+                <CardHeader title="Family Information" sx={{ bgcolor: 'grey.100' }} />
                 <CardContent>
                   <Grid container spacing={2}>
                     <LabeledData label="Family Name" xs={12} sm={6}>
@@ -252,10 +244,13 @@ function FamilyShow() {
                     )}
                     {family.grossFamilyIncome !== undefined && (
                       <LabeledData label="Gross Family Income" xs={12} sm={6}>
-                        {family.slidingScaleOptOut 
-                          ? 'Opted out of sliding scale' 
-                          : family.grossFamilyIncome !== null 
-                            ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(family.grossFamilyIncome)
+                        {family.slidingScaleOptOut
+                          ? 'Opted out of sliding scale'
+                          : family.grossFamilyIncome !== null
+                            ? new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                              }).format(family.grossFamilyIncome)
                             : 'Not provided'}
                       </LabeledData>
                     )}
@@ -270,13 +265,10 @@ function FamilyShow() {
               <Typography variant="h6" gutterBottom>
                 Students
               </Typography>
-              
+
               {family.students.map((student, index) => (
                 <Card key={student.id} variant="outlined" sx={{ mb: 2 }}>
-                  <CardHeader 
-                    title={`Student #${index + 1}`} 
-                    sx={{ bgcolor: 'grey.100' }}
-                  />
+                  <CardHeader title={`Student #${index + 1}`} sx={{ bgcolor: 'grey.100' }} />
                   <CardContent>
                     <Student student={student} />
                   </CardContent>
@@ -290,13 +282,13 @@ function FamilyShow() {
               <Typography variant="h6" gutterBottom>
                 Guardians
               </Typography>
-              
+
               <Grid container spacing={2}>
                 {family.guardians.map((guardian, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card variant="outlined">
-                      <CardHeader 
-                        title={`${guardian.firstName} ${guardian.lastName}`} 
+                      <CardHeader
+                        title={`${guardian.firstName} ${guardian.lastName}`}
                         subheader={guardian.relationship}
                         sx={{ bgcolor: 'grey.100' }}
                       />
@@ -316,17 +308,12 @@ function FamilyShow() {
                 <Typography variant="h6" gutterBottom>
                   Emergency Contacts
                 </Typography>
-                
+
                 <Card variant="outlined">
                   <CardContent>
                     <Grid container spacing={2}>
                       {family.emergencyContacts.map((contact, index) => (
-                        <LabeledData 
-                          key={index}
-                          label={`Contact #${index + 1}`} 
-                          xs={12} 
-                          md={6}
-                        >
+                        <LabeledData key={index} label={`Contact #${index + 1}`} xs={12} md={6}>
                           {formatContact(contact)}
                         </LabeledData>
                       ))}
@@ -343,15 +330,15 @@ function FamilyShow() {
                 <Typography variant="h6" gutterBottom>
                   Medical Providers
                 </Typography>
-                
+
                 <Card variant="outlined">
                   <CardContent>
                     <Grid container spacing={2}>
                       {family.medicalProviders.map((provider, index) => (
-                        <LabeledData 
+                        <LabeledData
                           key={index}
-                          label={provider.type || `Provider #${index + 1}`} 
-                          xs={12} 
+                          label={provider.type || `Provider #${index + 1}`}
+                          xs={12}
                           md={6}
                         >
                           {formatProvider(provider)}
@@ -364,14 +351,16 @@ function FamilyShow() {
             )}
 
             {/* Medical Insurance Section */}
-            {(family.medicalInsuranceProvider || family.medicalInsuranceNameOfPrimaryInsured || 
-              family.medicalInsurancePolicyNumber || family.medicalInsuranceGroupNumber) && (
+            {(family.medicalInsuranceProvider ||
+              family.medicalInsuranceNameOfPrimaryInsured ||
+              family.medicalInsurancePolicyNumber ||
+              family.medicalInsuranceGroupNumber) && (
               <Grid item xs={12}>
                 <Divider sx={{ my: 2 }} />
                 <Typography variant="h6" gutterBottom>
                   Medical Insurance
                 </Typography>
-                
+
                 <Card variant="outlined">
                   <CardContent>
                     <Grid container spacing={2}>
@@ -380,19 +369,19 @@ function FamilyShow() {
                           {family.medicalInsuranceProvider}
                         </LabeledData>
                       )}
-                      
+
                       {family.medicalInsuranceNameOfPrimaryInsured && (
                         <LabeledData label="Primary Insured" xs={12} sm={6}>
                           {family.medicalInsuranceNameOfPrimaryInsured}
                         </LabeledData>
                       )}
-                      
+
                       {family.medicalInsurancePolicyNumber && (
                         <LabeledData label="Policy Number" xs={12} sm={6}>
                           {family.medicalInsurancePolicyNumber}
                         </LabeledData>
                       )}
-                      
+
                       {family.medicalInsuranceGroupNumber && (
                         <LabeledData label="Group Number" xs={12} sm={6}>
                           {family.medicalInsuranceGroupNumber}
@@ -411,7 +400,7 @@ function FamilyShow() {
                 <Typography variant="h6" gutterBottom>
                   Additional Adults Authorized to Pick Up
                 </Typography>
-                
+
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="body1" whiteSpace="pre-wrap">
@@ -421,7 +410,7 @@ function FamilyShow() {
                 </Card>
               </Grid>
             )}
-            
+
             {/* Action Buttons */}
             <Grid item xs={12}>
               <Box display="flex" justifyContent="space-between" mt={2}>
@@ -440,8 +429,8 @@ function FamilyShow() {
                       component={RouterLink}
                       to={`/families/${family.id}/registrations`}
                       startIcon={<DescriptionIcon />}
-                      sx={{ 
-                        bgcolor: 'brown.500', 
+                      sx={{
+                        bgcolor: 'brown.500',
                         '&:hover': { bgcolor: 'brown.700' },
                         mr: 1,
                       }}
@@ -452,8 +441,8 @@ function FamilyShow() {
                       variant="contained"
                       startIcon={<EditIcon />}
                       onClick={() => setEditDialogOpen(true)}
-                      sx={{ 
-                        bgcolor: 'green.800', 
+                      sx={{
+                        bgcolor: 'green.800',
                         '&:hover': { bgcolor: 'green.900' },
                       }}
                     >

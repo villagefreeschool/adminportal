@@ -13,7 +13,7 @@ interface GuardianProps {
  */
 const Guardian: React.FC<GuardianProps> = ({ guardian }) => {
   const hasAddress = guardian.address1 || guardian.city;
-  
+
   return (
     <Grid container spacing={2}>
       <LabeledData label={guardian.relationship || 'Guardian'}>

@@ -20,19 +20,13 @@ import YearList from './pages/YearList';
 import Users from './pages/Users';
 
 // TODO: Create FamilyRegistrations component
-const FamilyRegistrations = () => (
-  <div>Family Registrations Page (Not yet implemented)</div>
-);
+const FamilyRegistrations = () => <div>Family Registrations Page (Not yet implemented)</div>;
 
 // TODO: Create YearRoster component
-const YearRoster = () => (
-  <div>Year Roster Page (Not yet implemented)</div>
-);
+const YearRoster = () => <div>Year Roster Page (Not yet implemented)</div>;
 
 // TODO: Create YearContracts component
-const YearContracts = () => (
-  <div>Year Contracts Page (Not yet implemented)</div>
-);
+const YearContracts = () => <div>Year Contracts Page (Not yet implemented)</div>;
 
 function App() {
   return (

@@ -11,7 +11,7 @@ import {
   Box,
   FormControlLabel,
   Checkbox,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -25,7 +25,7 @@ import {
   Student,
   Guardian,
   EmergencyContact,
-  MedicalProvider
+  MedicalProvider,
 } from '../services/firebase/models/types';
 
 interface FamilyFormProps {
@@ -38,7 +38,6 @@ interface FamilyFormProps {
  * Migrated from Vue FamilyForm
  */
 const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
-  
   // Minimums for collections
   const MIN_STUDENTS = 1;
   const MIN_GUARDIANS = 1;
@@ -62,12 +61,12 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
   const addStudent = () => {
     const students = [...family.students];
-    students.push({ 
-      id: '', 
+    students.push({
+      id: '',
       familyID: family.id || '',
       firstName: '',
       lastName: '',
-      mediaRelease: true
+      mediaRelease: true,
     });
     handleChange('students', students);
   };
@@ -87,11 +86,11 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
   const addGuardian = () => {
     const guardians = [...family.guardians];
-    guardians.push({ 
+    guardians.push({
       firstName: '',
       lastName: '',
       email: '',
-      atSameAddress: true
+      atSameAddress: true,
     });
     handleChange('guardians', guardians);
   };
@@ -149,7 +148,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
     if (family.guardians[index] && (family.emergencyContacts || [])[index]) {
       const src = family.guardians[index];
       const contacts = [...(family.emergencyContacts || [])];
-      
+
       contacts[index] = {
         firstName: src.firstName,
         lastName: src.lastName,
@@ -158,7 +157,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         workPhone: src.workPhone,
         notes: src.notes,
       };
-      
+
       handleChange('emergencyContacts', contacts);
     }
   };
@@ -183,20 +182,20 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
   // Ensure minimum number of items in collections
   while (family.students.length < MIN_STUDENTS) {
-    family.students.push({ 
-      id: '', 
+    family.students.push({
+      id: '',
       familyID: family.id || '',
       firstName: '',
       lastName: '',
-      mediaRelease: true
+      mediaRelease: true,
     });
   }
 
   while (family.guardians.length < MIN_GUARDIANS) {
-    family.guardians.push({ 
+    family.guardians.push({
       firstName: '',
       lastName: '',
-      email: ''
+      email: '',
     });
   }
 
@@ -213,10 +212,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       {/* Family Nickname */}
       <Grid item xs={12}>
         <Card>
-          <CardHeader
-            title="Family Nickname"
-            sx={{ bgcolor: 'green.900', color: 'white' }}
-          />
+          <CardHeader title="Family Nickname" sx={{ bgcolor: 'green.900', color: 'white' }} />
           <CardContent>
             <TextField
               label="What Should We Call Your Family?"
@@ -238,10 +234,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       <Grid item xs={12}>
         <Typography variant="h6">Students</Typography>
         <Typography variant="body2">
-          <strong>Instructions</strong>: Enter at least the children who are
-          planning to attend Village Free School. It is helpful for the staff to
-          know the names of siblings, so consider entering children who are not
-          attending as well.
+          <strong>Instructions</strong>: Enter at least the children who are planning to attend
+          Village Free School. It is helpful for the staff to know the names of siblings, so
+          consider entering children who are not attending as well.
         </Typography>
       </Grid>
 
@@ -277,9 +272,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           />
           <CardContent>
             <Box display="flex" justifyContent="center">
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={addStudent}
                 sx={{ bgcolor: 'green.900' }}
               >
@@ -333,9 +328,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           />
           <CardContent>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={addGuardian}
                 sx={{ bgcolor: 'green.900' }}
               >
@@ -363,8 +358,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           />
           <CardContent>
             <Typography variant="body2" paragraph>
-              In addition to the parents/guardians listed above, please name all
-              other adults who are authorized to pick children up from school.
+              In addition to the parents/guardians listed above, please name all other adults who
+              are authorized to pick children up from school.
             </Typography>
             <TextField
               label="Pick Up List"
@@ -436,9 +431,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           />
           <CardContent>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={addEmergencyContact}
                 sx={{ bgcolor: 'green.900' }}
               >
@@ -460,10 +455,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
 
       <Grid item xs={12}>
         <Card>
-          <CardHeader
-            title="Medical Insurance"
-            sx={{ bgcolor: 'green.900', color: 'white' }}
-          />
+          <CardHeader title="Medical Insurance" sx={{ bgcolor: 'green.900', color: 'white' }} />
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -478,7 +470,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                 <TextField
                   label="Name of Primary Insured"
                   value={family.medicalInsuranceNameOfPrimaryInsured || ''}
-                  onChange={(e) => handleChange('medicalInsuranceNameOfPrimaryInsured', e.target.value)}
+                  onChange={(e) =>
+                    handleChange('medicalInsuranceNameOfPrimaryInsured', e.target.value)
+                  }
                   fullWidth
                 />
               </Grid>
@@ -535,9 +529,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           />
           <CardContent>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={addMedicalProvider}
                 sx={{ bgcolor: 'green.900' }}
               >
@@ -555,22 +549,17 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       {/* Sliding Scale */}
       <Grid item xs={12}>
         <Card>
-          <CardHeader
-            title="Sliding Scale"
-            sx={{ bgcolor: 'green.900', color: 'white' }}
-          />
+          <CardHeader title="Sliding Scale" sx={{ bgcolor: 'green.900', color: 'white' }} />
           <CardContent>
             <Grid container justifyContent="center">
               <Grid item xs={12} sm={8} md={6}>
                 <Typography variant="body2" paragraph>
-                  To make Village Free School affordable to all families, tuition
-                  is based on a percentage of family income. Please enter your
-                  family's annual gross income.
+                  To make Village Free School affordable to all families, tuition is based on a
+                  percentage of family income. Please enter your family's annual gross income.
                 </Typography>
                 <Typography variant="body2" paragraph>
-                  If income has changed recently, or if income varies from month
-                  to month, enter the average total for the year for the past
-                  couple years.
+                  If income has changed recently, or if income varies from month to month, enter the
+                  average total for the year for the past couple years.
                 </Typography>
               </Grid>
             </Grid>
@@ -586,14 +575,24 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                   label="Opt Out"
                 />
               </Grid>
-              <Grid item xs={6} sm={4} style={{ display: family.slidingScaleOptOut ? 'none' : 'block' }}>
+              <Grid
+                item
+                xs={6}
+                sm={4}
+                style={{ display: family.slidingScaleOptOut ? 'none' : 'block' }}
+              >
                 <IncomeField
                   value={family.grossFamilyIncome}
                   onChange={(value) => handleChange('grossFamilyIncome', value)}
                   label="Gross Family Income"
                 />
               </Grid>
-              <Grid item xs={6} sm={4} style={{ display: family.slidingScaleOptOut ? 'block' : 'none' }}>
+              <Grid
+                item
+                xs={6}
+                sm={4}
+                style={{ display: family.slidingScaleOptOut ? 'block' : 'none' }}
+              >
                 <Typography variant="body2">
                   Tuition calculation will use the full tuition rate.
                 </Typography>

@@ -11,7 +11,7 @@ import {
   Box,
   IconButton,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
@@ -59,7 +59,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   const handleSave = async () => {
     setError(null);
     setSaving(true);
-    
+
     try {
       await onSave(localFamily);
       onClose();
@@ -105,7 +105,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
         ) : (
           <FamilyForm family={localFamily} onChange={handleChange} />
         )}
-        
+
         {error && (
           <Typography color="error" align="center" sx={{ mt: 2 }}>
             {error}
@@ -114,11 +114,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
       </DialogContent>
 
       <DialogActions>
-        <Button
-          onClick={onClose}
-          color="inherit"
-          disabled={saving}
-        >
+        <Button onClick={onClose} color="inherit" disabled={saving}>
           Cancel
         </Button>
         <Button

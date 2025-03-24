@@ -86,7 +86,7 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           helperText="Users logging in with any of these email addresses will be linked to your family automatically."
         />
       </Grid>
-      
+
       {index !== 0 && (
         <Grid item xs={12}>
           <FormControlLabel
@@ -100,13 +100,13 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           />
         </Grid>
       )}
-      
+
       {index === 0 && (
         <Grid item xs={12}>
           <div style={{ minHeight: '48px' }} />
         </Grid>
       )}
-      
+
       {!guardian.atSameAddress && (
         <>
           <Grid item xs={12}>
@@ -155,7 +155,7 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           </Grid>
         </>
       )}
-      
+
       <Grid item xs={12}>
         <TextField
           label="Occupation"
@@ -164,7 +164,7 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
         />
       </Grid>
-      
+
       <Grid item xs={12}>
         <TextField
           label="Notes"

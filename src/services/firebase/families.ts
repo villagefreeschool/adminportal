@@ -21,7 +21,7 @@ import { familyDB, studentDB, userFamilyDB, yearDB } from './collections';
  */
 export async function fetchFamilies(): Promise<Family[]> {
   const families: Family[] = [];
-  
+
   try {
     const snapshot = await getDocs(familyDB);
     snapshot.forEach((doc) => {
@@ -31,7 +31,7 @@ export async function fetchFamilies(): Promise<Family[]> {
     console.error('Error fetching families:', error);
     throw error;
   }
-  
+
   return families;
 }
 
@@ -42,7 +42,7 @@ export async function fetchFamily(id: string): Promise<Family | null> {
   try {
     const docRef = doc(familyDB, id);
     const docSnapshot = await getDoc(docRef);
-    
+
     if (docSnapshot.exists()) {
       return { id: docSnapshot.id, ...docSnapshot.data() } as Family;
     } else {
@@ -82,9 +82,9 @@ export async function saveFamily(family: Family): Promise<Family> {
     }
 
     // Make a copy of the family to save to Firestore
-    const familyToSave = { 
+    const familyToSave = {
       ...family,
-      id: familyID 
+      id: familyID,
     };
 
     await setDoc(doc(familyDB, familyID), familyToSave);

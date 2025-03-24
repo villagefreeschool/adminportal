@@ -1,12 +1,5 @@
 import React, { useEffect } from 'react';
-import { 
-  Grid, 
-  TextField, 
-  MenuItem, 
-  FormControlLabel, 
-  Switch,
-  Typography
-} from '@mui/material';
+import { Grid, TextField, MenuItem, FormControlLabel, Switch, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -45,7 +38,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
   // Calculate reflexive pronoun for self-sign-out text
   const getReflexivePronoun = (): string => {
     if (!student.pronoun) return 'themself';
-    
+
     switch (student.pronoun.toLowerCase()) {
       case 'he':
       case 'his':
@@ -109,7 +102,12 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             label="Birthdate"
             value={student.birthdate ? dayjs(student.birthdate) : null}
             onChange={(date: unknown) => {
-              if (date && typeof date === 'object' && 'format' in date && typeof date.format === 'function') {
+              if (
+                date &&
+                typeof date === 'object' &&
+                'format' in date &&
+                typeof date.format === 'function'
+              ) {
                 handleChange('birthdate', date.format('YYYY-MM-DD'));
               } else {
                 handleChange('birthdate', null);
@@ -135,7 +133,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             ))}
           </TextField>
         </Grid>
-        
+
         {student.gender === 'Custom' && (
           <Grid item xs={12} sm={6}>
             <TextField
@@ -147,7 +145,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             />
           </Grid>
         )}
-        
+
         <Grid item xs={12} md={6}>
           <TextField
             select

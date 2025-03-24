@@ -8,7 +8,7 @@ import {
   Button,
   CircularProgress,
   Typography,
-  Box
+  Box,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Family } from '../../services/firebase/models/types';
@@ -36,10 +36,10 @@ const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
   // Handle delete action
   const handleDelete = async () => {
     if (!family) return;
-    
+
     setError(null);
     setDeleting(true);
-    
+
     try {
       await onDelete(family);
       onClose();
@@ -53,57 +53,42 @@ const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
 
   // Generate family name for display
   const familyName = family ? calculatedNameForFamily(family) : '';
-  
+
   // List students for confirmation
-  const studentNames = family?.students.map(s => 
-    `${s.firstName} ${s.lastName}`
-  ).join(', ');
+  const studentNames = family?.students.map((s) => `${s.firstName} ${s.lastName}`).join(', ');
 
   return (
-    <Dialog
-      open={open}
-      onClose={!deleting ? onClose : undefined}
-      maxWidth="sm"
-      fullWidth
-    >
-      <DialogTitle>
-        Confirm Family Deletion
-      </DialogTitle>
-      
+    <Dialog open={open} onClose={!deleting ? onClose : undefined} maxWidth="sm" fullWidth>
+      <DialogTitle>Confirm Family Deletion</DialogTitle>
+
       <DialogContent>
         <DialogContentText>
           Are you sure you want to delete <strong>{familyName}</strong>?
         </DialogContentText>
-        
+
         <Box mt={2}>
-          <Typography variant="subtitle2">
-            This will permanently delete:
-          </Typography>
+          <Typography variant="subtitle2">This will permanently delete:</Typography>
           <ul>
             <li>Family profile for {familyName}</li>
             <li>Student records for: {studentNames}</li>
             <li>All enrollments for these students</li>
             <li>All contracts for this family</li>
           </ul>
-          
+
           <Typography color="error" variant="body2" sx={{ mt: 2, fontWeight: 'bold' }}>
             This action cannot be undone.
           </Typography>
         </Box>
-        
+
         {error && (
           <Typography color="error" sx={{ mt: 2 }}>
             {error}
           </Typography>
         )}
       </DialogContent>
-      
+
       <DialogActions>
-        <Button
-          onClick={onClose}
-          color="inherit"
-          disabled={deleting}
-        >
+        <Button onClick={onClose} color="inherit" disabled={deleting}>
           Cancel
         </Button>
         <Button
