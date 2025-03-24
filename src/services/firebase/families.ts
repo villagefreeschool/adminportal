@@ -4,6 +4,7 @@ import {
   doc,
   setDoc,
   getDocs,
+  getDoc,
   deleteDoc,
   where,
   query,
@@ -14,6 +15,45 @@ import { EmergencyContact, Family } from './models/types';
 
 // Import collection references
 import { familyDB, studentDB, userFamilyDB, yearDB } from './collections';
+
+/**
+ * Fetches all families from Firestore
+ */
+export async function fetchFamilies(): Promise<Family[]> {
+  const families: Family[] = [];
+  
+  try {
+    const snapshot = await getDocs(familyDB);
+    snapshot.forEach((doc) => {
+      families.push({ id: doc.id, ...doc.data() } as Family);
+    });
+  } catch (error) {
+    console.error('Error fetching families:', error);
+    throw error;
+  }
+  
+  return families;
+}
+
+/**
+ * Fetches a single family by ID
+ */
+export async function fetchFamily(id: string): Promise<Family | null> {
+  try {
+    const docRef = doc(familyDB, id);
+    const docSnapshot = await getDoc(docRef);
+    
+    if (docSnapshot.exists()) {
+      return { id: docSnapshot.id, ...docSnapshot.data() } as Family;
+    } else {
+      console.log(`No family found with ID: ${id}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching family:', error);
+    throw error;
+  }
+}
 
 /**
  * saveFamily is the central handler for saving a family, its guardians and
@@ -33,14 +73,21 @@ export async function saveFamily(family: Family): Promise<Family> {
   }
 
   try {
-    // Assign missing student IDs
+    // Assign missing student IDs and family ID
     for (let i = 0; i < family.students.length; i++) {
       if (!family.students[i].id) {
         family.students[i].id = doc(studentDB).id;
       }
+      family.students[i].familyID = familyID;
     }
 
-    await setDoc(doc(familyDB, familyID), family);
+    // Make a copy of the family to save to Firestore
+    const familyToSave = { 
+      ...family,
+      id: familyID 
+    };
+
+    await setDoc(doc(familyDB, familyID), familyToSave);
 
     let emails: string[] = [];
     // Add Guardian email access
@@ -88,7 +135,7 @@ export async function saveFamily(family: Family): Promise<Family> {
   } catch (error) {
     return Promise.reject(error);
   }
-  return Promise.resolve(family);
+  return Promise.resolve({ ...family, id: familyID });
 }
 
 /**

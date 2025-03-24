@@ -19,7 +19,10 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"]
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -27,6 +30,8 @@
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
+    "@mui/x-date-pickers": "^7.28.0",
+    "dayjs": "^1.11.13",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "firebase": "^11.5.0",

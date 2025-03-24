@@ -9,25 +9,56 @@ export interface Guardian {
   email: string;
   otherEmails?: string;
   cellPhone?: string;
+  workPhone?: string;
   relationship?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  occupation?: string;
+  notes?: string;
+  atSameAddress?: boolean;
 }
 
 export interface Student {
   id: string;
   familyID: string;
   firstName: string;
+  middleName?: string;
   lastName: string;
+  preferredName?: string;
   birthdate?: string; // ISO date string
+  gender?: string;
+  customGender?: string;
+  pronoun?: string;
   email?: string;
   grade?: string;
+  priorSchool?: string;
+  learningDisabilities?: string;
+  additionalInfo?: string;
+  severeAllergies?: string;
+  nonSevereAllergies?: string;
+  otherMedicalConditions?: string;
   medicalNotes?: string;
-  allergies?: string;
+  allergies?: string; // General allergies field
+  mediaRelease?: boolean;
+  signSelfOut?: boolean;
 }
 
 export interface EmergencyContact {
   firstName: string;
+  lastName?: string;
   cellPhone?: string;
+  workPhone?: string;
   relationship?: string;
+  notes?: string;
+}
+
+export interface MedicalProvider {
+  name: string;
+  phone?: string;
+  type?: string;
 }
 
 export interface Family {
@@ -40,9 +71,17 @@ export interface Family {
   phone?: string;
   allergies?: string;
   grossFamilyIncome?: number | null;
+  slidingScaleOptOut?: boolean;
   guardians: Guardian[];
   students: Student[];
   emergencyContacts?: EmergencyContact[];
+  medicalProviders?: MedicalProvider[];
+  medicalInsuranceProvider?: string;
+  medicalInsuranceNameOfPrimaryInsured?: string;
+  medicalInsurancePolicyNumber?: string;
+  medicalInsuranceGroupNumber?: string;
+  pickupList?: string;
+  authorizedEmails?: string[];
 }
 
 export interface UserFamily {
@@ -70,4 +109,14 @@ export interface Contract {
   yearID: string;
   familyID: string;
   studentDecisions: Record<string, string>;
+}
+
+export interface Year {
+  id: string;
+  name: string;
+  minimumTuition: number;
+  maximumTuition: number;
+  minimumIncome: number;
+  maximumIncome: number;
+  isAcceptingRegistrations: boolean;
 }
