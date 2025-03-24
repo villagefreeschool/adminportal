@@ -5,8 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
-  User as FirebaseUser,
-  FirebaseError
+  User as FirebaseUser
 } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth } from './core';
@@ -15,7 +14,7 @@ import { userDB } from './collections';
 /**
  * Interface for a VFS Admin user, extending Firebase User with additional properties
  */
-export interface User extends FirebaseUser {
+export interface User extends Omit<FirebaseUser, 'displayName'> {
   isAdmin?: boolean;
   displayName?: string | null;
   [key: string]: any; // Additional properties from Firestore
