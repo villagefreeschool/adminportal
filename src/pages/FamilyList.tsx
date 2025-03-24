@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // Remove useNavigate since we're not using it
 import {
+  useTheme,
   Paper,
   Typography,
   Box,
@@ -76,6 +77,7 @@ const headCells: HeadCell[] = [
 
 function FamilyList() {
   const { isAdmin } = useAuth();
+  const theme = useTheme();
 
   // State variables
   const [families, setFamilies] = useState<Family[]>([]);
@@ -281,7 +283,7 @@ function FamilyList() {
   return (
     <>
       <Paper elevation={2} sx={{ overflow: 'hidden' }}>
-        <AppBar position="relative" sx={{ bgcolor: 'green.900' }}>
+        <AppBar position="relative" sx={{ bgcolor: theme.palette.green[900] }}>
           <Toolbar>
             <Typography variant="h6" component="h1">
               Families
@@ -332,8 +334,8 @@ function FamilyList() {
                     bottom: -16,
                     left: 24,
                     zIndex: 1,
-                    bgcolor: 'brown.500',
-                    '&:hover': { bgcolor: 'brown.700' },
+                    bgcolor: theme.palette.brown[500],
+                    '&:hover': { bgcolor: theme.palette.brown[700] },
                   }}
                 >
                   <AddIcon />
@@ -397,8 +399,8 @@ function FamilyList() {
                           to={`/families/${family.id}/registrations`}
                           startIcon={<DescriptionIcon />}
                           sx={{
-                            bgcolor: 'brown.500',
-                            '&:hover': { bgcolor: 'brown.700' },
+                            bgcolor: theme.palette.brown[500],
+                            '&:hover': { bgcolor: theme.palette.brown[700] },
                             fontSize: '0.75rem',
                           }}
                         >
@@ -412,7 +414,7 @@ function FamilyList() {
                               <IconButton
                                 size="small"
                                 onClick={() => handleEditFamily(family.id)}
-                                sx={{ color: 'brown.500' }}
+                                sx={{ color: theme.palette.brown[500] }}
                               >
                                 <EditIcon fontSize="small" />
                               </IconButton>

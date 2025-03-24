@@ -15,6 +15,7 @@ import {
   Breadcrumbs,
   Link,
   Tooltip,
+  useTheme,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -38,6 +39,7 @@ function FamilyShow() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+  const theme = useTheme();
 
   // State variables
   const [family, setFamily] = useState<Family | null>(null);
@@ -188,7 +190,13 @@ function FamilyShow() {
 
       <Paper elevation={2} sx={{ mb: 3 }}>
         <Box
-          sx={{ p: 2, bgcolor: 'green.900', color: 'white', display: 'flex', alignItems: 'center' }}
+          sx={{ 
+            p: 2, 
+            bgcolor: theme.palette.green[900], 
+            color: 'white', 
+            display: 'flex', 
+            alignItems: 'center' 
+          }}
         >
           <Typography variant="h5" component="h1" sx={{ flexGrow: 1 }}>
             {familyName}
@@ -228,7 +236,7 @@ function FamilyShow() {
             {/* Basic Family Information */}
             <Grid item xs={12}>
               <Card variant="outlined">
-                <CardHeader title="Family Information" sx={{ bgcolor: 'grey.100' }} />
+                <CardHeader title="Family Information" />
                 <CardContent>
                   <Grid container spacing={2}>
                     <LabeledData label="Family Name" xs={12} sm={6}>
@@ -268,7 +276,7 @@ function FamilyShow() {
 
               {family.students.map((student, index) => (
                 <Card key={student.id} variant="outlined" sx={{ mb: 2 }}>
-                  <CardHeader title={`Student #${index + 1}`} sx={{ bgcolor: 'grey.100' }} />
+                  <CardHeader title={`Student #${index + 1}`} />
                   <CardContent>
                     <Student student={student} />
                   </CardContent>
@@ -290,7 +298,6 @@ function FamilyShow() {
                       <CardHeader
                         title={`${guardian.firstName} ${guardian.lastName}`}
                         subheader={guardian.relationship}
-                        sx={{ bgcolor: 'grey.100' }}
                       />
                       <CardContent>
                         <Guardian guardian={guardian} />
@@ -430,8 +437,8 @@ function FamilyShow() {
                       to={`/families/${family.id}/registrations`}
                       startIcon={<DescriptionIcon />}
                       sx={{
-                        bgcolor: 'brown.500',
-                        '&:hover': { bgcolor: 'brown.700' },
+                        bgcolor: theme.palette.brown[500],
+                        '&:hover': { bgcolor: theme.palette.brown[700] },
                         mr: 1,
                       }}
                     >
@@ -442,8 +449,8 @@ function FamilyShow() {
                       startIcon={<EditIcon />}
                       onClick={() => setEditDialogOpen(true)}
                       sx={{
-                        bgcolor: 'green.800',
-                        '&:hover': { bgcolor: 'green.900' },
+                        bgcolor: theme.palette.green[800],
+                        '&:hover': { bgcolor: theme.palette.green[900] },
                       }}
                     >
                       Edit Family

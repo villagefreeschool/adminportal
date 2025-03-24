@@ -83,7 +83,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
       fullWidth
       disableEscapeKeyDown={saving}
     >
-      <AppBar position="relative" sx={{ bgcolor: 'green.900' }}>
+      <AppBar position="relative" sx={{ bgcolor: theme.palette.green[900] }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flex: 1 }}>
             {title}
@@ -126,7 +126,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
           variant="contained"
           disabled={saving || loading}
           startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
-          sx={{ bgcolor: 'brown.500', '&:hover': { bgcolor: 'brown.700' } }}
+          sx={{ bgcolor: theme.palette.brown[500], '&:hover': { bgcolor: theme.palette.brown[700] } }}
         >
           Save
         </Button>
