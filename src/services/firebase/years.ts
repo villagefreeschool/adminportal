@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { collection, doc, getDocs } from 'firebase/firestore';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import { Enrollment, Family } from './models/types';
 import { fetchFamiliesWithIDs } from './families';
 import { fetchStudentsWithIDs } from './students';
@@ -41,8 +41,8 @@ export async function enrolledStudentsInYear(yearID: string): Promise<Enrollment
     const data = docSnapshot.data() as Enrollment;
     const student = students[data.studentID];
     const birthday = student?.birthdate ? student.birthdate : null;
-    const birthdaySort = birthday ? dayjs(student.birthdate).format('MM DD MMMM') : '';
-    const birthdayDisplay = birthday ? dayjs(student.birthdate).format('MMM Do') : '';
+    const birthdaySort = birthday ? moment(student.birthdate).format('MM DD MMMM') : '';
+    const birthdayDisplay = birthday ? moment(student.birthdate).format('MMM Do') : '';
 
     enrolledStudents.push({
       ...data,
