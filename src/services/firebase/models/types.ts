@@ -120,3 +120,11 @@ export interface Year {
   maximumIncome: number;
   isAcceptingRegistrations: boolean;
 }
+
+export interface VFSAdminUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  isAdmin: boolean;
+  isStaff: boolean;
+}
