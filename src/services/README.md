@@ -1,18 +1,21 @@
 # Firebase Services
 
-This directory contains Firebase-related services for the VFSAdmin application. These services provide a TypeScript implementation of the original Vue app's Firebase functionality.
+This directory contains Firebase-related services for the VFSAdmin application. These services
+provide a TypeScript implementation of the original Vue app's Firebase functionality.
 
 ## Configuration
 
 Firebase configuration is managed through environment variables or fallback hardcoded configs:
 
 1. **Environment Variables**: Define in `.env.local` file (see `.env.example` for format)
-2. **Project Selection**: Set `VITE_FIREBASE_PROJECT=vfsadmin-dev` or `VITE_FIREBASE_PROJECT=vfsadmin` to switch environments
-3. **Fallback Configs**: If environment variables aren't available, hardcoded configs in `firebaseConfig.ts` will be used
+2. **Project Selection**: Set `VITE_FIREBASE_PROJECT=vfsadmin-dev` or
+   `VITE_FIREBASE_PROJECT=vfsadmin` to switch environments
+3. **Fallback Configs**: If environment variables aren't available, hardcoded configs in
+   `firebaseConfig.ts` will be used
 
 ## Services
 
-- `firebase.ts` - Core Firebase initialization 
+- `firebase.ts` - Core Firebase initialization
 - `firebaseConfig.ts` - Configuration management
 - `firestoredb.ts` - Firestore database operations
 - `index.ts` - Barrel file that exports all Firebase functionality
@@ -29,7 +32,8 @@ The services include TypeScript definitions for all data models:
 
 ## API Compatibility
 
-This implementation maintains API compatibility with the original Vue app's `firestoredb.js` while adding type safety:
+This implementation maintains API compatibility with the original Vue app's `firestoredb.js` while
+adding type safety:
 
 - Collection references are maintained with the same names
 - Helper functions like `saveFamily`, `deleteFamily`, etc. have the same signatures
@@ -49,7 +53,7 @@ This implementation uses Firebase SDK v11 patterns, which differ from the older 
 import { saveFamily, fetchStudentsWithIDs, Family } from './services';
 
 // Create or update a family
-const family: Family = { 
+const family: Family = {
   id: '123',
   name: 'Smith Family',
   guardians: [...],
