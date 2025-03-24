@@ -1,12 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Grid,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-  Box,
-} from '@mui/material';
+import { Grid, TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
 import { VFSAdminUser } from '../services/firebase/models/types';
 
 interface UserFormProps {

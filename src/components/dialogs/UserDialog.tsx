@@ -80,7 +80,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
   // Handle save
   const handleSave = async () => {
     if (!user) return;
-    
+
     // Simple validation
     if (!user.email || !user.firstName || !user.lastName) {
       setError('Please fill in all required fields');
@@ -127,11 +127,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
             <CircularProgress />
           </Box>
         ) : user ? (
-          <UserForm
-            user={user}
-            onChange={handleChange}
-            allowChangingEmail={!isEditMode}
-          />
+          <UserForm user={user} onChange={handleChange} allowChangingEmail={!isEditMode} />
         ) : null}
 
         {error && (
@@ -151,7 +147,10 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
           variant="contained"
           disabled={saving || loading}
           startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
-          sx={{ bgcolor: theme.palette.brown[500], '&:hover': { bgcolor: theme.palette.brown[700] } }}
+          sx={{
+            bgcolor: theme.palette.brown[500],
+            '&:hover': { bgcolor: theme.palette.brown[700] },
+          }}
         >
           Save
         </Button>
