@@ -26,7 +26,8 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   const displayValue = value !== null && value !== undefined ? value.toString() : '';
 
   // Handle change and convert to number
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (e: React.ChangeEvent<any>) => {
     const input = e.target.value;
     const numbers = input.replace(/[^0-9]/g, '');
 
