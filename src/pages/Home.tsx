@@ -5,7 +5,14 @@ import Box from '@mui/material/Box';
 function Home() {
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ p: 4, mb: 4 }}>
+      <Paper
+        elevation={2}
+        sx={{
+          p: { xs: 3, sm: 4 },
+          mb: { xs: 3, sm: 4 },
+          width: '100%',
+        }}
+      >
         <Typography variant="h4" component="h1" gutterBottom>
           Welcome to VFS Admin Portal
         </Typography>

@@ -5,7 +5,13 @@ import Box from '@mui/material/Box';
 function Users() {
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ p: 4 }}>
+      <Paper
+        elevation={2}
+        sx={{
+          p: { xs: 3, sm: 4 },
+          width: '100%',
+        }}
+      >
         <Typography variant="h4" component="h1" gutterBottom>
           Users
         </Typography>
