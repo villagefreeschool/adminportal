@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -8,9 +7,13 @@ import '@fontsource/roboto/700.css';
 
 // Components
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
 
 // Pages
 import Home from './pages/Home';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 import MyFamily from './pages/MyFamily';
 import FamilyList from './pages/FamilyList';
 import YearList from './pages/YearList';
@@ -20,17 +23,70 @@ function App() {
   return (
     <BrowserRouter>
       <CssBaseline />
-      <Box>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/my-family" element={<MyFamily />} />
-            <Route path="/families" element={<FamilyList />} />
-            <Route path="/years" element={<YearList />} />
-            <Route path="/users" element={<Users />} />
-          </Routes>
-        </Layout>
-      </Box>
+      <AuthProvider>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          {/* Protected routes with Layout */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Home />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-family"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MyFamily />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin-only routes */}
+          <Route
+            path="/families"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <Layout>
+                  <FamilyList />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/years"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <Layout>
+                  <YearList />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <Layout>
+                  <Users />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Fallback route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

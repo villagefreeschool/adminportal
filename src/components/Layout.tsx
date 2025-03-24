@@ -20,8 +20,10 @@ import PeopleIcon from '@mui/icons-material/People';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+import { useAuth } from '../contexts/AuthContext';
 
 const drawerWidth = 240;
 
@@ -61,18 +63,43 @@ function Layout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentUser, isAdmin, isAuthenticated, logout, myFamily } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  // Basic navigation items available to all authenticated users
   const navItems: NavItem[] = [
     { text: 'Home', path: '/', icon: <HomeIcon /> },
     { text: 'My Family', path: '/my-family', icon: <FamilyRestroomIcon /> },
-    { text: 'Families', path: '/families', icon: <PeopleIcon /> },
-    { text: 'School Years', path: '/years', icon: <DateRangeIcon /> },
-    { text: 'Users', path: '/users', icon: <PersonIcon /> },
   ];
+
+  // Add registration item if user has a family
+  if (myFamily) {
+    navItems.push({
+      text: 'Register',
+      path: '/register',
+      icon: <PersonIcon />,
+    });
+  }
+
+  // Add admin-only items
+  if (isAdmin) {
+    navItems.push(
+      { text: 'Families', path: '/families', icon: <PeopleIcon /> },
+      { text: 'School Years', path: '/years', icon: <DateRangeIcon /> },
+      { text: 'Users', path: '/users', icon: <PersonIcon /> },
+    );
+  }
 
   const drawer = (
     <Box sx={{ overflow: 'auto', height: '100%', position: 'relative' }}>
@@ -94,10 +121,36 @@ function Layout({ children }: LayoutProps) {
       </List>
       <Box sx={{ position: 'absolute', bottom: 0, width: '100%' }}>
         <Divider />
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-          <Avatar sx={{ mr: 2 }} />
-          <Typography variant="body2">User Profile</Typography>
-        </Box>
+
+        {isAuthenticated && (
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+              <Avatar
+                sx={{ mr: 2 }}
+                src={currentUser?.photoURL || undefined}
+                alt={currentUser?.displayName || 'User Avatar'}
+              />
+              <Box>
+                <Typography variant="body2" noWrap>
+                  {currentUser?.displayName || currentUser?.email}
+                </Typography>
+                {isAdmin && (
+                  <Typography variant="caption" color="primary">
+                    Administrator
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleLogout}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </Box>
     </Box>
   );
