@@ -41,9 +41,11 @@ const MainContent = styled('main')(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('md')]: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
+    // Add left margin to account for permanent drawer width
+    marginLeft: drawerWidth,
   },
 }));
 
@@ -59,7 +61,8 @@ interface NavItem {
 
 function Layout({ children }: LayoutProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // Use 'md' breakpoint instead of 'sm' to show sidebar on larger screens
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -172,6 +175,7 @@ function Layout({ children }: LayoutProps) {
               edge="start"
               onClick={handleDrawerToggle}
               sx={{ mr: 2 }}
+              size="large"
             >
               <MenuIcon />
             </IconButton>
@@ -208,8 +212,8 @@ function Layout({ children }: LayoutProps) {
           disableGutters={false}
           sx={{
             flexGrow: 1,
-            py: { xs: 2, sm: 3 },
-            px: { xs: 2, sm: 3, md: 4 },
+            py: { xs: 2, md: 3 },
+            px: { xs: 2, md: 3 },
           }}
         >
           {children}
