@@ -98,7 +98,6 @@ export default function Login() {
 
     try {
       console.log('Starting Google login from Login component');
-      // Switch to popup for better user experience
       await loginWithGooglePopup();
       console.log('Google login completed');
       setIsLoading(false);

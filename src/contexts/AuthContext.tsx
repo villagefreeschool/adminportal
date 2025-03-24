@@ -3,6 +3,8 @@ import {
   User,
   signInWithEmail,
   signInWithGooglePopup,
+  signInWithGoogleRedirect,
+  getAuthRedirectResult,
   resetPassword,
   logoutUser,
   subscribeToAuthChanges,
@@ -22,6 +24,8 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   loginWithGooglePopup: () => Promise<void>;
+  loginWithGoogleRedirect: () => Promise<void>;
+  checkRedirectResult: () => Promise<User | null>;
   logout: () => Promise<void>;
   sendPasswordReset: (email: string) => Promise<void>;
   error: string | null;
@@ -110,7 +114,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  // Removed redirect authentication in favor of popup method
+  // Login with Google (redirect - better for mobile)
+  const loginWithGoogleRedirect = async () => {
+    try {
+      setError(null);
+      await signInWithGoogleRedirect();
+      // Page will redirect, so no further code will execute here
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
+      throw err;
+    }
+  };
+
+  // Check for redirect result (after coming back from redirect flow)
+  const checkRedirectResult = async () => {
+    try {
+      setError(null);
+      return await getAuthRedirectResult();
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
+      throw err;
+    }
+  };
 
   // Other OAuth providers removed to simplify the implementation
 
@@ -147,6 +174,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isLoading,
     login,
     loginWithGooglePopup,
+    loginWithGoogleRedirect,
+    checkRedirectResult,
     logout,
     sendPasswordReset,
     error,
