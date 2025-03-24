@@ -20,7 +20,7 @@ function App() {
   return (
     <BrowserRouter>
       <CssBaseline />
-      <Box sx={{ display: 'flex' }}>
+      <Box>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
