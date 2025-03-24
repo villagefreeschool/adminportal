@@ -82,7 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, []);
 
   // Login with email/password
   const login = async (email: string, password: string) => {
