@@ -463,6 +463,7 @@ function FamilyShow() {
         family={family}
         onClose={() => setEditDialogOpen(false)}
         onSave={handleUpdateFamily}
+        fullScreen={true}
       />
 
       {/* Delete Family Dialog */}

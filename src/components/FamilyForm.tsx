@@ -213,7 +213,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       <Grid item xs={12}>
         <Card>
           <CardHeader title="Family Nickname" sx={{ bgcolor: 'green.900', color: 'white' }} />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <TextField
               label="What Should We Call Your Family?"
               value={family.name || ''}
@@ -231,8 +231,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {/* Students */}
-      <Grid item xs={12}>
-        <Typography variant="h6">Students</Typography>
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 0.5 }}>Students</Typography>
         <Typography variant="body2">
           <strong>Instructions</strong>: Enter at least the children who are planning to attend
           Village Free School. It is helpful for the staff to know the names of siblings, so
@@ -254,7 +254,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                 )
               }
             />
-            <CardContent>
+            <CardContent sx={{ pt: 1 }}>
               <StudentForm
                 student={student}
                 onChange={(updatedStudent) => handleStudentChange(index, updatedStudent)}
@@ -270,7 +270,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             title={`Student #${family.students.length + 1}`}
             sx={{ bgcolor: 'grey.500', color: 'white' }}
           />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Box display="flex" justifyContent="center">
               <Button
                 variant="contained"
@@ -290,8 +290,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {/* Parents and Guardians */}
-      <Grid item xs={12}>
-        <Typography variant="h6">Parents and Guardians</Typography>
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 0.5 }}>Parents and Guardians</Typography>
         <Typography variant="body2">Enter all parents and legal guardians.</Typography>
       </Grid>
 
@@ -309,7 +309,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                 )
               }
             />
-            <CardContent>
+            <CardContent sx={{ pt: 1 }}>
               <GuardianForm
                 guardian={guardian}
                 onChange={(updatedGuardian) => handleGuardianChange(index, updatedGuardian)}
@@ -326,7 +326,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             title={`Parent / Guardian #${family.guardians.length + 1}`}
             sx={{ bgcolor: 'grey.500', color: 'white' }}
           />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
               <Button
                 variant="contained"
@@ -346,8 +346,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {/* Pick Up List */}
-      <Grid item xs={12}>
-        <Typography variant="h6">Pick Up List</Typography>
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 0.5 }}>Pick Up List</Typography>
       </Grid>
 
       <Grid item xs={12}>
@@ -356,7 +356,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             title="Additional Adults Authorized to Pick Up"
             sx={{ bgcolor: 'green.900', color: 'white' }}
           />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Typography variant="body2" paragraph>
               In addition to the parents/guardians listed above, please name all other adults who
               are authorized to pick children up from school.
@@ -378,8 +378,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {/* Emergency Contacts */}
-      <Grid item xs={12}>
-        <Typography variant="h6">Emergency Contacts</Typography>
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 0.5 }}>Emergency Contacts</Typography>
         <Typography variant="body2">
           Please enter at least {MIN_EMERGENCY_CONTACTS} emergency contacts.
         </Typography>
@@ -399,7 +399,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                 )
               }
             />
-            <CardContent>
+            <CardContent sx={{ pt: 1 }}>
               {canCopyGuardian(index) && (
                 <Box display="flex" justifyContent="center" mb={2}>
                   <Button
@@ -429,7 +429,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             title={`Emergency Contact #${family.emergencyContacts.length + 1}`}
             sx={{ bgcolor: 'grey.500', color: 'white' }}
           />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
               <Button
                 variant="contained"
@@ -449,14 +449,14 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {/* Medical and Insurance */}
-      <Grid item xs={12}>
-        <Typography variant="h6">Medical and Insurance</Typography>
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 0.5 }}>Medical and Insurance</Typography>
       </Grid>
 
       <Grid item xs={12}>
         <Card>
           <CardHeader title="Medical Insurance" sx={{ bgcolor: 'green.900', color: 'white' }} />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -511,7 +511,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                 )
               }
             />
-            <CardContent>
+            <CardContent sx={{ pt: 1 }}>
               <MedicalProviderForm
                 provider={provider}
                 onChange={(updatedProvider) => handleMedicalProviderChange(index, updatedProvider)}
@@ -527,7 +527,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             title={`Medical Provider #${family.medicalProviders.length + 1}`}
             sx={{ bgcolor: 'grey.500', color: 'white' }}
           />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
               <Button
                 variant="contained"
@@ -550,7 +550,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       <Grid item xs={12}>
         <Card>
           <CardHeader title="Sliding Scale" sx={{ bgcolor: 'green.900', color: 'white' }} />
-          <CardContent>
+          <CardContent sx={{ pt: 1 }}>
             <Grid container justifyContent="center">
               <Grid item xs={12} sm={8} md={6}>
                 <Typography variant="body2" paragraph>

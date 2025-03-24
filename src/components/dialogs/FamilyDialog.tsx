@@ -25,6 +25,7 @@ interface FamilyDialogProps {
   loading?: boolean;
   onClose: () => void;
   onSave: (family: Family) => Promise<void>;
+  fullScreen?: boolean;
 }
 
 /**
@@ -38,9 +39,11 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   loading = false,
   onClose,
   onSave,
+  fullScreen: forcedFullScreen,
 }) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = forcedFullScreen !== undefined ? forcedFullScreen : isSmallScreen;
   const [localFamily, setLocalFamily] = useState<Family>(family);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
