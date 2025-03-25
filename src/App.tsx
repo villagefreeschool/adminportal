@@ -52,6 +52,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/register"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Registration />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin-only routes */}
           <Route
@@ -78,16 +88,6 @@ function App() {
             path="/families/:id/registrations"
             element={
               <ProtectedRoute requireAdmin={true}>
-                <Layout>
-                  <Registration />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/registration"
-            element={
-              <ProtectedRoute>
                 <Layout>
                   <Registration />
                 </Layout>
