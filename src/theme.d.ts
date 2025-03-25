@@ -4,6 +4,17 @@ declare module '@mui/material/styles' {
   interface PaletteColorOptions {
     dark?: string;
     light?: string;
+    500?: string;
+    700?: string;
+    800?: string;
+    900?: string;
+  }
+
+  interface PaletteColor {
+    500: string;
+    700: string;
+    800: string;
+    900: string;
   }
 
   interface Palette {
