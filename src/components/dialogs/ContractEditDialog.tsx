@@ -6,7 +6,6 @@ import {
   DialogActions,
   Button,
   TextField,
-  Grid,
   FormControlLabel,
   Checkbox,
   CircularProgress,
@@ -21,6 +20,7 @@ import {
   ListItem,
   ListItemText,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Contract, Family, Year, Enrollment } from '../../services/firebase/models/types';
@@ -69,7 +69,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
   onSave,
 }) => {
   const theme = useTheme();
-  const { user, isAdmin } = useAuth();
+  const { currentUser, isAdmin } = useAuth();
 
   // State
   const [contract, setContract] = useState<Contract | null>(null);
@@ -92,6 +92,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
     if (open && yearId && familyId) {
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, yearId, familyId]);
 
   // Update tuition when student decisions change
@@ -105,6 +106,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
         setTuition(contract.tuition);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentDecisions]);
 
   // Update assistance amount when tuition changes
@@ -115,6 +117,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       setTuitionAssistanceRequested(false);
       setAssistanceAmount(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tuition]);
 
   // Load contract, family and year data
@@ -263,7 +266,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
         familyName: family.name,
         suggestedTuition: suggestedTuition,
         minTuition: minTuition,
-        lastSavedBy: user?.email || 'unknown',
+        lastSavedBy: currentUser?.email || 'unknown',
         lastSavedAt: new Date().toISOString(),
       };
 

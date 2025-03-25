@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Paper,
+  Container,
   Typography,
   Box,
   Button,
-  Grid,
   Card,
-  CardHeader,
   CardContent,
   Divider,
-  CircularProgress,
-  IconButton,
-  Breadcrumbs,
-  Link,
-  Tooltip,
+  LinearProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Toolbar,
   useTheme,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { Family, EmergencyContact, MedicalProvider } from '../services/firebase/models/types';
-import {
-  fetchFamily,
-  deleteFamily,
-  saveFamily,
-  calculatedNameForFamily,
-} from '../services/firebase/families';
+import { Family } from '../services/firebase/models/types';
+import { fetchFamily, deleteFamily, saveFamily } from '../services/firebase/families';
 import FamilyDialog from '../components/dialogs/FamilyDialog';
 import FamilyDeleteDialog from '../components/dialogs/FamilyDeleteDialog';
 import { useAuth } from '../contexts/useAuth';
@@ -38,7 +34,7 @@ import Student from '../components/Student';
 function FamilyShow() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+  const { isAdmin, currentUser } = useAuth();
   const theme = useTheme();
 
   // State variables
@@ -99,374 +95,319 @@ function FamilyShow() {
     }
   };
 
-  // Format address for display
-  const formatAddress = (family: Family): string => {
-    if (!family.address) return 'No address on file';
-
-    let address = family.address;
-    if (family.city || family.state || family.zip) {
-      address += `, ${family.city || ''} ${family.state || ''} ${family.zip || ''}`;
-    }
-    return address;
+  // Create a new family
+  const handleNewFamily = () => {
+    setEditDialogOpen(true);
   };
 
-  // Format emergency contact for display
-  const formatContact = (contact: EmergencyContact): string => {
-    let text = contact.firstName;
-    if (contact.lastName) {
-      text += ` ${contact.lastName}`;
-    }
-    if (contact.relationship) {
-      text += ` (${contact.relationship})`;
-    }
-    if (contact.cellPhone) {
-      text += `, ${contact.cellPhone}`;
-    }
-    return text;
-  };
+  // Calculate emergency contacts for display
+  const emergencyContacts = family?.emergencyContacts
+    ? family.emergencyContacts.map((c, i) => ({
+        ...c,
+        order: i + 1,
+        name: `${c.firstName} ${c.lastName}`,
+      }))
+    : [];
 
-  // Format medical provider for display
-  const formatProvider = (provider: MedicalProvider): string => {
-    let text = provider.name;
-    if (provider.type) {
-      text += ` (${provider.type})`;
-    }
-    if (provider.phone) {
-      text += `, ${provider.phone}`;
-    }
-    return text;
-  };
+  // Emergency contact headers
+  const emergencyContactHeaders = [
+    { text: '#', field: 'order' },
+    { text: 'Name', field: 'name' },
+    { text: 'Relationship', field: 'relationship' },
+    { text: 'Cell', field: 'cellPhone' },
+    { text: 'Work', field: 'workPhone' },
+    { text: 'Notes', field: 'notes' },
+  ];
+
+  // Medical provider headers
+  const medicalProviderHeaders = [
+    { text: 'Name', field: 'name' },
+    { text: 'Office', field: 'office' },
+    { text: 'Phone', field: 'phoneNumber' },
+  ];
 
   // Render loading state
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-        <CircularProgress />
-      </Box>
+      <Container>
+        <Box py={2}>
+          <LinearProgress />
+        </Box>
+      </Container>
+    );
+  }
+
+  // Render create family prompt
+  if (!loading && !family && currentUser) {
+    return (
+      <Container sx={{ padding: 2 }}>
+        <Grid container justifyContent="center" textAlign="center">
+          <Grid item xs={12} sm={10} md={6}>
+            <Typography variant="h4">Create a New Family Profile?</Typography>
+            <Box sx={{ my: 2 }}>
+              <Typography>
+                You logged in with the email address
+                <strong> {currentUser?.email}</strong>
+                <br />
+                This email address is not yet associated with a family profile.
+              </Typography>
+            </Box>
+            <Box sx={{ my: 2 }}>
+              <Typography>
+                If you&apos;re a new family, welcome! Please create your family&apos;s profile.
+              </Typography>
+            </Box>
+            <Box sx={{ my: 2 }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleNewFamily}
+                sx={{
+                  bgcolor: theme.palette.green[900],
+                  '&:hover': { bgcolor: theme.palette.green[800] },
+                }}
+                startIcon={<span className="fas fa-plus-square" />}
+              >
+                Create Family Profile
+              </Button>
+            </Box>
+            <Typography color="error" variant="caption">
+              If you&apos;re a returning family, or another parent or guardian has already entered
+              your family&apos;s info, ask them to make sure the email address above is added to the
+              profile they created.
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
     );
   }
 
   // Render error state
   if (error || !family) {
     return (
-      <Paper
-        elevation={2}
-        sx={{
-          p: { xs: 3, sm: 4 },
-          mt: 2,
-        }}
-      >
-        <Typography variant="h5" color="error" gutterBottom>
+      <Container>
+        <Typography variant="h5" color="error">
           {error || 'Family not found'}
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate('/families')}
-          sx={{ mt: 2 }}
-        >
-          Back to Families
-        </Button>
-      </Paper>
+      </Container>
     );
   }
 
-  // Calculate family name for display
-  const familyName = calculatedNameForFamily(family);
+  // Calculate columns for student and guardian display
+  const studentCols = Math.max(3, 12 / family.students.length);
+  const guardianCols = Math.max(3, 12 / family.guardians.length);
 
   return (
-    <>
-      <Box mb={2}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link component={RouterLink} to="/" underline="hover" color="inherit">
-            Home
-          </Link>
-          <Link component={RouterLink} to="/families" underline="hover" color="inherit">
-            Families
-          </Link>
-          <Typography color="text.primary">{familyName}</Typography>
-        </Breadcrumbs>
-      </Box>
+    <Container>
+      {/* EXISTING FAMILY DISPLAY */}
+      <Box sx={{ my: 2 }}>
+        <Card>
+          <Toolbar
+            sx={{
+              bgcolor: theme.palette.green[900],
+              color: 'white',
+            }}
+          >
+            <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+              {family.name}
+            </Typography>
+            <Button
+              size="small"
+              sx={{
+                bgcolor: theme.palette.brown[500],
+                color: 'white',
+                '&:hover': { bgcolor: theme.palette.brown[700] },
+              }}
+              onClick={() => setEditDialogOpen(true)}
+              startIcon={<EditIcon />}
+            >
+              Edit
+            </Button>
+          </Toolbar>
 
-      <Paper elevation={2} sx={{ mb: 3 }}>
-        <Box
-          sx={{
-            p: 2,
-            bgcolor: theme.palette.green[900],
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h5" component="h1" sx={{ flexGrow: 1 }}>
-            {familyName}
-          </Typography>
-          <Box>
-            {isAdmin && (
-              <>
-                <Tooltip title="Family Registrations">
-                  <IconButton
-                    component={RouterLink}
-                    to={`/families/${family.id}/registrations`}
-                    sx={{ color: 'white', mr: 1 }}
-                  >
-                    <DescriptionIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Edit Family">
-                  <IconButton
-                    onClick={() => setEditDialogOpen(true)}
-                    sx={{ color: 'white', mr: 1 }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete Family">
-                  <IconButton onClick={() => setDeleteDialogOpen(true)} sx={{ color: 'white' }}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </>
-            )}
-          </Box>
-        </Box>
-
-        <Box sx={{ p: 3 }}>
-          <Grid container spacing={3}>
-            {/* Basic Family Information */}
-            <Grid item xs={12}>
-              <Card variant="outlined">
-                <CardHeader title="Family Information" />
-                <CardContent>
-                  <Grid container spacing={2}>
-                    <LabeledData label="Family Name" xs={12} sm={6}>
-                      {family.name}
-                    </LabeledData>
-                    <LabeledData label="Address" xs={12} sm={6}>
-                      {formatAddress(family)}
-                    </LabeledData>
-                    {family.phone && (
-                      <LabeledData label="Phone" xs={12} sm={6}>
-                        {family.phone}
-                      </LabeledData>
-                    )}
-                    {family.grossFamilyIncome !== undefined && (
-                      <LabeledData label="Gross Family Income" xs={12} sm={6}>
-                        {family.slidingScaleOptOut
-                          ? 'Opted out of sliding scale'
-                          : family.grossFamilyIncome !== null
-                            ? new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                              }).format(family.grossFamilyIncome)
-                            : 'Not provided'}
-                      </LabeledData>
-                    )}
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-
-            {/* Students Section */}
-            <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant="h6" gutterBottom>
-                Students
-              </Typography>
-
-              {family.students.map((student, index) => (
-                <Card key={student.id} variant="outlined" sx={{ mb: 2 }}>
-                  <CardHeader title={`Student #${index + 1}`} />
-                  <CardContent>
-                    <Student student={student} />
-                  </CardContent>
-                </Card>
+          <CardContent sx={{ p: 3 }}>
+            {/* Students */}
+            <Grid container spacing={2}>
+              {family.students.map((student, i) => (
+                <Grid item xs={12} sm={studentCols} key={`student-${i}`}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <Student student={student} />
+                    </CardContent>
+                  </Card>
+                </Grid>
               ))}
             </Grid>
+            {/* End Students */}
 
-            {/* Guardians Section */}
-            <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant="h6" gutterBottom>
-                Guardians
-              </Typography>
+            <Divider sx={{ my: 2 }} />
 
-              <Grid container spacing={2}>
-                {family.guardians.map((guardian, index) => (
-                  <Grid item xs={12} md={6} key={index}>
+            {/* Parents and Guardians */}
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Parents and Guardians</Typography>
+              </Grid>
+              {family.guardians.map((guardian, i) => (
+                <Grid item xs={12} sm={guardianCols} key={`guardian-${i}`}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <Guardian guardian={guardian} />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+            {/* End Parents and Guardians */}
+
+            <Divider sx={{ my: 2 }} />
+
+            {/* Emergency Contacts */}
+            {family.emergencyContacts && family.emergencyContacts.length > 0 && (
+              <>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6">Emergency Contacts</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TableContainer component={Paper} variant="outlined">
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            {emergencyContactHeaders.map((header) => (
+                              <TableCell key={header.field}>{header.text}</TableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {emergencyContacts.map((contact, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{contact.order}</TableCell>
+                              <TableCell>{contact.name}</TableCell>
+                              <TableCell>{contact.relationship}</TableCell>
+                              <TableCell>{contact.cellPhone}</TableCell>
+                              <TableCell>{contact.workPhone}</TableCell>
+                              <TableCell>{contact.notes}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Grid>
+                </Grid>
+
+                <Divider sx={{ my: 2 }} />
+              </>
+            )}
+            {/* End Emergency Contacts */}
+
+            {/* Pickup List */}
+            {family.pickupList && (
+              <>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6">Pick Up List</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
                     <Card variant="outlined">
-                      <CardHeader
-                        title={`${guardian.firstName} ${guardian.lastName}`}
-                        subheader={guardian.relationship}
-                      />
                       <CardContent>
-                        <Guardian guardian={guardian} />
+                        <Typography sx={{ whiteSpace: 'pre' }} variant="body2">
+                          {family.pickupList}
+                        </Typography>
                       </CardContent>
                     </Card>
                   </Grid>
-                ))}
-              </Grid>
-            </Grid>
+                </Grid>
 
-            {/* Emergency Contacts Section */}
-            {family.emergencyContacts && family.emergencyContacts.length > 0 && (
-              <Grid item xs={12}>
                 <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" gutterBottom>
-                  Emergency Contacts
-                </Typography>
-
-                <Card variant="outlined">
-                  <CardContent>
-                    <Grid container spacing={2}>
-                      {family.emergencyContacts.map((contact, index) => (
-                        <LabeledData key={index} label={`Contact #${index + 1}`} xs={12} md={6}>
-                          {formatContact(contact)}
-                        </LabeledData>
-                      ))}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
+              </>
             )}
+            {/* End Pickup List */}
 
-            {/* Medical Providers Section */}
+            {/* Medical Insurance */}
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Insurance</Typography>
+              </Grid>
+
+              {family.medicalInsuranceProvider && (
+                <LabeledData xs={12} sm={6} md={3} label="Insurance Provider">
+                  {family.medicalInsuranceProvider}
+                </LabeledData>
+              )}
+
+              {family.medicalInsuranceNameOfPrimaryInsured && (
+                <LabeledData xs={12} sm={6} md={3} label="Name of Primary Insured">
+                  {family.medicalInsuranceNameOfPrimaryInsured}
+                </LabeledData>
+              )}
+
+              {family.medicalInsurancePolicyNumber && (
+                <LabeledData xs={12} sm={6} md={3} label="Policy Number">
+                  {family.medicalInsurancePolicyNumber}
+                </LabeledData>
+              )}
+
+              {family.medicalInsuranceGroupNumber && (
+                <LabeledData xs={12} sm={6} md={3} label="Group Number">
+                  {family.medicalInsuranceGroupNumber}
+                </LabeledData>
+              )}
+            </Grid>
+            {/* End Medical Insurance */}
+
+            {/* Medical Providers */}
             {family.medicalProviders && family.medicalProviders.length > 0 && (
-              <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" gutterBottom>
-                  Medical Providers
-                </Typography>
-
-                <Card variant="outlined">
-                  <CardContent>
-                    <Grid container spacing={2}>
-                      {family.medicalProviders.map((provider, index) => (
-                        <LabeledData
-                          key={index}
-                          label={provider.type || `Provider #${index + 1}`}
-                          xs={12}
-                          md={6}
-                        >
-                          {formatProvider(provider)}
-                        </LabeledData>
-                      ))}
-                    </Grid>
-                  </CardContent>
-                </Card>
+              <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Medical Providers</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          {medicalProviderHeaders.map((header) => (
+                            <TableCell key={header.field}>{header.text}</TableCell>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {family.medicalProviders.map((provider, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{provider.name}</TableCell>
+                            <TableCell>{provider.office}</TableCell>
+                            <TableCell>{provider.phoneNumber}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
               </Grid>
             )}
+            {/* End Medical Providers */}
+          </CardContent>
+        </Card>
+      </Box>
 
-            {/* Medical Insurance Section */}
-            {(family.medicalInsuranceProvider ||
-              family.medicalInsuranceNameOfPrimaryInsured ||
-              family.medicalInsurancePolicyNumber ||
-              family.medicalInsuranceGroupNumber) && (
-              <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" gutterBottom>
-                  Medical Insurance
-                </Typography>
-
-                <Card variant="outlined">
-                  <CardContent>
-                    <Grid container spacing={2}>
-                      {family.medicalInsuranceProvider && (
-                        <LabeledData label="Insurance Provider" xs={12} sm={6}>
-                          {family.medicalInsuranceProvider}
-                        </LabeledData>
-                      )}
-
-                      {family.medicalInsuranceNameOfPrimaryInsured && (
-                        <LabeledData label="Primary Insured" xs={12} sm={6}>
-                          {family.medicalInsuranceNameOfPrimaryInsured}
-                        </LabeledData>
-                      )}
-
-                      {family.medicalInsurancePolicyNumber && (
-                        <LabeledData label="Policy Number" xs={12} sm={6}>
-                          {family.medicalInsurancePolicyNumber}
-                        </LabeledData>
-                      )}
-
-                      {family.medicalInsuranceGroupNumber && (
-                        <LabeledData label="Group Number" xs={12} sm={6}>
-                          {family.medicalInsuranceGroupNumber}
-                        </LabeledData>
-                      )}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
-            )}
-
-            {/* Pickup List Section */}
-            {family.pickupList && (
-              <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" gutterBottom>
-                  Additional Adults Authorized to Pick Up
-                </Typography>
-
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="body1" whiteSpace="pre-wrap">
-                      {family.pickupList}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            )}
-
-            {/* Action Buttons */}
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button
-                  variant="outlined"
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => navigate('/families')}
-                >
-                  Back to Families
-                </Button>
-                {isAdmin && (
-                  <Box>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component={RouterLink}
-                      to={`/families/${family.id}/registrations`}
-                      startIcon={<DescriptionIcon />}
-                      sx={{
-                        bgcolor: theme.palette.brown[500],
-                        '&:hover': { bgcolor: theme.palette.brown[700] },
-                        mr: 1,
-                      }}
-                    >
-                      Registrations
-                    </Button>
-                    <Button
-                      variant="contained"
-                      startIcon={<EditIcon />}
-                      onClick={() => setEditDialogOpen(true)}
-                      sx={{
-                        bgcolor: theme.palette.green[800],
-                        '&:hover': { bgcolor: theme.palette.green[900] },
-                      }}
-                    >
-                      Edit Family
-                    </Button>
-                  </Box>
-                )}
-              </Box>
-            </Grid>
-          </Grid>
+      {/* Delete Family Control for Admins */}
+      {family && isAdmin && (
+        <Box textAlign="center" sx={{ mb: 3 }}>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => setDeleteDialogOpen(true)}
+            startIcon={<DeleteIcon />}
+          >
+            Delete Family
+          </Button>
         </Box>
-      </Paper>
+      )}
 
       {/* Edit Family Dialog */}
       <FamilyDialog
         open={editDialogOpen}
-        title={`Edit ${familyName}`}
+        title={`Edit ${family.name}`}
         family={family}
         onClose={() => setEditDialogOpen(false)}
         onSave={handleUpdateFamily}
@@ -480,7 +421,7 @@ function FamilyShow() {
         onClose={() => setDeleteDialogOpen(false)}
         onDelete={handleDeleteFamily}
       />
-    </>
+    </Container>
   );
 }
 
