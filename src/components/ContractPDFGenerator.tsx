@@ -12,7 +12,7 @@ interface ContractPDFGeneratorProps {
   variant?: 'text' | 'outlined' | 'contained';
   children?: React.ReactNode;
   icon?: boolean;
-  customButton?: React.ReactElement;
+  customButton?: React.ReactElement<{ onClick?: () => void }>;
 }
 
 /**
