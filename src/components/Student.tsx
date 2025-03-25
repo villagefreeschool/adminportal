@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Box, Typography, Grid } from '@mui/material';
 import LabeledData from './LabeledData';
 import { Student as StudentType } from '../services/firebase/models/types';
 
@@ -13,68 +13,89 @@ interface StudentProps {
  */
 const Student: React.FC<StudentProps> = ({ student }) => {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h5" component="div">
-          {student.preferredName || student.firstName}
-          {student.pronoun && (
-            <Typography variant="subtitle1" component="span" sx={{ ml: 1 }}>
-              ({student.pronoun})
-            </Typography>
-          )}
-        </Typography>
+    <Box sx={{ width: '100%' }}>
+      {/* Student Name Header */}
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h5" component="div">
+            {student.preferredName || student.firstName}
+            {student.pronoun && (
+              <Typography variant="subtitle1" component="span" sx={{ ml: 1 }}>
+                ({student.pronoun})
+              </Typography>
+            )}
+          </Typography>
+        </Grid>
       </Grid>
 
-      <Grid container item spacing={2} justifyContent="space-around">
-        <LabeledData label="First">{student.firstName}</LabeledData>
-
-        {student.middleName && <LabeledData label="Middle">{student.middleName}</LabeledData>}
-
-        <LabeledData label="Last">{student.lastName}</LabeledData>
+      {/* Name Fields - Split into thirds */}
+      <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid item xs={4}>
+          <Box>
+            <LabeledData label="First">{student.firstName}</LabeledData>
+          </Box>
+        </Grid>
+        <Grid item xs={4}>
+          <Box sx={{ textAlign: 'center' }}>
+            <LabeledData label="Middle">{student.middleName || '-'}</LabeledData>
+          </Box>
+        </Grid>
+        <Grid item xs={4}>
+          <Box sx={{ textAlign: 'right' }}>
+            <LabeledData label="Last">{student.lastName}</LabeledData>
+          </Box>
+        </Grid>
       </Grid>
 
-      {student.email && (
-        <LabeledData label="Email Address" xs={12}>
-          {student.email}
-        </LabeledData>
-      )}
+      {/* Other Student Information */}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        {student.email && (
+          <Grid item xs={12}>
+            <LabeledData label="Email Address">{student.email}</LabeledData>
+          </Grid>
+        )}
 
-      {student.severeAllergies && (
-        <LabeledData label="Severe Allergies" xs={12} md={6} error>
-          {student.severeAllergies}
-        </LabeledData>
-      )}
+        {student.severeAllergies && (
+          <Grid item xs={12} md={6}>
+            <LabeledData label="Severe Allergies" error>
+              {student.severeAllergies}
+            </LabeledData>
+          </Grid>
+        )}
 
-      {student.nonSevereAllergies && (
-        <LabeledData label="Non-Severe Allergies" xs={12} md={6}>
-          {student.nonSevereAllergies}
-        </LabeledData>
-      )}
+        {student.nonSevereAllergies && (
+          <Grid item xs={12} md={6}>
+            <LabeledData label="Non-Severe Allergies">{student.nonSevereAllergies}</LabeledData>
+          </Grid>
+        )}
 
-      {student.priorSchool && (
-        <LabeledData label="Prior School" xs={12} md={6}>
-          {student.priorSchool}
-        </LabeledData>
-      )}
+        {student.priorSchool && (
+          <Grid item xs={12} md={6}>
+            <LabeledData label="Prior School">{student.priorSchool}</LabeledData>
+          </Grid>
+        )}
 
-      {student.learningDisabilities && (
-        <LabeledData label="Learning Disabilities" xs={12} md={6}>
-          {student.learningDisabilities}
-        </LabeledData>
-      )}
+        {student.learningDisabilities && (
+          <Grid item xs={12} md={6}>
+            <LabeledData label="Learning Disabilities">{student.learningDisabilities}</LabeledData>
+          </Grid>
+        )}
 
-      {student.additionalInfo && (
-        <LabeledData label="Additional Information" xs={12} md={6}>
-          {student.additionalInfo}
-        </LabeledData>
-      )}
+        {student.additionalInfo && (
+          <Grid item xs={12} md={6}>
+            <LabeledData label="Additional Information">{student.additionalInfo}</LabeledData>
+          </Grid>
+        )}
 
-      {student.otherMedicalConditions && (
-        <LabeledData label="Other Medical Conditions" xs={12} md={6}>
-          {student.otherMedicalConditions}
-        </LabeledData>
-      )}
-    </Grid>
+        {student.otherMedicalConditions && (
+          <Grid item xs={12} md={6}>
+            <LabeledData label="Other Medical Conditions">
+              {student.otherMedicalConditions}
+            </LabeledData>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   );
 };
 
