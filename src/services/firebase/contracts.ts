@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, Firestore } from 'firebase/firestore';
-import { db } from './core';
+import { collection, doc, getDoc, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
+// import { db } from './core';
 import { yearDB } from './collections';
 import { Contract, Enrollment, Family } from './models/types';
-import { fetchFamiliesWithIDs } from './families';
+// import { fetchFamiliesWithIDs } from './families';
 import { calculatedNameForFamily, guardianNamesForFamily } from './families';
 
 /**
@@ -68,6 +68,7 @@ export async function fetchContract(yearID: string, familyID: string): Promise<C
  */
 export async function saveContract(contract: Contract): Promise<Contract> {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, yearID, familyID, ...contractData } = contract;
 
     // Use familyID as the document ID

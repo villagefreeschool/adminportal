@@ -63,13 +63,14 @@ export async function saveUser(user: VFSAdminUser): Promise<VFSAdminUser> {
     userCopy.isAdmin = Boolean(userCopy.isAdmin);
     userCopy.isStaff = Boolean(userCopy.isStaff);
 
-    // Remove email from the data to save (it's used as the document ID)
-    const { email, ...userDataToSave } = userCopy;
-    const userToSave = userDataToSave;
+    // Create a copy of the user data to save
+    const userToSave = {
+      ...userCopy,
+    };
 
     // Email is used as the document ID
     await setDoc(doc(userDB, user.email), userToSave);
-    return userToSave;
+    return { ...userToSave, email: user.email };
   } catch (error) {
     console.error('Error saving user:', error);
     throw error;
