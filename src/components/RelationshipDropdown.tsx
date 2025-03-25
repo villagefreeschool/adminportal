@@ -21,17 +21,21 @@ const RelationshipDropdown: React.FC<RelationshipDropdownProps> = ({
   helperText,
 }) => {
   const relationships = [
-    'Mother',
     'Father',
+    'Mother',
     'Parent',
-    'Stepmother',
+    'Grandparent',
     'Stepfather',
-    'Guardian',
-    'Grandmother',
-    'Grandfather',
-    'Aunt',
+    'Stepmother',
+    'Brother',
+    'Sister',
+    'Legal Guardian',
     'Uncle',
-    'Sibling',
+    'Aunt',
+    'Step-grandparent',
+    'Friend',
+    'Neighbor',
+    'Housemate',
     'Other',
   ];
 
