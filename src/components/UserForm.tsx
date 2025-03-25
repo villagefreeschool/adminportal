@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Grid, TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
+import React, { useEffect, useCallback } from 'react';
+import { TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
+import { Grid } from '@mui/material';
 import { VFSAdminUser } from '../services/firebase/models/types';
 
 interface UserFormProps {
@@ -14,19 +15,22 @@ interface UserFormProps {
  */
 const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail = true }) => {
   // Handle field changes
-  const handleChange = (field: keyof VFSAdminUser, value: unknown) => {
-    onChange({
-      ...user,
-      [field]: value,
-    });
-  };
+  const handleChange = useCallback(
+    (field: keyof VFSAdminUser, value: unknown) => {
+      onChange({
+        ...user,
+        [field]: value,
+      });
+    },
+    [user, onChange],
+  );
 
   // Make staff automatically true when admin is true
   useEffect(() => {
     if (user.isAdmin && !user.isStaff) {
       handleChange('isStaff', true);
     }
-  }, [user.isAdmin, user.isStaff]);
+  }, [user.isAdmin, user.isStaff, handleChange]);
 
   return (
     <Grid container spacing={2}>

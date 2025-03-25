@@ -5,11 +5,11 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Grid,
   Typography,
   Alert,
   LinearProgress,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Family, Year } from '../services/firebase/models/types';
 import { fetchFamily } from '../services/firebase/families';
 import { fetchYears } from '../services/firebase/years';

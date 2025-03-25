@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import { EmergencyContact } from '../services/firebase/models/types';
 import RelationshipDropdown from './RelationshipDropdown';
 

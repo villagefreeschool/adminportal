@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Link } from '@mui/material';
+import { Link, Grid } from '@mui/material';
 import LabeledData from './LabeledData';
 import { Guardian as GuardianType } from '../services/firebase/models/types';
 

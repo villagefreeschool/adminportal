@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Grid, LinearProgress, Typography } from '@mui/material';
+import { Box, Button, LinearProgress, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Contract as ContractType, Family, Year } from '../services/firebase/models/types';
 import { fetchContract } from '../services/firebase/contracts';
 import { fetchFamily } from '../services/firebase/families';
@@ -115,19 +116,14 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
       {family && family.students && (
         <Grid container spacing={2} justifyContent="space-around">
           {family.students.map((student) => (
-            <Grid
-              item
-              xs={12 / family.students.length}
-              sm={8 / family.students.length}
-              key={student.id}
-            >
+            <Grid xs={12 / family.students.length} sm={8 / family.students.length} key={student.id}>
               <LabeledData label={student.preferredName || student.firstName} textAlign="center">
                 {contract ? contract.studentDecisions[student.id] : 'Unknown'}
               </LabeledData>
             </Grid>
           ))}
 
-          <Grid item>
+          <Grid>
             <LabeledData label="Total Tuition" textAlign="center">
               {formatCurrency(contract.tuition || 0)}
             </LabeledData>
@@ -143,7 +139,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
         )}
       </Box>
 
-      {contract && (
+      {contract && year && family && (
         <Box display="flex" justifyContent="center" mt={2}>
           <ContractPDFGenerator year={year} family={family} contract={contract} />
         </Box>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Grid, TextField, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   DefaultMinimumIncome,
   DefaultMaximumIncome,

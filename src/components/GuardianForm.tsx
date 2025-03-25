@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Guardian } from '../services/firebase/models/types';
 import RelationshipDropdown from './RelationshipDropdown';
 
