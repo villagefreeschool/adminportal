@@ -58,7 +58,9 @@ export interface EmergencyContact {
 export interface MedicalProvider {
   name: string;
   phone?: string;
+  phoneNumber?: string;
   type?: string;
+  office?: string;
 }
 
 export interface Family {
@@ -87,6 +89,7 @@ export interface Family {
 export interface UserFamily {
   familyID: string;
   familyName: string;
+  id?: string;
 }
 
 export interface Enrollment {
@@ -119,6 +122,10 @@ export interface Contract {
   family?: Family;
   fullTimeNames?: string;
   partTimeNames?: string;
+  suggestedTuition?: number;
+  minTuition?: number;
+  lastSavedBy?: string;
+  lastSavedAt?: string;
 }
 
 export interface Year {
