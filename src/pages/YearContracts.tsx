@@ -16,7 +16,6 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Grid,
   Link,
   AppBar,
   Toolbar,
@@ -24,6 +23,7 @@ import {
   useTheme,
   Tooltip,
 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -34,7 +34,7 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import _ from 'lodash';
 import { useAuth } from '../contexts/useAuth';
-import { Contract, Enrollment, Year } from '../services/firebase/models/types';
+import { Contract, Enrollment, Year, Family } from '../services/firebase/models/types';
 import { fetchYear, enrolledStudentsInYear } from '../services/firebase/years';
 import { enrolledFamiliesInYear } from '../services/firebase/years';
 import {
@@ -96,7 +96,7 @@ function YearContracts() {
   const [contracts, setContracts] = useState<Contract[]>([]);
   // Need to reference unused state for correct data structure
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [families, setFamilies] = useState<Array<Record<string, unknown>>>([]);
+  const [families, setFamilies] = useState<Family[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
