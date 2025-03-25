@@ -85,7 +85,7 @@ function App() {
             }
           />
           <Route
-            path="/families/:id/registrations"
+            path="/families/:id/register"
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>

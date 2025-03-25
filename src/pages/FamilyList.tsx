@@ -396,7 +396,7 @@ function FamilyList() {
                           variant="contained"
                           color="primary"
                           component={RouterLink}
-                          to={`/families/${family.id}/registrations`}
+                          to={`/families/${family.id}/register`}
                           startIcon={<DescriptionIcon />}
                           sx={{
                             bgcolor: theme.palette.brown[500],

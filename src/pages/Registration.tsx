@@ -21,7 +21,7 @@ import { useAuth } from '../contexts/useAuth';
  */
 const Registration: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
-  const { isAdmin, userFamily } = useAuth();
+  const { isAdmin, myFamily } = useAuth();
 
   // State
   const [loading, setLoading] = useState(true);
@@ -43,11 +43,8 @@ const Registration: React.FC = () => {
           const fetchedFamily = await fetchFamily(id);
           setFamily(fetchedFamily);
         } else {
-          // Use the user's own family if no ID provided
-          if (userFamily && userFamily.id) {
-            const fetchedFamily = await fetchFamily(userFamily.id);
-            setFamily(fetchedFamily);
-          }
+          // Use the user's own family if no ID provided (for /register path)
+          setFamily(myFamily);
         }
       } catch (error) {
         console.error('Error loading data:', error);
@@ -57,7 +54,7 @@ const Registration: React.FC = () => {
     };
 
     loadData();
-  }, [id, userFamily]);
+  }, [id, myFamily]);
 
   // Filter years to only show those accepting registrations (or all for admins)
   const displayedYears = years.filter((year) => year.isAcceptingRegistrations || isAdmin);
