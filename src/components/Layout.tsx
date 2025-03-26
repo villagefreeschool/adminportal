@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -23,7 +23,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+import _ from 'lodash';
 import { useAuth } from '../contexts/useAuth';
+import DirectoryPDFGenerator from './DirectoryPDFGenerator';
+import { fetchYears } from '../services/firebase/years';
+import { Year } from '../services/firebase/models/types';
 
 const drawerWidth = 240;
 
@@ -62,9 +66,35 @@ function Layout({ children }: LayoutProps) {
   // Use 'md' breakpoint instead of 'sm' to show sidebar on larger screens
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [years, setYears] = useState<Year[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, isAdmin, isAuthenticated, logout, myFamily } = useAuth();
+
+  useEffect(() => {
+    // Fetch years from Firebase
+    const loadYears = async () => {
+      try {
+        const yearsList = await fetchYears();
+        console.log('Years loaded:', yearsList);
+        setYears(yearsList);
+      } catch (error) {
+        console.error('Error fetching years:', error);
+      }
+    };
+
+    loadYears();
+  }, []);
+
+  // Debug information
+  useEffect(() => {
+    console.log('Auth state:', {
+      isAdmin,
+      isAuthenticated,
+      currentUser,
+      currentYear: _.find(years, { isAcceptingRegistrations: true }),
+    });
+  }, [isAdmin, isAuthenticated, currentUser, years]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -77,6 +107,9 @@ function Layout({ children }: LayoutProps) {
       console.error('Logout error:', error);
     }
   };
+
+  // Find the current active year
+  const currentYear = _.find(years, { isAcceptingRegistrations: true });
 
   // Basic navigation items available to all authenticated users
   const navItems: NavItem[] = [
@@ -119,6 +152,23 @@ function Layout({ children }: LayoutProps) {
             </ListItemButton>
           </ListItem>
         ))}
+
+        {/* Add Directory PDF Generator */}
+        {isAdmin && (
+          <>
+            <Divider sx={{ my: 1 }} />
+            {currentYear ? (
+              <DirectoryPDFGenerator year={currentYear} />
+            ) : (
+              <ListItem>
+                <ListItemText
+                  primary="No active school year"
+                  primaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
+                />
+              </ListItem>
+            )}
+          </>
+        )}
       </List>
       <Box sx={{ position: 'absolute', bottom: 0, width: '100%' }}>
         <Divider />

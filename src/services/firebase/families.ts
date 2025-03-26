@@ -200,6 +200,69 @@ export async function fetchFamiliesWithIDs(ids: string[]): Promise<Family[]> {
 }
 
 /**
+ * enrolledFamiliesInYear fetches a read-only array of Families with at least
+ * one student enrolled in the provided YearID. The returned records
+ * SHOULD NOT BE EDITED and are not watched for server-side changes. This
+ * function is to be used for reporting/listing only.
+ *
+ * @param yearID
+ * @returns An array of Family objects.
+ */
+export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> {
+  console.log(`Fetching enrolled families for year ${yearID}`);
+
+  try {
+    // Verify yearID is not empty
+    if (!yearID) {
+      console.error('Year ID is empty');
+      return [];
+    }
+
+    const familyIDs: string[] = [];
+    const validDecisions = ['Full Time', 'Part Time'];
+
+    try {
+      // Get the contracts collection for this year
+      const contractsRef = collection(doc(yearDB, yearID), 'contracts');
+      console.log(`Querying contracts collection for year ${yearID}`);
+
+      const contractsDocs = await getDocs(contractsRef);
+      console.log(`Found ${contractsDocs.size} contracts`);
+
+      // First pass, we just collect the IDs of families attending
+      contractsDocs.forEach((contract) => {
+        const data = contract.data();
+        const decisions = _.values(data.studentDecisions || {});
+        if (_.intersection(decisions, validDecisions).length > 0) {
+          familyIDs.push(contract.id); // Contract IDs are the ID of the family
+        }
+      });
+
+      console.log(`Found ${familyIDs.length} families with enrolled students`);
+    } catch (error) {
+      console.error('Error fetching contracts:', error);
+      throw new Error(`Failed to fetch contracts for year ${yearID}: ${error}`);
+    }
+
+    // If no families found, return empty array
+    if (familyIDs.length === 0) {
+      console.log('No enrolled families found');
+      return [];
+    }
+
+    // Fetch the full family data for each family ID
+    console.log(`Fetching full family data for ${familyIDs.length} families`);
+    const results = await fetchFamiliesWithIDs(familyIDs);
+    console.log(`Successfully fetched ${results.length} families`);
+
+    return results;
+  } catch (error) {
+    console.error('Error in enrolledFamiliesInYear:', error);
+    throw error;
+  }
+}
+
+/**
  * Generates a family name based on the last names of guardians and students
  */
 export function calculatedNameForFamily(family: Family): string {
