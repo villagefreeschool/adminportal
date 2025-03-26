@@ -328,14 +328,12 @@ function FamilyList() {
                   color="primary"
                   aria-label="add"
                   onClick={handleNewFamily}
-                  size="small"
+                  size="large"
                   sx={{
                     position: 'absolute',
-                    bottom: -16,
+                    bottom: -21,
                     left: 24,
                     zIndex: 1,
-                    bgcolor: theme.palette.brown[500],
-                    '&:hover': { bgcolor: theme.palette.brown[700] },
                   }}
                 >
                   <AddIcon />
