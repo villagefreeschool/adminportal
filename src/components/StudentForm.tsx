@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { TextField, MenuItem, FormControlLabel, Switch, Typography } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -62,9 +62,9 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid container spacing={2}>
+      <Grid2 container spacing={2}>
         {/* Name fields */}
-        <Grid item xs={12} sm={4}>
+        <Grid2 size={{ xs: 12, sm: 4 }}>
           <TextField
             label="First Name"
             value={student.firstName || ''}
@@ -72,16 +72,16 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             required
           />
-        </Grid>
-        <Grid item xs={12} sm={4}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 4 }}>
           <TextField
             label="Middle Name"
             value={student.middleName || ''}
             onChange={(e) => handleChange('middleName', e.target.value)}
             fullWidth
           />
-        </Grid>
-        <Grid item xs={12} sm={4}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 4 }}>
           <TextField
             label="Last Name"
             value={student.lastName || ''}
@@ -89,10 +89,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             required
           />
-        </Grid>
+        </Grid2>
 
         {/* Preferred name and birthdate */}
-        <Grid item xs={12} sm={6}>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Preferred Name"
             value={student.preferredName || ''}
@@ -100,8 +100,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             required
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <DatePicker
             label="Birthdate"
             value={student.birthdate ? dayjs(student.birthdate) : null}
@@ -118,10 +118,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
               }
             }}
           />
-        </Grid>
+        </Grid2>
 
         {/* Gender and pronouns */}
-        <Grid item xs={12} sm={student.gender === 'Custom' ? 6 : 12} md={6}>
+        <Grid2 size={{ xs: 12, sm: student.gender === 'Custom' ? 6 : 12, md: 6 }}>
           <TextField
             select
             label="Gender"
@@ -136,10 +136,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
+        </Grid2>
 
         {student.gender === 'Custom' && (
-          <Grid item xs={12} sm={6}>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
             <TextField
               label="Custom Gender"
               value={student.customGender || ''}
@@ -147,10 +147,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
               fullWidth
               required
             />
-          </Grid>
+          </Grid2>
         )}
 
-        <Grid item xs={12} md={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <TextField
             select
             label="Pronoun"
@@ -165,10 +165,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
+        </Grid2>
 
         {/* Email and prior school */}
-        <Grid item xs={12} sm={6}>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Email Address (Optional)"
             value={student.email || ''}
@@ -176,8 +176,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             helperText={`Enter only if ${shortName} uses email.`}
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Prior School"
             value={student.priorSchool || ''}
@@ -185,10 +185,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             helperText={`School ${shortName} most recently attended before VFS.`}
           />
-        </Grid>
+        </Grid2>
 
         {/* Medical and learning info */}
-        <Grid item xs={12} sm={6}>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Learning Disabilities"
             value={student.learningDisabilities || ''}
@@ -197,8 +197,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             rows={3}
             fullWidth
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Additional Information"
             value={student.additionalInfo || ''}
@@ -207,8 +207,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             rows={3}
             fullWidth
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Severe Allergies"
             value={student.severeAllergies || ''}
@@ -218,8 +218,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             helperText="Note allergies with anaphylaxis or other severe impacts"
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Non-Severe Allergies"
             value={student.nonSevereAllergies || ''}
@@ -229,8 +229,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             fullWidth
             helperText="Note dietary intolerances, seasonal allergies and other allergies with non-severe impacts"
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Other Medical Conditions"
             value={student.otherMedicalConditions || ''}
@@ -239,10 +239,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             rows={3}
             fullWidth
           />
-        </Grid>
+        </Grid2>
 
         {/* Media release and sign-out permissions */}
-        <Grid item xs={12} md={6}>
+        <Grid2 spacing={{ xs: 12, md: 6 }}>
           <FormControlLabel
             control={
               <Switch
@@ -257,8 +257,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
               </Typography>
             }
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControlLabel
             control={
               <Switch
@@ -273,8 +273,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
               </Typography>
             }
           />
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </LocalizationProvider>
   );
 };

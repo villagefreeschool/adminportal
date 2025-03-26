@@ -21,7 +21,7 @@ import {
   Toolbar,
   useTheme,
 } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 // import CheckIcon from '@mui/icons-material/Check'; // Unused import
@@ -266,26 +266,26 @@ function YearRoster() {
       <Box sx={{ p: 2 }}>
         <Card sx={{ mb: 3 }}>
           <CardContent>
-            <Grid container spacing={2} justifyContent="center" textAlign="center">
-              <Grid item xs={4} sm={3}>
+            <Grid2 container spacing={2} justifyContent="center" textAlign="center">
+              <Grid2 size={{ xs: 4, sm: 3 }}>
                 <Typography variant="caption" display="block">
                   Part Time
                 </Typography>
                 <Typography variant="h4">{partTimeCount}</Typography>
-              </Grid>
-              <Grid item xs={4} sm={3}>
+              </Grid2>
+              <Grid2 size={{ xs: 4, sm: 3 }}>
                 <Typography variant="caption" display="block">
                   Full Time
                 </Typography>
                 <Typography variant="h4">{fullTimeCount}</Typography>
-              </Grid>
-              <Grid item xs={4} sm={3}>
+              </Grid2>
+              <Grid2 size={{ xs: 4, sm: 3 }}>
                 <Typography variant="caption" display="block">
                   Total
                 </Typography>
                 <Typography variant="h4">{enrolledStudents.length}</Typography>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </CardContent>
         </Card>
 

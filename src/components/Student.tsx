@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid2 } from '@mui/material';
 import LabeledData from './LabeledData';
 import { Student as StudentType } from '../services/firebase/models/types';
 
@@ -15,8 +15,8 @@ const Student: React.FC<StudentProps> = ({ student }) => {
   return (
     <Box sx={{ width: '100%' }}>
       {/* Student Name Header */}
-      <Grid container>
-        <Grid item xs={12}>
+      <Grid2 container>
+        <Grid2 size={{ xs: 12 }}>
           <Typography variant="h5" component="div">
             {student.preferredName || student.firstName}
             {student.pronoun && (
@@ -25,76 +25,76 @@ const Student: React.FC<StudentProps> = ({ student }) => {
               </Typography>
             )}
           </Typography>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Name Fields - Split into thirds */}
-      <Grid container spacing={2} sx={{ mt: 1 }}>
-        <Grid item xs={4}>
+      <Grid2 container spacing={2} sx={{ mt: 1 }}>
+        <Grid2 size={{ xs: 4 }}>
           <Box>
             <LabeledData label="First">{student.firstName}</LabeledData>
           </Box>
-        </Grid>
-        <Grid item xs={4}>
+        </Grid2>
+        <Grid2 size={{ xs: 4 }}>
           <Box sx={{ textAlign: 'center' }}>
             <LabeledData label="Middle">{student.middleName || '-'}</LabeledData>
           </Box>
-        </Grid>
-        <Grid item xs={4}>
+        </Grid2>
+        <Grid2 size={{ xs: 4 }}>
           <Box sx={{ textAlign: 'right' }}>
             <LabeledData label="Last">{student.lastName}</LabeledData>
           </Box>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Other Student Information */}
-      <Grid container spacing={2} sx={{ mt: 2 }}>
+      <Grid2 container spacing={2} sx={{ mt: 2 }}>
         {student.email && (
-          <Grid item xs={12}>
+          <Grid2 size={{ xs: 12 }}>
             <LabeledData label="Email Address">{student.email}</LabeledData>
-          </Grid>
+          </Grid2>
         )}
 
         {student.severeAllergies && (
-          <Grid item xs={12} md={6}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <LabeledData label="Severe Allergies" error>
               {student.severeAllergies}
             </LabeledData>
-          </Grid>
+          </Grid2>
         )}
 
         {student.nonSevereAllergies && (
-          <Grid item xs={12} md={6}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <LabeledData label="Non-Severe Allergies">{student.nonSevereAllergies}</LabeledData>
-          </Grid>
+          </Grid2>
         )}
 
         {student.priorSchool && (
-          <Grid item xs={12} md={6}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <LabeledData label="Prior School">{student.priorSchool}</LabeledData>
-          </Grid>
+          </Grid2>
         )}
 
         {student.learningDisabilities && (
-          <Grid item xs={12} md={6}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <LabeledData label="Learning Disabilities">{student.learningDisabilities}</LabeledData>
-          </Grid>
+          </Grid2>
         )}
 
         {student.additionalInfo && (
-          <Grid item xs={12} md={6}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <LabeledData label="Additional Information">{student.additionalInfo}</LabeledData>
-          </Grid>
+          </Grid2>
         )}
 
         {student.otherMedicalConditions && (
-          <Grid item xs={12} md={6}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <LabeledData label="Other Medical Conditions">
               {student.otherMedicalConditions}
             </LabeledData>
-          </Grid>
+          </Grid2>
         )}
-      </Grid>
+      </Grid2>
     </Box>
   );
 };

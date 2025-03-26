@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { EmergencyContact } from '../services/firebase/models/types';
 import RelationshipDropdown from './RelationshipDropdown';
 
@@ -23,8 +23,8 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
+    <Grid2 container spacing={2}>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <TextField
           label="First Name"
           value={contact.firstName || ''}
@@ -32,16 +32,16 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Last Name"
           value={contact.lastName || ''}
           onChange={(e) => handleChange('lastName', e.target.value)}
           fullWidth
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Cell Phone"
           value={contact.cellPhone || ''}
@@ -49,23 +49,23 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Work Phone"
           value={contact.workPhone || ''}
           onChange={(e) => handleChange('workPhone', e.target.value)}
           fullWidth
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <RelationshipDropdown
           value={contact.relationship || ''}
           onChange={(value) => handleChange('relationship', value)}
           required
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Notes"
           value={contact.notes || ''}
@@ -74,8 +74,8 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
           rows={2}
           fullWidth
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

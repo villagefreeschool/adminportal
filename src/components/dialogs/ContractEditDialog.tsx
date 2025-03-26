@@ -20,7 +20,7 @@ import {
   ListItem,
   ListItemText,
 } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Contract, Family, Year, Enrollment } from '../../services/firebase/models/types';
@@ -572,20 +572,20 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             Based on your family&apos;s income
           </Typography>
 
-          <Grid container spacing={2} justifyContent="space-between" mt={1}>
-            <Grid item xs={4}>
+          <Grid2 container spacing={2} justifyContent="space-between" mt={1}>
+            <Grid2 size={{ xs: 4 }}>
               <Typography variant="body2">Full Time</Typography>
               <Typography variant="body1">{formatCurrency(fullTimeTuition)}</Typography>
-            </Grid>
-            <Grid item xs={4}>
+            </Grid2>
+            <Grid2 size={{ xs: 4 }}>
               <Typography variant="body2">Full Time Sibling</Typography>
               <Typography variant="body1">{formatCurrency(siblingTuition)}</Typography>
-            </Grid>
-            <Grid item xs={4}>
+            </Grid2>
+            <Grid2 size={{ xs: 4 }}>
               <Typography variant="body2">Part Time</Typography>
               <Typography variant="body1">{formatCurrency(partTimeTuition)}</Typography>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Paper>
 
         {/* Attendance Decisions */}
@@ -594,12 +594,10 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             Who&apos;s Attending This Year?
           </Typography>
 
-          <Grid container spacing={2}>
+          <Grid2 container spacing={2}>
             {family.students?.map((student) => (
-              <Grid
-                item
-                xs={12}
-                sm={family.students.length > 0 ? 12 / family.students.length : 12}
+              <Grid2
+                size={{ xs: 12, sm: family.students.length > 0 ? 12 / family.students.length : 12 }}
                 key={student.id}
               >
                 <EnrollmentTypeSelector
@@ -610,9 +608,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   error={!studentDecisions[student.id]}
                   helperText={!studentDecisions[student.id] ? 'Required' : ''}
                 />
-              </Grid>
+              </Grid2>
             ))}
-          </Grid>
+          </Grid2>
         </Box>
 
         {/* Annual Tuition Section */}
@@ -628,23 +626,23 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                 livelihood, and current compensation does not include health insurance.
               </Typography>
 
-              <Grid
+              <Grid2
                 container
                 spacing={2}
                 alignItems="flex-end"
                 justifyContent="space-around"
                 textAlign="center"
               >
-                <Grid item xs={3}>
+                <Grid2 size={{ xs: 3 }}>
                   <Typography variant="caption" color="text.secondary">
                     Over 10 Months
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {formatCurrency(tuition / 10)}/mo
                   </Typography>
-                </Grid>
+                </Grid2>
 
-                <Grid item xs={6}>
+                <Grid2 size={{ xs: 6 }}>
                   <Typography variant="overline" color="text.secondary">
                     Total {year.name} Tuition
                   </Typography>
@@ -671,22 +669,22 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       {`Previous year: ${formatCurrency(prevYearContract.tuition || 0)}`}
                     </Typography>
                   )}
-                </Grid>
+                </Grid2>
 
-                <Grid item xs={3}>
+                <Grid2 size={{ xs: 3 }}>
                   <Typography variant="caption" color="text.secondary">
                     Over 12 Months
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {formatCurrency(tuition / 12)}/mo
                   </Typography>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             </Box>
 
             {/* Slider Interface */}
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <Grid2 container spacing={2}>
+              <Grid2 size={{ xs: 12 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <IconButton
                     color="primary"
@@ -731,12 +729,12 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                     Year-over-year change limited to ±{MaxYearOverYearChange * 100}%
                   </Typography>
                 )}
-              </Grid>
+              </Grid2>
 
               {/* Tuition Assistance Options */}
               {(isAdmin || tuition < minTuition) && (
                 <>
-                  <Grid item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -748,9 +746,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }
                       label="Request Tuition Assistance"
                     />
-                  </Grid>
+                  </Grid2>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <TextField
                       label="Tuition Assistance Amount"
                       type="number"
@@ -761,14 +759,14 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }}
                       fullWidth
                     />
-                  </Grid>
+                  </Grid2>
                 </>
               )}
 
               {/* Admin-only options */}
               {allAttendanceDecisionsMade && isAdmin && (
-                <Grid container item xs={12} spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                <Grid2 container size={{ xs: 12 }} spacing={2}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -778,9 +776,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }
                       label="Signed Contract Received"
                     />
-                  </Grid>
+                  </Grid2>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -793,13 +791,13 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }
                       label="Tuition Assistance Granted"
                     />
-                  </Grid>
-                </Grid>
+                  </Grid2>
+                </Grid2>
               )}
 
               {/* Metadata for admins */}
               {isAdmin && contract.lastSavedAt && (
-                <Grid item xs={12}>
+                <Grid2 size={{ xs: 12 }}>
                   <Divider sx={{ my: 2 }} />
                   <List dense>
                     {contract.lastSavedBy && (
@@ -816,9 +814,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       </ListItem>
                     )}
                   </List>
-                </Grid>
+                </Grid2>
               )}
-            </Grid>
+            </Grid2>
           </>
         )}
       </DialogContent>

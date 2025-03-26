@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { VFSAdminUser } from '../services/firebase/models/types';
 
 interface UserFormProps {
@@ -33,8 +33,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
   }, [user.isAdmin, user.isStaff, handleChange]);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
+    <Grid2 container spacing={2}>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Email Address"
           value={user.email || ''}
@@ -44,8 +44,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
           required
           helperText="They will log in to the system using this address."
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <TextField
           label="First Name"
           value={user.firstName || ''}
@@ -54,8 +54,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
           required
           autoFocus={!allowChangingEmail}
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Last Name"
           value={user.lastName || ''}
@@ -63,8 +63,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <Box>
           <FormControlLabel
             control={
@@ -80,8 +80,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
         <Typography variant="caption" color="textSecondary">
           Administrators can see all data and can create new users.
         </Typography>
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 6 }}>
         <Box>
           <FormControlLabel
             control={
@@ -97,8 +97,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
         <Typography variant="caption" color="textSecondary">
           Staff have access to the backend area.
         </Typography>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

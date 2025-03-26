@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, MenuItem } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { MedicalProvider } from '../services/firebase/models/types';
 
 interface MedicalProviderFormProps {
@@ -25,8 +25,8 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
+    <Grid2 container spacing={2}>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           select
           label="Provider Type"
@@ -41,8 +41,8 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
             </MenuItem>
           ))}
         </TextField>
-      </Grid>
-      <Grid item xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Provider Name"
           value={provider.name || ''}
@@ -50,16 +50,16 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Phone Number"
           value={provider.phone || ''}
           onChange={(e) => handleChange('phone', e.target.value)}
           fullWidth
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

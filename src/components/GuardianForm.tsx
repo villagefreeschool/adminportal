@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { Guardian } from '../services/firebase/models/types';
 import RelationshipDropdown from './RelationshipDropdown';
 
@@ -24,8 +24,8 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={4}>
+    <Grid2 container spacing={2}>
+      <Grid2 size={{ xs: 12, sm: 4 }}>
         <TextField
           label="First Name"
           value={guardian.firstName || ''}
@@ -33,8 +33,8 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} sm={4}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 4 }}>
         <TextField
           label="Last Name"
           value={guardian.lastName || ''}
@@ -42,15 +42,15 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} sm={4}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, sm: 4 }}>
         <RelationshipDropdown
           value={guardian.relationship || ''}
           onChange={(value) => handleChange('relationship', value)}
           required
         />
-      </Grid>
-      <Grid item xs={12} lg={4}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, lg: 4 }}>
         <TextField
           label="Email Address"
           value={guardian.email || ''}
@@ -58,8 +58,8 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: 6, lg: 4 }}>
         <TextField
           label="Cell Phone"
           value={guardian.cellPhone || ''}
@@ -67,16 +67,16 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
           required
         />
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: 6, lg: 4 }}>
         <TextField
           label="Work Phone"
           value={guardian.workPhone || ''}
           onChange={(e) => handleChange('workPhone', e.target.value)}
           fullWidth
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Grid2>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Work/Other Email Addresses"
           value={guardian.otherEmails || ''}
@@ -86,10 +86,10 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
           helperText="Users logging in with any of these email addresses will be linked to your family automatically."
         />
-      </Grid>
+      </Grid2>
 
       {index !== 0 && (
-        <Grid item xs={12}>
+        <Grid2 size={{ xs: 12 }}>
           <FormControlLabel
             control={
               <Checkbox
@@ -99,18 +99,18 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
             }
             label="At Same Address"
           />
-        </Grid>
+        </Grid2>
       )}
 
       {index === 0 && (
-        <Grid item xs={12}>
+        <Grid2 size={{ xs: 12 }}>
           <div style={{ minHeight: '48px' }} />
-        </Grid>
+        </Grid2>
       )}
 
       {!guardian.atSameAddress && (
         <>
-          <Grid item xs={12}>
+          <Grid2 size={{ xs: 12 }}>
             <TextField
               label="Address"
               value={guardian.address1 || ''}
@@ -118,16 +118,16 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
               fullWidth
               required={!guardian.atSameAddress}
             />
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 size={{ xs: 12 }}>
             <TextField
               label="Suite / Apt #"
               value={guardian.address2 || ''}
               onChange={(e) => handleChange('address2', e.target.value)}
               fullWidth
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
             <TextField
               label="City"
               value={guardian.city || ''}
@@ -135,8 +135,8 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
               fullWidth
               required={!guardian.atSameAddress}
             />
-          </Grid>
-          <Grid item xs={6} sm={2}>
+          </Grid2>
+          <Grid2 size={{ xs: 6, sm: 2 }}>
             <TextField
               label="State"
               value={guardian.state || ''}
@@ -144,8 +144,8 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
               fullWidth
               required={!guardian.atSameAddress}
             />
-          </Grid>
-          <Grid item xs={6} sm={4}>
+          </Grid2>
+          <Grid2 size={{ xs: 6, sm: 4 }}>
             <TextField
               label="ZIP Code"
               value={guardian.zip || ''}
@@ -153,20 +153,20 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
               fullWidth
               required={!guardian.atSameAddress}
             />
-          </Grid>
+          </Grid2>
         </>
       )}
 
-      <Grid item xs={12}>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Occupation"
           value={guardian.occupation || ''}
           onChange={(e) => handleChange('occupation', e.target.value)}
           fullWidth
         />
-      </Grid>
+      </Grid2>
 
-      <Grid item xs={12}>
+      <Grid2 size={{ xs: 12 }}>
         <TextField
           label="Notes"
           value={guardian.notes || ''}
@@ -176,8 +176,8 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
           fullWidth
           helperText="If needed, enter notes about custody or relationship status."
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

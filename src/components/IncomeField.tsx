@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, InputAdornment, Button, Box } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
@@ -94,8 +94,8 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   };
 
   return (
-    <Grid container spacing={1} alignItems="center">
-      <Grid item xs={isLocked ? 8 : 12} sm={isLocked ? 9 : 12}>
+    <Grid2 container spacing={1} alignItems="center">
+      <Grid2 size={{ xs: isLocked ? 8 : 12, sm: isLocked ? 9 : 12 }}>
         {isLocked ? (
           <TextField
             label={label}
@@ -120,10 +120,10 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
             }}
           />
         )}
-      </Grid>
+      </Grid2>
 
       {isLocked && (
-        <Grid item xs={4} sm={3}>
+        <Grid2 size={{ xs: 4, sm: 3 }}>
           <Button
             variant="contained"
             size="small"
@@ -133,11 +133,11 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
           >
             Edit
           </Button>
-        </Grid>
+        </Grid2>
       )}
 
       {!isLocked && initialValue !== null && initialValue !== undefined && (
-        <Grid item xs={12}>
+        <Grid2 size={{ xs: 12 }}>
           <Box display="flex" justifyContent="flex-end" gap={1}>
             <Button
               variant="contained"
@@ -159,9 +159,9 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
               Cancel
             </Button>
           </Box>
-        </Grid>
+        </Grid2>
       )}
-    </Grid>
+    </Grid2>
   );
 };
 

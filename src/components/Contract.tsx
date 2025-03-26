@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, LinearProgress, Typography } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { Contract as ContractType, Family, Year } from '../services/firebase/models/types';
 import { fetchContract } from '../services/firebase/contracts';
 import { fetchFamily } from '../services/firebase/families';
@@ -114,21 +114,24 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
   return (
     <Box>
       {family && family.students && (
-        <Grid container spacing={2} justifyContent="space-around">
+        <Grid2 container spacing={2} justifyContent="space-around">
           {family.students.map((student) => (
-            <Grid xs={12 / family.students.length} sm={8 / family.students.length} key={student.id}>
+            <Grid2
+              size={{ xs: 12 / family.students.length, sm: 8 / family.students.length }}
+              key={student.id}
+            >
               <LabeledData label={student.preferredName || student.firstName} textAlign="center">
                 {contract ? contract.studentDecisions[student.id] : 'Unknown'}
               </LabeledData>
-            </Grid>
+            </Grid2>
           ))}
 
-          <Grid>
+          <Grid2>
             <LabeledData label="Total Tuition" textAlign="center">
               {formatCurrency(contract.tuition || 0)}
             </LabeledData>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       )}
 
       <Box display="flex" justifyContent="center" mt={2}>

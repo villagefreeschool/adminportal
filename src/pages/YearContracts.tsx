@@ -23,7 +23,7 @@ import {
   useTheme,
   Tooltip,
 } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -385,8 +385,8 @@ function YearContracts() {
       <Box sx={{ p: 2 }}>
         <Card sx={{ mb: 3 }}>
           <CardContent>
-            <Grid container spacing={2} justifyContent="center" textAlign="center">
-              <Grid item xs={6} sm={4}>
+            <Grid2 container spacing={2} justifyContent="center" textAlign="center">
+              <Grid2 size={{ xs: 6, sm: 4 }}>
                 <Typography variant="h5">
                   {signedContracts.length} ({formatCurrency(signedRevenue)})
                 </Typography>
@@ -396,8 +396,8 @@ function YearContracts() {
                     ({formatAverage(signedRevenue, signedStudentCount)} / child)
                   </Typography>
                 </Typography>
-              </Grid>
-              <Grid item xs={6} sm={4}>
+              </Grid2>
+              <Grid2 size={{ xs: 6, sm: 4 }}>
                 <Typography variant="h5">
                   {unsignedContracts.length} ({formatCurrency(unsignedRevenue)})
                 </Typography>
@@ -407,8 +407,8 @@ function YearContracts() {
                     ({formatAverage(unsignedRevenue, unsignedStudentCount)} / child)
                   </Typography>
                 </Typography>
-              </Grid>
-              <Grid item xs={6} sm={4}>
+              </Grid2>
+              <Grid2 size={{ xs: 6, sm: 4 }}>
                 <Typography variant="h5">
                   {contracts.length} ({formatCurrency(revenue)})
                 </Typography>
@@ -418,8 +418,8 @@ function YearContracts() {
                     ({formatAverage(revenue, studentCount)} / child)
                   </Typography>
                 </Typography>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </CardContent>
         </Card>
 
@@ -536,11 +536,11 @@ function YearContracts() {
         )}
 
         <Box mt={4}>
-          <Grid container justifyContent="center" textAlign="center">
+          <Grid2 container justifyContent="center" textAlign="center">
             <LabeledData label="Assistance Given" xs={12} sm={4}>
               <Typography variant="h5">{formatCurrency(assistance)}</Typography>
             </LabeledData>
-          </Grid>
+          </Grid2>
         </Box>
       </Box>
 
