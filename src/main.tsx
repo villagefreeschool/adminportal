@@ -9,7 +9,7 @@ import './index.css';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4e4a44', // Dark brown from Vuetify theme
+      main: '#5E5047', // Dark brown from Vuetify theme
       dark: '#3a3631', // Darker version for hover states
       light: '#625d56', // Lighter version
     },

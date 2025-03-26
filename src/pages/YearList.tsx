@@ -193,7 +193,7 @@ function YearList() {
     <>
       <Paper elevation={2} sx={{ overflow: 'hidden' }}>
         <AppBar position="relative" sx={{ bgcolor: 'green.900' }}>
-          <Toolbar variant="dense">
+          <Toolbar>
             <Typography variant="h6" component="h1">
               School Years
             </Typography>
@@ -205,14 +205,12 @@ function YearList() {
                 color="primary"
                 aria-label="add"
                 onClick={handleNewYear}
-                size="small"
+                size="large"
                 sx={{
                   position: 'absolute',
                   bottom: -16,
                   left: 24,
                   zIndex: 1,
-                  bgcolor: 'brown.500',
-                  '&:hover': { bgcolor: 'brown.700' },
                 }}
               >
                 <AddIcon />
