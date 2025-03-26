@@ -648,7 +648,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   </Typography>
                   <Typography
                     variant="h3"
-                    align="right"
+                    align="center"
                     color={
                       tuition < minTuition && !tuitionAssistanceRequested
                         ? 'error.main'
@@ -660,7 +660,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                     {formatCurrency(tuition)}
                   </Typography>
                   {tuition > slidingScaleTuition && (
-                    <Typography variant="caption" color="success.main">
+                    <Typography variant="caption" color="success.main" component="p">
                       Thank you for support of the staff and VFS community!
                     </Typography>
                   )}
