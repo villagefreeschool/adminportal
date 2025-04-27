@@ -131,7 +131,7 @@ function Layout({ children }: LayoutProps) {
     navItems.push(
       { text: 'Families', path: '/families', icon: <PeopleIcon /> },
       { text: 'School Years', path: '/years', icon: <DateRangeIcon /> },
-      { text: 'Users', path: '/users', icon: <PersonIcon /> },
+      { text: 'User Accounts', path: '/users', icon: <PersonIcon /> },
     );
   }
 
