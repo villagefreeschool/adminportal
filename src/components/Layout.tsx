@@ -256,12 +256,12 @@ function Layout({ children }: LayoutProps) {
 
       <MainContent>
         <Container
-          maxWidth="lg"
+          maxWidth="xl"
           disableGutters={false}
           sx={{
             flexGrow: 1,
-            py: { xs: 2, md: 3 },
-            px: { xs: 2, md: 3 },
+            py: { xs: 0 },
+            px: { xs: 0 },
           }}
         >
           {children}
