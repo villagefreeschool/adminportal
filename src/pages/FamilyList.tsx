@@ -27,10 +27,8 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import DescriptionIcon from '@mui/icons-material/Description';
 import FamilyDialog from '../components/dialogs/FamilyDialog';
-import FamilyDeleteDialog from '../components/dialogs/FamilyDeleteDialog';
 import { Family } from '../services/firebase/models/types';
 import {
   fetchFamilies,
@@ -89,7 +87,6 @@ function FamilyList() {
   // Dialog states
   const [newDialogOpen, setNewDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedFamily, setSelectedFamily] = useState<Family | null>(null);
   const [fetchingFamily, setFetchingFamily] = useState(false);
 
@@ -129,23 +126,6 @@ function FamilyList() {
   const handleEditFamily = async (id: string) => {
     setFetchingFamily(true);
     setEditDialogOpen(true);
-
-    try {
-      const family = await fetchFamily(id);
-      if (family) {
-        setSelectedFamily(family);
-      }
-    } catch (error) {
-      console.error('Error fetching family:', error);
-    } finally {
-      setFetchingFamily(false);
-    }
-  };
-
-  // Open delete confirmation dialog
-  const handleDeletePrompt = async (id: string) => {
-    setFetchingFamily(true);
-    setDeleteDialogOpen(true);
 
     try {
       const family = await fetchFamily(id);
@@ -407,26 +387,15 @@ function FamilyList() {
                       </TableCell>
                       <TableCell>
                         {isAdmin && (
-                          <Box sx={{ display: 'flex', gap: 1 }}>
-                            <Tooltip title="Edit Family">
-                              <IconButton
-                                size="small"
-                                onClick={() => handleEditFamily(family.id)}
-                                sx={{ color: theme.palette.brown[500] }}
-                              >
-                                <EditIcon fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Delete Family">
-                              <IconButton
-                                size="small"
-                                onClick={() => handleDeletePrompt(family.id)}
-                                sx={{ color: 'error.main' }}
-                              >
-                                <DeleteIcon fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
+                          <Tooltip title="Edit Family">
+                            <IconButton
+                              size="small"
+                              onClick={() => handleEditFamily(family.id)}
+                              sx={{ color: theme.palette.brown[500] }}
+                            >
+                              <EditIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
                         )}
                       </TableCell>
                     </TableRow>
@@ -474,15 +443,9 @@ function FamilyList() {
         loading={fetchingFamily}
         onClose={() => setEditDialogOpen(false)}
         onSave={handleUpdateFamily}
-        fullScreen={true}
-      />
-
-      {/* Delete Family Dialog */}
-      <FamilyDeleteDialog
-        open={deleteDialogOpen}
-        family={selectedFamily}
-        onClose={() => setDeleteDialogOpen(false)}
         onDelete={handleDeleteFamily}
+        isEditing={true}
+        fullScreen={true}
       />
     </>
   );

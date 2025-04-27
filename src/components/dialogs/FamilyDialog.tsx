@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import FamilyForm from '../FamilyForm';
 import { Family } from '../../services/firebase/models/types';
 
@@ -25,7 +26,9 @@ interface FamilyDialogProps {
   loading?: boolean;
   onClose: () => void;
   onSave: (family: Family) => Promise<void>;
+  onDelete?: (family: Family) => Promise<void>;
   fullScreen?: boolean;
+  isEditing?: boolean;
 }
 
 /**
@@ -39,7 +42,9 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   loading = false,
   onClose,
   onSave,
+  onDelete,
   fullScreen: forcedFullScreen,
+  isEditing = false,
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -69,6 +74,29 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
     } catch (err) {
       console.error('Error saving family:', err);
       setError('An error occurred while saving. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Handle delete
+  const handleDelete = async () => {
+    if (
+      !onDelete ||
+      !window.confirm('Are you sure you want to delete this family? This action cannot be undone.')
+    ) {
+      return;
+    }
+
+    setError(null);
+    setSaving(true);
+
+    try {
+      await onDelete(localFamily);
+      onClose();
+    } catch (err) {
+      console.error('Error deleting family:', err);
+      setError('An error occurred while deleting. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -120,6 +148,18 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
         <Button onClick={onClose} color="inherit" disabled={saving}>
           Cancel
         </Button>
+        {isEditing && onDelete && (
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="outlined"
+            disabled={saving || loading}
+            startIcon={<DeleteIcon />}
+            sx={{ mr: 'auto' }}
+          >
+            Delete
+          </Button>
+        )}
         <Button
           onClick={handleSave}
           color="primary"
