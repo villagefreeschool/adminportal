@@ -260,7 +260,7 @@ function Layout({ children }: LayoutProps) {
           disableGutters={false}
           sx={{
             flexGrow: 1,
-            py: { xs: 0 },
+            py: { xs: 2 },
             px: { xs: 0 },
           }}
         >
