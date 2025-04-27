@@ -5,7 +5,12 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { PDF_DEFAULT_STYLE, PDF_STYLES, dataURLFromImagePath } from '../utils/pdfUtil';
+import {
+  PDF_DEFAULT_STYLE,
+  PDF_STYLES,
+  dataURLFromImagePath,
+  normalizeSignatureForPdf,
+} from '../utils/pdfUtil';
 
 // Configure pdfMake
 // @ts-expect-error - pdfFonts structure varies depending on version
@@ -549,18 +554,78 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
 
     family.guardians.forEach((g) => {
       // Check if this guardian has a digital signature
-      const signature = contract.signatures?.[g.id || ''];
+      const guardianId = g.id || '';
+      const signature = contract.signatures?.[guardianId];
 
-      if (signature) {
-        // If we have a digital signature, include it in the PDF
-        lines.push([
-          {
-            image: signature.data,
-            width: 150,
-            height: 70,
-          },
-          '',
-        ]);
+      // Try alternative guardian ID formats
+      const possibleIds = [
+        guardianId,
+        `guardian-${family.guardians.indexOf(g)}`,
+        `${family.id}-${guardianId}`,
+        `${g.firstName.toLowerCase()}-${g.lastName.toLowerCase()}`,
+      ];
+
+      // Look for a matching signature using all possible ID formats
+      let matchedSignature = signature;
+
+      if (!matchedSignature) {
+        // Try alternative ID formats if the primary one doesn't work
+        for (const altId of possibleIds) {
+          if (altId === guardianId) continue; // Skip the one we already tried
+
+          const altSignature = contract.signatures?.[altId];
+          if (altSignature && altSignature.data) {
+            matchedSignature = altSignature;
+            break;
+          }
+        }
+      }
+
+      if (matchedSignature && matchedSignature.data) {
+        try {
+          // Try to normalize the signature data
+          const normalizedSignature = normalizeSignatureForPdf(matchedSignature);
+
+          if (normalizedSignature) {
+            // Use the normalized signature image
+            try {
+              lines.push([
+                {
+                  image: normalizedSignature,
+                  width: 150,
+                  height: 70,
+                },
+                '',
+              ]);
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (_) {
+              lines.push(['', '']);
+            }
+          } else {
+            // Try using the signature data directly as a last resort
+            if (typeof matchedSignature.data === 'string' && matchedSignature.data.length > 100) {
+              try {
+                lines.push([
+                  {
+                    image: matchedSignature.data,
+                    width: 150,
+                    height: 70,
+                  },
+                  '',
+                ]);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              } catch (_) {
+                lines.push(['', '']);
+              }
+            } else {
+              lines.push(['', '']);
+            }
+          }
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (_) {
+          // Use empty cell as fallback
+          lines.push(['', '']);
+        }
       } else {
         // Otherwise show an empty box for manual signing
         lines.push(['', '']);
@@ -568,7 +633,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
       heights.push(70);
 
       // Add name and date line (show actual date if signed digitally)
-      const dateText = signature ? new Date(signature.date).toLocaleDateString() : '';
+      const dateText = matchedSignature ? new Date(matchedSignature.date).toLocaleDateString() : '';
 
       lines.push([g.firstName + ' ' + g.lastName, { text: dateText, bold: true }]);
       heights.push('auto');
@@ -609,27 +674,32 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
 
   // Function to generate and download the PDF
   const download = () => {
-    setGenerating(true);
-    const content: Content[] = [
-      ...titlePage(),
-      ...terms(),
-      signatureTable(''),
-      ...liabilityRelease(),
-      ...signSelfOut(),
-      ...mediaRelease(),
-    ];
-    const fileName = `${family.name} ${year.name} Contract.pdf`;
+    try {
+      setGenerating(true);
+      const content: Content[] = [
+        ...titlePage(),
+        ...terms(),
+        signatureTable(''),
+        ...liabilityRelease(),
+        ...signSelfOut(),
+        ...mediaRelease(),
+      ];
+      const fileName = `${family.name} ${year.name} Contract.pdf`;
 
-    pdfMake
-      .createPdf({
-        content,
-        styles: PDF_STYLES,
-        defaultStyle: PDF_DEFAULT_STYLE,
-        footer: pdfFooter,
-      } as TDocumentDefinitions)
-      .download(fileName);
-
-    setGenerating(false);
+      pdfMake
+        .createPdf({
+          content,
+          styles: PDF_STYLES,
+          defaultStyle: PDF_DEFAULT_STYLE,
+          footer: pdfFooter,
+        } as TDocumentDefinitions)
+        .download(fileName);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      window.alert('Failed to generate PDF. Please try again or contact support.');
+    } finally {
+      setGenerating(false);
+    }
   };
 
   // If custom button is provided, clone it with onClick handler
