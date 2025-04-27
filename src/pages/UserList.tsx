@@ -70,11 +70,17 @@ function UserList() {
 
     try {
       const data = await fetchUsers();
-      // Sort users by firstName
-      setUsers(data.sort((a, b) => a.firstName.localeCompare(b.firstName)));
+
+      if (data.length === 0) {
+        // If no users found, don't show an error - just display an empty table
+        setUsers([]);
+      } else {
+        // Sort users by firstName
+        setUsers(data.sort((a, b) => (a.firstName || '').localeCompare(b.firstName || '')));
+      }
     } catch (err) {
       console.error('Error loading users:', err);
-      setError('Failed to load users');
+      setError('Failed to load users. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
@@ -176,27 +182,37 @@ function UserList() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user.email} hover>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{displayName(user)}</TableCell>
-                      <TableCell align="center">
-                        {user.isAdmin && <CheckIcon color="success" fontSize="small" />}
-                      </TableCell>
-                      <TableCell align="center">
-                        {user.isStaff && <CheckIcon color="success" fontSize="small" />}
-                      </TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          size="small"
-                          onClick={() => handleEditUser(user.email)}
-                          sx={{ color: theme.palette.brown[500] }}
-                        >
-                          <EditIcon fontSize="small" />
-                        </IconButton>
+                  {users.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={columns.length} align="center" sx={{ py: 3 }}>
+                        <Typography color="textSecondary">
+                          No users found. Click the + button to add your first user.
+                        </Typography>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    users.map((user) => (
+                      <TableRow key={user.email} hover>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{displayName(user)}</TableCell>
+                        <TableCell align="center">
+                          {user.isAdmin && <CheckIcon color="success" fontSize="small" />}
+                        </TableCell>
+                        <TableCell align="center">
+                          {user.isStaff && <CheckIcon color="success" fontSize="small" />}
+                        </TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            size="small"
+                            onClick={() => handleEditUser(user.email)}
+                            sx={{ color: theme.palette.brown[500] }}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
