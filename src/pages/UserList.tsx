@@ -16,6 +16,7 @@ import {
   Tooltip,
   CircularProgress,
   useTheme,
+  TableSortLabel,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,6 +25,9 @@ import { fetchUsers } from '../services/firebase/users';
 import { VFSAdminUser } from '../services/firebase/models/types';
 import UserDialog from '../components/dialogs/UserDialog';
 import { useAuth } from '../contexts/useAuth';
+
+// Sort direction type
+type Order = 'asc' | 'desc';
 
 // Column definition
 interface Column {
@@ -34,10 +38,10 @@ interface Column {
 }
 
 const columns: Column[] = [
-  { id: 'email', label: 'Email' },
-  { id: 'firstName', label: 'Name' },
-  { id: 'isAdmin', label: 'Admin', align: 'center' },
-  { id: 'isStaff', label: 'Staff', align: 'center' },
+  { id: 'email', label: 'Email', sortable: true },
+  { id: 'firstName', label: 'Name', sortable: true },
+  { id: 'isAdmin', label: 'Admin', align: 'center', sortable: true },
+  { id: 'isStaff', label: 'Staff', align: 'center', sortable: true },
   { id: 'actions', label: 'Edit', align: 'center', sortable: false },
 ];
 
@@ -53,6 +57,8 @@ function UserList() {
   const [users, setUsers] = useState<VFSAdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [orderBy, setOrderBy] = useState<keyof VFSAdminUser>('email');
+  const [order, setOrder] = useState<Order>('asc');
 
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -75,8 +81,8 @@ function UserList() {
         // If no users found, don't show an error - just display an empty table
         setUsers([]);
       } else {
-        // Sort users by firstName
-        setUsers(data.sort((a, b) => (a.firstName || '').localeCompare(b.firstName || '')));
+        // Initial sort is handled by the sortData function
+        setUsers(data);
       }
     } catch (err) {
       console.error('Error loading users:', err);
@@ -84,6 +90,47 @@ function UserList() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Handle column header click for sorting
+  const handleRequestSort = (property: keyof VFSAdminUser) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  // Generic comparison function for sorting
+  const compareValues = (a: unknown, b: unknown, orderDirection: Order): number => {
+    // Handle null/undefined values
+    if (a == null) return orderDirection === 'asc' ? -1 : 1;
+    if (b == null) return orderDirection === 'asc' ? 1 : -1;
+
+    // Handle booleans
+    if (typeof a === 'boolean' && typeof b === 'boolean') {
+      return orderDirection === 'asc' ? (a === b ? 0 : a ? -1 : 1) : a === b ? 0 : a ? 1 : -1;
+    }
+
+    // Handle strings and other values
+    if (typeof a === 'string' && typeof b === 'string') {
+      return orderDirection === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+    }
+
+    // Handle numbers
+    if (typeof a === 'number' && typeof b === 'number') {
+      return orderDirection === 'asc' ? a - b : b - a;
+    }
+
+    // Convert to strings as fallback for other types
+    const aStr = String(a);
+    const bStr = String(b);
+    return orderDirection === 'asc' ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+  };
+
+  // Get sorted data based on current order and orderBy
+  const getSortedData = () => {
+    return [...users].sort((a, b) => {
+      return compareValues(a[orderBy], b[orderBy], order);
+    });
   };
 
   // Open edit dialog
@@ -105,7 +152,7 @@ function UserList() {
       setUsers(users.map((u) => (u.email === selectedEmail ? user : u)));
     } else {
       // If creating a new user, add it to the list
-      setUsers([...users, user].sort((a, b) => a.firstName.localeCompare(b.firstName)));
+      setUsers([...users, user]);
     }
   };
 
@@ -174,15 +221,29 @@ function UserList() {
                       <TableCell
                         key={column.id}
                         align={column.align}
+                        sortDirection={orderBy === column.id ? order : false}
                         sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
                       >
-                        {column.label}
+                        {column.sortable ? (
+                          <TableSortLabel
+                            active={orderBy === column.id}
+                            direction={orderBy === column.id ? order : 'asc'}
+                            onClick={() =>
+                              column.id !== 'actions' &&
+                              handleRequestSort(column.id as keyof VFSAdminUser)
+                            }
+                          >
+                            {column.label}
+                          </TableSortLabel>
+                        ) : (
+                          column.label
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.length === 0 ? (
+                  {getSortedData().length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={columns.length} align="center" sx={{ py: 3 }}>
                         <Typography color="textSecondary">
@@ -191,7 +252,7 @@ function UserList() {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    users.map((user) => (
+                    getSortedData().map((user) => (
                       <TableRow key={user.email} hover>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{displayName(user)}</TableCell>
