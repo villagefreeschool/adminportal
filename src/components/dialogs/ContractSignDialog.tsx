@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,7 @@ interface ContractSignDialogProps {
   guardianIds: string[];
   guardianNames: Record<string, string>;
   existingSignatures?: Record<string, SignatureData>;
+  initialGuardian?: string | null;
 }
 
 /**
@@ -40,12 +41,20 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
   guardianIds,
   guardianNames,
   existingSignatures = {},
+  initialGuardian = null,
 }) => {
   const theme = useTheme();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeGuardian, setActiveGuardian] = useState<string | null>(null);
+  const [activeGuardian, setActiveGuardian] = useState<string | null>(initialGuardian);
   const [signatures, setSignatures] = useState<Record<string, SignatureData>>(existingSignatures);
+  
+  // Update active guardian when initialGuardian prop changes
+  useEffect(() => {
+    if (initialGuardian) {
+      setActiveGuardian(initialGuardian);
+    }
+  }, [initialGuardian]);
 
   // Handle dialog close
   const handleClose = () => {

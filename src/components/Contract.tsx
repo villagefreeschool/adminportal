@@ -33,6 +33,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
   const [contract, setContract] = useState<ContractType | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [signDialogOpen, setSignDialogOpen] = useState(false);
+  const [activeGuardian, setActiveGuardian] = useState<string | null>(null);
   const { isAdmin } = useAuth();
 
   // Fetch data when component mounts or props change
@@ -68,8 +69,13 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
     contract && (isAdmin || (year?.isAcceptingRegistrations && !contract.isSigned));
 
   // Determine if user can sign the contract
-  const canSignContract =
-    contract && !contract.isSigned && (isAdmin || year?.isAcceptingRegistrations);
+  const canSignContract = contract && (isAdmin || year?.isAcceptingRegistrations);
+  
+  // Check if contract has signatures
+  const hasSignatures = 
+    contract && 
+    contract.signatures && 
+    Object.keys(contract.signatures || {}).length > 0;
 
   // Create a map of guardian names for display
   const guardianNames: Record<string, string> = {};
@@ -107,6 +113,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
   // Handle closing signature dialog
   const handleCloseSignDialog = () => {
     setSignDialogOpen(false);
+    setActiveGuardian(null);
   };
 
   // Handle saving signatures
@@ -202,35 +209,59 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
             onClick={handleOpenSignDialog}
             startIcon={<HowToRegIcon />}
           >
-            Sign Contract
+            {hasSignatures ? 'Edit Signatures' : 'Sign Contract'}
           </Button>
         )}
       </Box>
 
       {/* Signature status display */}
-      {contract && contract.signatures && Object.keys(contract.signatures).length > 0 && (
+      {hasSignatures && (
         <Box mt={3} p={2} bgcolor="#f5f5f5" borderRadius={1}>
-          <Typography variant="subtitle1" gutterBottom fontWeight="bold">
-            Signatures
-          </Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="subtitle1" fontWeight="bold">
+              Signatures
+            </Typography>
+          </Box>
           <Divider sx={{ mb: 2 }} />
 
           {guardianIds.map((guardianId) => {
-            const signature = contract.signatures?.[guardianId];
+            const signature = contract?.signatures?.[guardianId];
             return (
-              <Box key={guardianId} display="flex" alignItems="center" mb={1}>
-                <Typography variant="body2" sx={{ width: '40%' }}>
-                  {guardianNames[guardianId]}:
-                </Typography>
-                {signature ? (
-                  <Typography variant="body2" color="success.main">
-                    Signed on {new Date(signature.date).toLocaleDateString()}
+              <Box key={guardianId} display="flex" alignItems="center" mb={2}>
+                <Box flexGrow={1} display="flex" alignItems="center">
+                  <Typography variant="body2" sx={{ width: '40%' }}>
+                    {guardianNames[guardianId]}:
                   </Typography>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    Not signed
-                  </Typography>
-                )}
+                  {signature ? (
+                    <>
+                      <Typography variant="body2" color="success.main">
+                        Signed on {new Date(signature.date).toLocaleDateString()}
+                      </Typography>
+                      <Box ml={1} width={60} height={30}>
+                        <img 
+                          src={signature.data} 
+                          alt={`${guardianNames[guardianId]}'s signature`}
+                          style={{ maxWidth: '100%', maxHeight: '100%' }}
+                        />
+                      </Box>
+                    </>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      Not signed
+                    </Typography>
+                  )}
+                </Box>
+                <Button 
+                  size="small" 
+                  variant="outlined"
+                  onClick={() => {
+                    // Set the active guardian in the sign dialog
+                    setActiveGuardian(guardianId);
+                    setSignDialogOpen(true);
+                  }}
+                >
+                  {signature ? 'Edit' : 'Sign'}
+                </Button>
               </Box>
             );
           })}
@@ -261,6 +292,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
           guardianIds={guardianIds}
           guardianNames={guardianNames}
           existingSignatures={contract.signatures}
+          initialGuardian={activeGuardian}
         />
       )}
     </Box>
