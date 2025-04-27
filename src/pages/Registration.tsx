@@ -81,7 +81,7 @@ const Registration: React.FC = () => {
 
   return (
     <Container>
-      <Grid2 container>
+      <Grid2 container spacing={2}>
         {displayedYears.map((year) => (
           <Grid2 size={{ xs: 12 }} key={year.id}>
             <Card>
