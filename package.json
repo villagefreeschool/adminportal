@@ -19,7 +19,10 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"]
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -28,6 +31,8 @@
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@mui/x-date-pickers": "^7.28.0",
+    "@types/plotly.js": "^2.35.5",
+    "@types/react-plotly.js": "^2.6.3",
     "dayjs": "^1.11.13",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
@@ -35,8 +40,10 @@
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "pdfmake": "^0.2.10",
+    "plotly.js": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-plotly.js": "^2.6.0",
     "react-router-dom": "^7.4.0",
     "terser": "^5.39.0"
   },
