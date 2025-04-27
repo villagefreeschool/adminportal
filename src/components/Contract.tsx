@@ -70,25 +70,35 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
 
   // Determine if user can sign the contract
   const canSignContract = contract && (isAdmin || year?.isAcceptingRegistrations);
-  
+
   // Check if contract has signatures
-  const hasSignatures = 
-    contract && 
-    contract.signatures && 
-    Object.keys(contract.signatures || {}).length > 0;
+  const hasSignatures =
+    contract && contract.signatures && Object.keys(contract.signatures || {}).length > 0;
 
   // Create a map of guardian names for display
   const guardianNames: Record<string, string> = {};
   const guardianIds: string[] = [];
 
   if (family?.guardians) {
-    family.guardians.forEach((guardian) => {
-      if (guardian.id) {
-        guardianIds.push(guardian.id);
-        guardianNames[guardian.id] = `${guardian.firstName} ${guardian.lastName}`;
-      }
+    // Generate IDs for guardians if they don't have one
+    family.guardians.forEach((guardian, index) => {
+      // Use existing ID or generate a new one using index
+      const guardianId = guardian.id || `guardian-${index}`;
+      guardianIds.push(guardianId);
+      guardianNames[guardianId] = `${guardian.firstName} ${guardian.lastName}`;
     });
   }
+
+  // Log for debugging
+  console.log('Contract Component Debug:', {
+    familyId,
+    yearId,
+    'family?.guardians': family?.guardians,
+    'guardians with IDs': family?.guardians?.filter((g) => g.id),
+    'guardian IDs array': family?.guardians?.map((g) => g.id),
+    guardianIds,
+    guardianNames,
+  });
 
   // Open contract edit dialog
   const handleEdit = () => {
@@ -105,8 +115,11 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
     setContract(updatedContract);
   };
 
-  // Open signature dialog
+  // Open signature dialog - now just opens the dialog without selecting a guardian
   const handleOpenSignDialog = () => {
+    // Just open the dialog, don't pre-select a guardian
+    // This will show the overview page with all guardians
+    setActiveGuardian(null);
     setSignDialogOpen(true);
   };
 
@@ -208,6 +221,13 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
             color="secondary"
             onClick={handleOpenSignDialog}
             startIcon={<HowToRegIcon />}
+            sx={{
+              fontWeight: 'bold',
+              fontSize: '1rem',
+              py: 1,
+              px: 3,
+              boxShadow: 2,
+            }}
           >
             {hasSignatures ? 'Edit Signatures' : 'Sign Contract'}
           </Button>
@@ -237,9 +257,19 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
                       <Typography variant="body2" color="success.main">
                         Signed on {new Date(signature.date).toLocaleDateString()}
                       </Typography>
-                      <Box ml={1} width={60} height={30}>
-                        <img 
-                          src={signature.data} 
+                      <Box
+                        ml={1}
+                        width={120}
+                        height={50}
+                        border="1px solid #eee"
+                        borderRadius={1}
+                        p={1}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <img
+                          src={signature.data}
                           alt={`${guardianNames[guardianId]}'s signature`}
                           style={{ maxWidth: '100%', maxHeight: '100%' }}
                         />
@@ -251,11 +281,11 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
                     </Typography>
                   )}
                 </Box>
-                <Button 
-                  size="small" 
+                <Button
+                  size="small"
                   variant="outlined"
                   onClick={() => {
-                    // Set the active guardian in the sign dialog
+                    // Open the dialog with the specific guardian selected
                     setActiveGuardian(guardianId);
                     setSignDialogOpen(true);
                   }}
