@@ -7,13 +7,19 @@ interface UserFormProps {
   user: VFSAdminUser;
   onChange: (user: VFSAdminUser) => void;
   allowChangingEmail?: boolean;
+  onEnterKeyPressed?: () => void;
 }
 
 /**
  * Form for entering user information
  * Migrated from Vue UserForm
  */
-const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail = true }) => {
+const UserForm: React.FC<UserFormProps> = ({
+  user,
+  onChange,
+  allowChangingEmail = true,
+  onEnterKeyPressed,
+}) => {
   // Handle field changes
   const handleChange = useCallback(
     (field: keyof VFSAdminUser, value: unknown) => {
@@ -32,6 +38,14 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
     }
   }, [user.isAdmin, user.isStaff, handleChange]);
 
+  // Handle key down events for enter key
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && onEnterKeyPressed && !e.shiftKey) {
+      e.preventDefault();
+      onEnterKeyPressed();
+    }
+  };
+
   return (
     <Grid2 container spacing={2}>
       <Grid2 size={{ xs: 12 }}>
@@ -39,6 +53,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
           label="Email Address"
           value={user.email || ''}
           onChange={(e) => handleChange('email', e.target.value)}
+          onKeyDown={handleKeyDown}
           disabled={!allowChangingEmail}
           fullWidth
           required
@@ -50,6 +65,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
           label="First Name"
           value={user.firstName || ''}
           onChange={(e) => handleChange('firstName', e.target.value)}
+          onKeyDown={handleKeyDown}
           fullWidth
           required
           autoFocus={!allowChangingEmail}
@@ -60,6 +76,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onChange, allowChangingEmail 
           label="Last Name"
           value={user.lastName || ''}
           onChange={(e) => handleChange('lastName', e.target.value)}
+          onKeyDown={handleKeyDown}
           fullWidth
           required
         />

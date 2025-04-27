@@ -96,34 +96,47 @@ export default function YearDialog({
         </Toolbar>
       </AppBar>
 
-      <DialogContent dividers>
-        {loading ? (
-          <Box display="flex" justifyContent="center" my={4}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <>
-            <YearForm year={formData} onChange={handleChange} />
-            {formData.id && formValid && <YearTuitionChart year={formData as Year} />}
-          </>
-        )}
-      </DialogContent>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (formValid && !saving) {
+            handleSave();
+          }
+        }}
+      >
+        <DialogContent dividers>
+          {loading ? (
+            <Box display="flex" justifyContent="center" my={4}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <>
+              <YearForm
+                year={formData}
+                onChange={handleChange}
+                onEnterKeySubmit={formValid && !saving ? handleSave : undefined}
+              />
+              {formData.id && formValid && <YearTuitionChart year={formData as Year} />}
+            </>
+          )}
+        </DialogContent>
 
-      <DialogActions>
-        <Button onClick={onClose} color="error" variant="text">
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSave}
-          color="primary"
-          variant="contained"
-          startIcon={<SaveIcon />}
-          disabled={!formValid || saving}
-          sx={{ bgcolor: 'brown.500', '&:hover': { bgcolor: 'brown.700' } }}
-        >
-          {saving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
-        </Button>
-      </DialogActions>
+        <DialogActions>
+          <Button onClick={onClose} color="error" variant="text" type="button">
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            startIcon={<SaveIcon />}
+            disabled={!formValid || saving}
+            sx={{ bgcolor: 'brown.500', '&:hover': { bgcolor: 'brown.700' } }}
+          >
+            {saving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+          </Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }

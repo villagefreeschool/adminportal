@@ -121,40 +121,52 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
         </Toolbar>
       </AppBar>
 
-      <DialogContent dividers>
-        {loading ? (
-          <Box display="flex" justifyContent="center" my={4}>
-            <CircularProgress />
-          </Box>
-        ) : user ? (
-          <UserForm user={user} onChange={handleChange} allowChangingEmail={!isEditMode} />
-        ) : null}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+      >
+        <DialogContent dividers>
+          {loading ? (
+            <Box display="flex" justifyContent="center" my={4}>
+              <CircularProgress />
+            </Box>
+          ) : user ? (
+            <UserForm
+              user={user}
+              onChange={handleChange}
+              allowChangingEmail={!isEditMode}
+              onEnterKeyPressed={handleSave}
+            />
+          ) : null}
 
-        {error && (
-          <Typography color="error" align="center" sx={{ mt: 2 }}>
-            {error}
-          </Typography>
-        )}
-      </DialogContent>
+          {error && (
+            <Typography color="error" align="center" sx={{ mt: 2 }}>
+              {error}
+            </Typography>
+          )}
+        </DialogContent>
 
-      <DialogActions>
-        <Button onClick={onClose} color="inherit" disabled={saving}>
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSave}
-          color="primary"
-          variant="contained"
-          disabled={saving || loading}
-          startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
-          sx={{
-            bgcolor: theme.palette.brown[500],
-            '&:hover': { bgcolor: theme.palette.brown[700] },
-          }}
-        >
-          Save
-        </Button>
-      </DialogActions>
+        <DialogActions>
+          <Button onClick={onClose} color="inherit" disabled={saving} type="button">
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            disabled={saving || loading}
+            startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
+            sx={{
+              bgcolor: theme.palette.brown[500],
+              '&:hover': { bgcolor: theme.palette.brown[700] },
+            }}
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 };

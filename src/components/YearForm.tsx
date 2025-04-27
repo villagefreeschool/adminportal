@@ -27,9 +27,10 @@ const parseCurrency = (value: string): number => {
 interface YearFormProps {
   year: Partial<Year>;
   onChange: (year: Partial<Year>) => void;
+  onEnterKeySubmit?: () => void;
 }
 
-export default function YearForm({ year, onChange }: YearFormProps) {
+export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormProps) {
   // Local state for form handling
   const [formValues, setFormValues] = useState<Partial<Year>>({
     name: '',
@@ -69,6 +70,14 @@ export default function YearForm({ year, onChange }: YearFormProps) {
     handleChange(field, numericValue);
   };
 
+  // Handle key down events for Enter key
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && onEnterKeySubmit && !e.shiftKey) {
+      e.preventDefault();
+      onEnterKeySubmit();
+    }
+  };
+
   return (
     <Grid2 container spacing={3}>
       <Grid2 size={{ xs: 12 }}>
@@ -78,6 +87,7 @@ export default function YearForm({ year, onChange }: YearFormProps) {
           required
           value={formValues.name || ''}
           onChange={(e) => handleChange('name', e.target.value)}
+          onKeyDown={handleKeyDown}
           inputProps={{ 'data-testid': 'year-name-input' }}
         />
       </Grid2>
@@ -89,6 +99,7 @@ export default function YearForm({ year, onChange }: YearFormProps) {
           required
           value={formatCurrency(formValues.minimumTuition?.toString() || '')}
           onChange={(e) => handleCurrencyChange('minimumTuition', e.target.value)}
+          onKeyDown={handleKeyDown}
           InputProps={{
             startAdornment: '$',
           }}
@@ -103,6 +114,7 @@ export default function YearForm({ year, onChange }: YearFormProps) {
           required
           value={formatCurrency(formValues.maximumTuition?.toString() || '')}
           onChange={(e) => handleCurrencyChange('maximumTuition', e.target.value)}
+          onKeyDown={handleKeyDown}
           InputProps={{
             startAdornment: '$',
           }}
@@ -117,6 +129,7 @@ export default function YearForm({ year, onChange }: YearFormProps) {
           required
           value={formatCurrency(formValues.minimumIncome?.toString() || '')}
           onChange={(e) => handleCurrencyChange('minimumIncome', e.target.value)}
+          onKeyDown={handleKeyDown}
           InputProps={{
             startAdornment: '$',
           }}
@@ -131,6 +144,7 @@ export default function YearForm({ year, onChange }: YearFormProps) {
           required
           value={formatCurrency(formValues.maximumIncome?.toString() || '')}
           onChange={(e) => handleCurrencyChange('maximumIncome', e.target.value)}
+          onKeyDown={handleKeyDown}
           InputProps={{
             startAdornment: '$',
           }}
