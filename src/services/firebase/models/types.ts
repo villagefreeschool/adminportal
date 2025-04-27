@@ -107,6 +107,12 @@ export interface Enrollment {
   birthdayDisplay?: string;
 }
 
+export interface SignatureData {
+  data: string; // Base64 encoded signature image
+  date: string; // ISO date string of when the signature was created
+  guardianId: string; // ID of the guardian who signed
+}
+
 export interface Contract {
   id: string;
   yearID: string;
@@ -126,6 +132,7 @@ export interface Contract {
   minTuition?: number;
   lastSavedBy?: string;
   lastSavedAt?: string;
+  signatures?: Record<string, SignatureData>; // Guardian ID -> Signature data
 }
 
 export interface Year {

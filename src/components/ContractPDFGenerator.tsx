@@ -548,10 +548,29 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
     heights.push('auto');
 
     family.guardians.forEach((g) => {
-      lines.push(['', '']); // Signature empty boxes
+      // Check if this guardian has a digital signature
+      const signature = contract.signatures?.[g.id || ''];
+
+      if (signature) {
+        // If we have a digital signature, include it in the PDF
+        lines.push([
+          {
+            image: signature.data,
+            width: 150,
+            height: 70,
+          },
+          '',
+        ]);
+      } else {
+        // Otherwise show an empty box for manual signing
+        lines.push(['', '']);
+      }
       heights.push(70);
 
-      lines.push([g.firstName + ' ' + g.lastName, { text: 'Date', bold: true }]);
+      // Add name and date line (show actual date if signed digitally)
+      const dateText = signature ? new Date(signature.date).toLocaleDateString() : '';
+
+      lines.push([g.firstName + ' ' + g.lastName, { text: dateText, bold: true }]);
       heights.push('auto');
     });
 

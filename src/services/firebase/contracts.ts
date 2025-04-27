@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { collection, doc, getDoc, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 // import { db } from './core';
 import { yearDB } from './collections';
-import { Contract, Enrollment, Family } from './models/types';
+import { Contract, Enrollment, Family, SignatureData } from './models/types';
 // import { fetchFamiliesWithIDs } from './families';
 import { calculatedNameForFamily, guardianNamesForFamily } from './families';
 
@@ -79,6 +79,34 @@ export async function saveContract(contract: Contract): Promise<Contract> {
     return contract;
   } catch (error) {
     console.error('Error saving contract:', error);
+    throw error;
+  }
+}
+
+/**
+ * Save signatures for a contract
+ * @param yearID The year ID
+ * @param familyID The family ID
+ * @param signatures The signatures to save
+ * @returns Promise resolving when signatures are saved
+ */
+export async function saveContractSignatures(
+  yearID: string,
+  familyID: string,
+  signatures: Record<string, SignatureData>,
+): Promise<void> {
+  try {
+    // Get reference to the contract document
+    const contractRef = doc(collection(doc(yearDB, yearID), 'contracts'), familyID);
+
+    // Update only the signatures and set isSigned to true
+    await updateDoc(contractRef, {
+      signatures,
+      isSigned: true,
+      lastSignedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Error saving contract signatures:', error);
     throw error;
   }
 }
