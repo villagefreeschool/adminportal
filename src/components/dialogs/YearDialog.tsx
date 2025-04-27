@@ -14,6 +14,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import YearForm from '../YearForm';
+import YearTuitionChart from '../YearTuitionChart';
 import { Year } from '../../services/firebase/years';
 
 interface YearDialogProps {
@@ -101,7 +102,10 @@ export default function YearDialog({
             <CircularProgress />
           </Box>
         ) : (
-          <YearForm year={formData} onChange={handleChange} />
+          <>
+            <YearForm year={formData} onChange={handleChange} />
+            {formData.id && formValid && <YearTuitionChart year={formData as Year} />}
+          </>
         )}
       </DialogContent>
 
