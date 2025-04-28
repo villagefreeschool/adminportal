@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
 import { TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
-import { Grid } from '@mui/material';
 import { VFSAdminUser } from '../services/firebase/models/types';
 
 interface UserFormProps {
@@ -47,75 +46,81 @@ const UserForm: React.FC<UserFormProps> = ({
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={{ xs: 12 }}>
-        <TextField
-          label="Email Address"
-          value={user.email || ''}
-          onChange={(e) => handleChange('email', e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={!allowChangingEmail}
-          fullWidth
-          required
-          helperText="They will log in to the system using this address."
-        />
-      </Grid>
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <TextField
-          label="First Name"
-          value={user.firstName || ''}
-          onChange={(e) => handleChange('firstName', e.target.value)}
-          onKeyDown={handleKeyDown}
-          fullWidth
-          required
-          autoFocus={!allowChangingEmail}
-        />
-      </Grid>
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <TextField
-          label="Last Name"
-          value={user.lastName || ''}
-          onChange={(e) => handleChange('lastName', e.target.value)}
-          onKeyDown={handleKeyDown}
-          fullWidth
-          required
-        />
-      </Grid>
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={user.isAdmin || false}
-                onChange={(e) => handleChange('isAdmin', e.target.checked)}
-                color="primary"
-              />
-            }
-            label="Administrator"
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <TextField
+        label="Email Address"
+        value={user.email || ''}
+        onChange={(e) => handleChange('email', e.target.value)}
+        onKeyDown={handleKeyDown}
+        disabled={!allowChangingEmail}
+        fullWidth
+        required
+        helperText="They will log in to the system using this address."
+      />
+      
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <TextField
+            label="First Name"
+            value={user.firstName || ''}
+            onChange={(e) => handleChange('firstName', e.target.value)}
+            onKeyDown={handleKeyDown}
+            fullWidth
+            required
+            autoFocus={!allowChangingEmail}
           />
         </Box>
-        <Typography variant="caption" color="textSecondary">
-          Administrators can see all data and can create new users.
-        </Typography>
-      </Grid>
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={user.isStaff || false}
-                onChange={(e) => handleChange('isStaff', e.target.checked)}
-                color="primary"
-              />
-            }
-            label="Staff"
+        
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <TextField
+            label="Last Name"
+            value={user.lastName || ''}
+            onChange={(e) => handleChange('lastName', e.target.value)}
+            onKeyDown={handleKeyDown}
+            fullWidth
+            required
           />
         </Box>
-        <Typography variant="caption" color="textSecondary">
-          Staff have access to the backend area.
-        </Typography>
-      </Grid>
-    </Grid>
+      </Box>
+      
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={user.isAdmin || false}
+                  onChange={(e) => handleChange('isAdmin', e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Administrator"
+            />
+          </Box>
+          <Typography variant="caption" color="textSecondary">
+            Administrators can see all data and can create new users.
+          </Typography>
+        </Box>
+        
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={user.isStaff || false}
+                  onChange={(e) => handleChange('isStaff', e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Staff"
+            />
+          </Box>
+          <Typography variant="caption" color="textSecondary">
+            Staff have access to the backend area.
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

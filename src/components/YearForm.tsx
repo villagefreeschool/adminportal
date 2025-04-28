@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TextField, Checkbox, FormControlLabel, Typography } from '@mui/material';
-import { Grid } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Typography, Box } from '@mui/material';
 import {
   DefaultMinimumIncome,
   DefaultMaximumIncome,
@@ -79,80 +78,82 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid size={{ xs: 12 }}>
-        <TextField
-          label="Name"
-          fullWidth
-          required
-          value={formValues.name || ''}
-          onChange={(e) => handleChange('name', e.target.value)}
-          onKeyDown={handleKeyDown}
-          inputProps={{ 'data-testid': 'year-name-input' }}
-        />
-      </Grid>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <TextField
+        label="Name"
+        fullWidth
+        required
+        value={formValues.name || ''}
+        onChange={(e) => handleChange('name', e.target.value)}
+        onKeyDown={handleKeyDown}
+        inputProps={{ 'data-testid': 'year-name-input' }}
+      />
 
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <TextField
-          label="Minimum Tuition"
-          fullWidth
-          required
-          value={formatCurrency(formValues.minimumTuition?.toString() || '')}
-          onChange={(e) => handleCurrencyChange('minimumTuition', e.target.value)}
-          onKeyDown={handleKeyDown}
-          InputProps={{
-            startAdornment: <Typography>$</Typography>
-          }}
-          inputProps={{ 'data-testid': 'minimum-tuition-input' }}
-        />
-      </Grid>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <TextField
+            label="Minimum Tuition"
+            fullWidth
+            required
+            value={formatCurrency(formValues.minimumTuition?.toString() || '')}
+            onChange={(e) => handleCurrencyChange('minimumTuition', e.target.value)}
+            onKeyDown={handleKeyDown}
+            InputProps={{
+              startAdornment: <Typography>$</Typography>
+            }}
+            inputProps={{ 'data-testid': 'minimum-tuition-input' }}
+          />
+        </Box>
 
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <TextField
-          label="Maximum Tuition"
-          fullWidth
-          required
-          value={formatCurrency(formValues.maximumTuition?.toString() || '')}
-          onChange={(e) => handleCurrencyChange('maximumTuition', e.target.value)}
-          onKeyDown={handleKeyDown}
-          InputProps={{
-            startAdornment: <Typography>$</Typography>
-          }}
-          inputProps={{ 'data-testid': 'maximum-tuition-input' }}
-        />
-      </Grid>
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <TextField
+            label="Maximum Tuition"
+            fullWidth
+            required
+            value={formatCurrency(formValues.maximumTuition?.toString() || '')}
+            onChange={(e) => handleCurrencyChange('maximumTuition', e.target.value)}
+            onKeyDown={handleKeyDown}
+            InputProps={{
+              startAdornment: <Typography>$</Typography>
+            }}
+            inputProps={{ 'data-testid': 'maximum-tuition-input' }}
+          />
+        </Box>
+      </Box>
 
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <TextField
-          label="Minimum Income"
-          fullWidth
-          required
-          value={formatCurrency(formValues.minimumIncome?.toString() || '')}
-          onChange={(e) => handleCurrencyChange('minimumIncome', e.target.value)}
-          onKeyDown={handleKeyDown}
-          InputProps={{
-            startAdornment: <Typography>$</Typography>
-          }}
-          inputProps={{ 'data-testid': 'minimum-income-input' }}
-        />
-      </Grid>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <TextField
+            label="Minimum Income"
+            fullWidth
+            required
+            value={formatCurrency(formValues.minimumIncome?.toString() || '')}
+            onChange={(e) => handleCurrencyChange('minimumIncome', e.target.value)}
+            onKeyDown={handleKeyDown}
+            InputProps={{
+              startAdornment: <Typography>$</Typography>
+            }}
+            inputProps={{ 'data-testid': 'minimum-income-input' }}
+          />
+        </Box>
 
-      <Grid size={{ xs: 12, sm: 6 }}>
-        <TextField
-          label="Maximum Income"
-          fullWidth
-          required
-          value={formatCurrency(formValues.maximumIncome?.toString() || '')}
-          onChange={(e) => handleCurrencyChange('maximumIncome', e.target.value)}
-          onKeyDown={handleKeyDown}
-          InputProps={{
-            startAdornment: <Typography>$</Typography>
-          }}
-          inputProps={{ 'data-testid': 'maximum-income-input' }}
-        />
-      </Grid>
+        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+          <TextField
+            label="Maximum Income"
+            fullWidth
+            required
+            value={formatCurrency(formValues.maximumIncome?.toString() || '')}
+            onChange={(e) => handleCurrencyChange('maximumIncome', e.target.value)}
+            onKeyDown={handleKeyDown}
+            InputProps={{
+              startAdornment: <Typography>$</Typography>
+            }}
+            inputProps={{ 'data-testid': 'maximum-income-input' }}
+          />
+        </Box>
+      </Box>
 
-      <Grid size={{ xs: 12 }}>
+      <Box>
         <FormControlLabel
           control={
             <Checkbox
@@ -166,7 +167,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
         <Typography variant="caption" display="block">
           Enables the registration link for families.
         </Typography>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }
