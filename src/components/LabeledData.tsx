@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Box, Typography, SxProps, Theme, Grid2 } from '@mui/material';
+import { Box, Typography, SxProps, Theme, Grid } from '@mui/material';
 
 interface LabeledDataProps {
   label: string;
@@ -29,7 +29,7 @@ const LabeledData: React.FC<LabeledDataProps> = ({
   textAlign,
 }) => {
   return (
-    <Grid2 size={{ xs: xs, sm: sm, md: md, lg: lg }}>
+    <Grid size={{ xs: xs, sm: sm, md: md, lg: lg }}>
       <Box sx={{ mb: 2, ...sx, textAlign }}>
         <Typography
           variant="subtitle2"
@@ -39,11 +39,11 @@ const LabeledData: React.FC<LabeledDataProps> = ({
         >
           {label}
         </Typography>
-        <Typography variant="body1" component="div">
+        <Typography variant="body-md" component="div">
           {children || '-'}
         </Typography>
       </Box>
-    </Grid2>
+    </Grid>
   );
 };
 

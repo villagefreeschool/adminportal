@@ -19,7 +19,7 @@ import {
   Toolbar,
   useTheme,
 } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Family } from '../services/firebase/models/types';
@@ -141,8 +141,8 @@ function FamilyShow() {
   if (!loading && !family && currentUser) {
     return (
       <Container sx={{ padding: 2 }}>
-        <Grid2 container justifyContent="center" textAlign="center">
-          <Grid2 size={{ xs: 12, sm: 10, md: 6 }}>
+        <Grid container justifyContent="center" textAlign="center">
+          <Grid size={{ xs: 12, sm: 10, md: 6 }}>
             <Typography variant="h4">Create a New Family Profile?</Typography>
             <Box sx={{ my: 2 }}>
               <Typography>
@@ -176,8 +176,8 @@ function FamilyShow() {
               your family&apos;s info, ask them to make sure the email address above is added to the
               profile they created.
             </Typography>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Container>
     );
   }
@@ -227,47 +227,47 @@ function FamilyShow() {
 
           <CardContent sx={{ p: 3 }}>
             {/* Students */}
-            <Grid2 container spacing={2}>
+            <Grid container spacing={2}>
               {family.students.map((student, i) => (
-                <Grid2 size={{ xs: 12, sm: studentCols }} key={`student-${i}`}>
+                <Grid size={{ xs: 12, sm: studentCols }} key={`student-${i}`}>
                   <Card variant="outlined">
                     <CardContent>
                       <Student student={student} />
                     </CardContent>
                   </Card>
-                </Grid2>
+                </Grid>
               ))}
-            </Grid2>
+            </Grid>
             {/* End Students */}
 
             <Divider sx={{ my: 2 }} />
 
             {/* Parents and Guardians */}
-            <Grid2 container spacing={2}>
-              <Grid2 size={{ xs: 12 }}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="h6">Parents and Guardians</Typography>
-              </Grid2>
+              </Grid>
               {family.guardians.map((guardian, i) => (
-                <Grid2 size={{ xs: 12, sm: guardianCols }} key={`guardian-${i}`}>
+                <Grid size={{ xs: 12, sm: guardianCols }} key={`guardian-${i}`}>
                   <Card variant="outlined">
                     <CardContent>
                       <Guardian guardian={guardian} />
                     </CardContent>
                   </Card>
-                </Grid2>
+                </Grid>
               ))}
-            </Grid2>
+            </Grid>
             {/* End Parents and Guardians */}
 
             <Divider sx={{ my: 2 }} />
 
             {/* Emergency Contacts */}
             {family.emergencyContacts && family.emergencyContacts.length > 0 && (
-              <Grid2 container spacing={2}>
-                <Grid2 size={{ xs: 12 }}>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
                   <Typography variant="h6">Emergency Contacts</Typography>
-                </Grid2>
-                <Grid2 size={{ xs: 12 }}>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
                   <TableContainer component={Paper} variant="outlined">
                     <Table size="small">
                       <TableHead>
@@ -291,31 +291,31 @@ function FamilyShow() {
                       </TableBody>
                     </Table>
                   </TableContainer>
-                </Grid2>
-                <Grid2 size={{ xs: 12 }}>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
                   <Divider sx={{ my: 2 }} />
-                </Grid2>
-              </Grid2>
+                </Grid>
+              </Grid>
             )}
             {/* End Emergency Contacts */}
 
             {/* Pickup List */}
             {family.pickupList && (
               <>
-                <Grid2 container spacing={2}>
-                  <Grid2 size={{ xs: 12 }}>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12 }}>
                     <Typography variant="h6">Pick Up List</Typography>
-                  </Grid2>
-                  <Grid2 size={{ xs: 12 }}>
+                  </Grid>
+                  <Grid size={{ xs: 12 }}>
                     <Card variant="outlined">
                       <CardContent>
-                        <Typography sx={{ whiteSpace: 'pre' }} variant="body2">
+                        <Typography sx={{ whiteSpace: 'pre' }} variant="body-sm">
                           {family.pickupList}
                         </Typography>
                       </CardContent>
                     </Card>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
 
                 <Divider sx={{ my: 2 }} />
               </>
@@ -323,10 +323,10 @@ function FamilyShow() {
             {/* End Pickup List */}
 
             {/* Medical Insurance */}
-            <Grid2 container spacing={2}>
-              <Grid2 size={{ xs: 12 }}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="h6">Insurance</Typography>
-              </Grid2>
+              </Grid>
 
               {family.medicalInsuranceProvider && (
                 <LabeledData xs={12} sm={6} md={3} label="Insurance Provider">
@@ -351,16 +351,16 @@ function FamilyShow() {
                   {family.medicalInsuranceGroupNumber}
                 </LabeledData>
               )}
-            </Grid2>
+            </Grid>
             {/* End Medical Insurance */}
 
             {/* Medical Providers */}
             {family.medicalProviders && family.medicalProviders.length > 0 && (
-              <Grid2 container spacing={2} sx={{ mt: 2 }}>
-                <Grid2 size={{ xs: 12 }}>
+              <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid size={{ xs: 12 }}>
                   <Typography variant="h6">Medical Providers</Typography>
-                </Grid2>
-                <Grid2 size={{ xs: 12 }}>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
                   <TableContainer component={Paper} variant="outlined">
                     <Table size="small">
                       <TableHead>
@@ -381,8 +381,8 @@ function FamilyShow() {
                       </TableBody>
                     </Table>
                   </TableContainer>
-                </Grid2>
-              </Grid2>
+                </Grid>
+              </Grid>
             )}
             {/* End Medical Providers */}
           </CardContent>

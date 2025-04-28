@@ -27,3 +27,12 @@ declare module '@mui/material/styles' {
     brown?: PaletteOptions['primary'];
   }
 }
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    'body-md': true;
+    'body-sm': true;
+    body1: false;
+    body2: false;
+  }
+}

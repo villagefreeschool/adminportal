@@ -75,7 +75,7 @@ const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
             <li>All contracts for this family</li>
           </ul>
 
-          <Typography color="error" variant="body2" sx={{ mt: 2, fontWeight: 'bold' }}>
+          <Typography color="error" variant="body-sm" sx={{ mt: 2, fontWeight: 'bold' }}>
             This action cannot be undone.
           </Typography>
         </Box>

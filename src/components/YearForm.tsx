@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TextField, Checkbox, FormControlLabel, Typography } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   DefaultMinimumIncome,
   DefaultMaximumIncome,
@@ -79,8 +79,8 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
   };
 
   return (
-    <Grid2 container spacing={3}>
-      <Grid2 size={{ xs: 12 }}>
+    <Grid container spacing={3}>
+      <Grid size={{ xs: 12 }}>
         <TextField
           label="Name"
           fullWidth
@@ -90,9 +90,9 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
           onKeyDown={handleKeyDown}
           inputProps={{ 'data-testid': 'year-name-input' }}
         />
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Minimum Tuition"
           fullWidth
@@ -105,9 +105,9 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
           }}
           inputProps={{ 'data-testid': 'minimum-tuition-input' }}
         />
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Maximum Tuition"
           fullWidth
@@ -120,9 +120,9 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
           }}
           inputProps={{ 'data-testid': 'maximum-tuition-input' }}
         />
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Minimum Income"
           fullWidth
@@ -135,9 +135,9 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
           }}
           inputProps={{ 'data-testid': 'minimum-income-input' }}
         />
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Maximum Income"
           fullWidth
@@ -150,9 +150,9 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
           }}
           inputProps={{ 'data-testid': 'maximum-income-input' }}
         />
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <FormControlLabel
           control={
             <Checkbox
@@ -166,7 +166,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
         <Typography variant="caption" display="block">
           Enables the registration link for families.
         </Typography>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 }

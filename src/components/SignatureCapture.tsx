@@ -229,7 +229,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
         >
           {isEmpty && !initialSignature && (
             <Typography
-              variant="body2"
+              variant="body-sm"
               sx={{
                 position: 'absolute',
                 top: '50%',

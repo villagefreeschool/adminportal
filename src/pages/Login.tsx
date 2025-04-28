@@ -124,7 +124,7 @@ export default function Login() {
             </Alert>
           )}
 
-          <Typography variant="body1" sx={{ mb: 2 }}>
+          <Typography variant="body-md" sx={{ mb: 2 }}>
             Sign in with Google:
           </Typography>
 
@@ -168,7 +168,7 @@ export default function Login() {
           </Box>
 
           <Box sx={{ textAlign: 'center', my: 1 }}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body-sm" color="text.secondary">
               You&apos;ll be redirected to Google to sign in securely
             </Typography>
           </Box>
@@ -210,7 +210,7 @@ export default function Login() {
         </CardContent>
 
         <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-          <Link component={RouterLink} to="/forgot-password" variant="body2" color="error">
+          <Link component={RouterLink} to="/forgot-password" variant="body-sm" color="error">
             Forgot Password?
           </Link>
           <Button
@@ -226,7 +226,7 @@ export default function Login() {
       </Card>
 
       <Box sx={{ mt: 3, textAlign: 'center' }}>
-        <Typography variant="body2" sx={{ mb: 1 }}>
+        <Typography variant="body-sm" sx={{ mb: 1 }}>
           If you haven&apos;t created an account on the VFS Portal yet, and you don&apos;t have a
           Google Account, then you&apos;ll need to create one:
         </Typography>

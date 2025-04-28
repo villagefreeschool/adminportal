@@ -130,7 +130,7 @@ export default function ForgotPassword() {
         </CardContent>
 
         <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-          <Link component={RouterLink} to="/login" variant="body2">
+          <Link component={RouterLink} to="/login" variant="body-sm">
             Back to Login
           </Link>
           <Button
@@ -146,7 +146,7 @@ export default function ForgotPassword() {
       </Card>
 
       <Box sx={{ mt: 3, textAlign: 'center' }}>
-        <Typography variant="body2" sx={{ mb: 1 }}>
+        <Typography variant="body-sm" sx={{ mb: 1 }}>
           If you haven&apos;t created an account on the VFS Portal yet, and you don&apos;t have a
           Google Account, then you&apos;ll need to create one:
         </Typography>

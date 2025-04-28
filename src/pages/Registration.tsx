@@ -9,7 +9,7 @@ import {
   Alert,
   LinearProgress,
 } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Family, Year } from '../services/firebase/models/types';
 import { fetchFamily } from '../services/firebase/families';
 import { fetchYears } from '../services/firebase/years';
@@ -81,9 +81,9 @@ const Registration: React.FC = () => {
 
   return (
     <Container>
-      <Grid2 container spacing={2}>
+      <Grid container spacing={2}>
         {displayedYears.map((year) => (
-          <Grid2 size={{ xs: 12 }} key={year.id}>
+          <Grid size={{ xs: 12 }} key={year.id}>
             <Card>
               <CardHeader
                 title={`${family.name} Registration For ${year.name}`}
@@ -105,9 +105,9 @@ const Registration: React.FC = () => {
                 )}
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
     </Container>
   );
 };

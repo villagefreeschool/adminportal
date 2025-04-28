@@ -9,6 +9,7 @@ import {
 import PdfIcon from '@mui/icons-material/PictureAsPdf';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as pdfMaketype from 'pdfmake/interfaces';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -17,7 +18,7 @@ import { dataURLFromImagePath, PDF_STYLES, PDF_DEFAULT_STYLE } from '../utils/pd
 import { Year, Family } from '../services/firebase/models/types';
 
 // Initialize pdfMake
-pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
+pdfMake.vfs = pdfFonts.vfs;
 
 interface DirectoryPDFGeneratorProps {
   year: Year;
@@ -47,7 +48,7 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
       console.log('Starting to generate directory PDF for year:', year.id);
 
       // Try to generate a full directory with families from Firebase
-      let families = [];
+      let families: Family[] = [];
       let useFallback = false;
 
       try {
@@ -70,11 +71,11 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
             text: 'No Student Information Available',
             style: 'subtitle',
             alignment: 'center',
-            margin: [0, 200, 0, 20],
+            margin: [0, 200, 0, 20] as [number, number, number, number],
           },
           {
             text: 'This directory was generated without student information either because:',
-            margin: [40, 20, 40, 10],
+            margin: [40, 20, 40, 10] as [number, number, number, number],
           },
           {
             ul: [
@@ -82,18 +83,18 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
               'You do not have permission to access the enrollment data',
               'There was an error connecting to the database',
             ],
-            margin: [60, 0, 40, 20],
+            margin: [60, 0, 40, 20] as [number, number, number, number],
           },
           {
             text: 'Please contact the VFS administrator if you believe this is an error.',
-            margin: [40, 20, 40, 10],
+            margin: [40, 20, 40, 10] as [number, number, number, number],
             style: 'caption',
           },
         ];
 
         pdfMake
           .createPdf({
-            content: fallbackContent,
+            content: fallbackContent as unknown as pdfMaketype.Content,
             styles: PDF_STYLES,
             defaultStyle: PDF_DEFAULT_STYLE,
           })
@@ -130,10 +131,10 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
 
       pdfMake
         .createPdf({
-          content: [...titlePage(), ...familyStacks],
+          content: [...titlePage(), ...familyStacks] as unknown as pdfMaketype.Content,
           styles: PDF_STYLES,
           defaultStyle: PDF_DEFAULT_STYLE,
-          footer: pdfFooter,
+          footer: pdfFooter as unknown as pdfMaketype.DynamicContent,
         })
         .download(fileName);
 
@@ -150,12 +151,12 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
     {
       image: logo,
       width: 500,
-      margin: [0, 200, 0, 0],
+      margin: [0, 200, 0, 0] as [number, number, number, number],
     },
     {
       text: year.name + ' Student Directory',
       style: 'title',
-      margin: [110, 20, 0, 200],
+      margin: [110, 20, 0, 200] as [number, number, number, number],
       pageBreak: 'after',
     },
   ];
@@ -171,7 +172,7 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
     content.push({
       text: `${family.name}`,
       style: 'subtitle',
-      margin: [0, 20, 0, 0],
+      margin: [0, 20, 0, 0] as [number, number, number, number],
     });
 
     // Parents Heading
@@ -184,7 +185,7 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
     // Students Columns
     const students = family.students || [];
     content.push({
-      margin: [25, 10, 25, 10],
+      margin: [25, 10, 25, 10] as [number, number, number, number],
       columns: students.map((s) => {
         const birthday = s.birthdate ? moment(s.birthdate).format('MMM Do') : '';
         const age = s.birthdate ? moment().diff(s.birthdate, 'years', false) : '';
@@ -226,7 +227,7 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
       return {};
     }
     return {
-      margin: [15, 0, 15, 0],
+      margin: [15, 0, 15, 0] as [number, number, number, number],
       columns: [
         {
           text: `VFS ${year.name} Student Directory`,
@@ -249,7 +250,7 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
   };
 
   return (
-    <ListItem disablePadding>
+    <ListItem>
       <ListItemButton onClick={download} disabled={generating}>
         <ListItemIcon>{generating ? <CircularProgress size={24} /> : <PdfIcon />}</ListItemIcon>
         <ListItemText primary={`${year.name} Directory`} />

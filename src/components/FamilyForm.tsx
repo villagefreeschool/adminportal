@@ -13,7 +13,7 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import StudentForm from './StudentForm';
@@ -210,9 +210,9 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
   }
 
   return (
-    <Grid2 container spacing={3}>
+    <Grid container spacing={3}>
       {/* Family Nickname */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Card>
           <CardHeader
             title="Family Nickname"
@@ -229,24 +229,24 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             />
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Divider />
-      </Grid2>
+      </Grid>
 
       {/* Students */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Typography variant="h6">Students</Typography>
-        <Typography variant="body2">
+        <Typography variant="body-sm">
           <strong>Instructions</strong>: Enter at least the children who are planning to attend
           Village Free School. It is helpful for the staff to know the names of siblings, so
           consider entering children who are not attending as well.
         </Typography>
-      </Grid2>
+      </Grid>
 
       {family.students.map((student, index) => (
-        <Grid2 size={{ xs: 12 }} key={`student-${index}`}>
+        <Grid size={{ xs: 12 }} key={`student-${index}`}>
           <Card>
             <CardHeader
               title={`Student #${index + 1}`}
@@ -266,10 +266,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               />
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
       ))}
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Card>
           <CardHeader
             title={`Student #${family.students.length + 1}`}
@@ -288,20 +288,20 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             </Box>
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Divider />
-      </Grid2>
+      </Grid>
 
       {/* Parents and Guardians */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Typography variant="h6">Parents and Guardians</Typography>
-        <Typography variant="body2">Enter all parents and legal guardians.</Typography>
-      </Grid2>
+        <Typography variant="body-sm">Enter all parents and legal guardians.</Typography>
+      </Grid>
 
       {family.guardians.map((guardian, index) => (
-        <Grid2 size={{ xs: 12, md: 6 }} key={`guardian-${index}`}>
+        <Grid size={{ xs: 12, md: 6 }} key={`guardian-${index}`}>
           <Card>
             <CardHeader
               title={`Parent / Guardian #${index + 1}`}
@@ -322,10 +322,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               />
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
       ))}
 
-      <Grid2 size={{ xs: 12, md: 6 }}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Card sx={{ height: '100%' }}>
           <CardHeader
             title={`Parent / Guardian #${family.guardians.length + 1}`}
@@ -344,25 +344,25 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             </Box>
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Divider />
-      </Grid2>
+      </Grid>
 
       {/* Pick Up List */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Typography variant="h6">Pick Up List</Typography>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Card>
           <CardHeader
             title="Additional Adults Authorized to Pick Up"
             sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
           />
           <CardContent>
-            <Typography variant="body2" paragraph>
+            <Typography variant="body-sm" paragraph>
               In addition to the parents/guardians listed above, please name all other adults who
               are authorized to pick children up from school.
             </Typography>
@@ -376,22 +376,22 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             />
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Divider />
-      </Grid2>
+      </Grid>
 
       {/* Emergency Contacts */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Typography variant="h6">Emergency Contacts</Typography>
-        <Typography variant="body2">
+        <Typography variant="body-sm">
           Please enter at least {MIN_EMERGENCY_CONTACTS} emergency contacts.
         </Typography>
-      </Grid2>
+      </Grid>
 
       {family.emergencyContacts.map((contact, index) => (
-        <Grid2 size={{ xs: 12, md: 6 }} key={`emergency-contact-${index}`}>
+        <Grid size={{ xs: 12, md: 6 }} key={`emergency-contact-${index}`}>
           <Card>
             <CardHeader
               title={`Emergency Contact #${index + 1}`}
@@ -425,10 +425,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               />
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
       ))}
 
-      <Grid2 size={{ xs: 12, md: 6 }}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Card sx={{ height: '100%' }}>
           <CardHeader
             title={`Emergency Contact #${family.emergencyContacts.length + 1}`}
@@ -447,34 +447,34 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             </Box>
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Divider />
-      </Grid2>
+      </Grid>
 
       {/* Medical and Insurance */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Typography variant="h6">Medical and Insurance</Typography>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Card>
           <CardHeader
             title="Medical Insurance"
             sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
           />
           <CardContent>
-            <Grid2 container spacing={2}>
-              <Grid2 size={{ xs: 12, sm: 6 }}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Insurance Provider"
                   value={family.medicalInsuranceProvider || ''}
                   onChange={(e) => handleChange('medicalInsuranceProvider', e.target.value)}
                   fullWidth
                 />
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 6 }}>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Name of Primary Insured"
                   value={family.medicalInsuranceNameOfPrimaryInsured || ''}
@@ -483,30 +483,30 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                   }
                   fullWidth
                 />
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 6 }}>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Policy Number"
                   value={family.medicalInsurancePolicyNumber || ''}
                   onChange={(e) => handleChange('medicalInsurancePolicyNumber', e.target.value)}
                   fullWidth
                 />
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 6 }}>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Group Number"
                   value={family.medicalInsuranceGroupNumber || ''}
                   onChange={(e) => handleChange('medicalInsuranceGroupNumber', e.target.value)}
                   fullWidth
                 />
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
       {family.medicalProviders.map((provider, index) => (
-        <Grid2 size={{ xs: 12, md: 6 }} key={`medical-provider-${index}`}>
+        <Grid size={{ xs: 12, md: 6 }} key={`medical-provider-${index}`}>
           <Card>
             <CardHeader
               title={`Medical Provider #${index + 1}`}
@@ -526,10 +526,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               />
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
       ))}
 
-      <Grid2 size={{ xs: 12, md: 6 }}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Card sx={{ height: '100%' }}>
           <CardHeader
             title={`Medical Provider #${family.medicalProviders.length + 1}`}
@@ -548,34 +548,34 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             </Box>
           </CardContent>
         </Card>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Divider />
-      </Grid2>
+      </Grid>
 
       {/* Sliding Scale */}
-      <Grid2 size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <Card>
           <CardHeader
             title="Sliding Scale"
             sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
           />
           <CardContent>
-            <Grid2 container justifyContent="center">
-              <Grid2 size={{ xs: 12, sm: 8, md: 6 }}>
-                <Typography variant="body2" paragraph>
+            <Grid container justifyContent="center">
+              <Grid size={{ xs: 12, sm: 8, md: 6 }}>
+                <Typography variant="body-sm" paragraph>
                   To make Village Free School affordable to all families, tuition is based on a
                   percentage of family income. Please enter your family&apos;s annual gross income.
                 </Typography>
-                <Typography variant="body2" paragraph>
+                <Typography variant="body-sm" paragraph>
                   If income has changed recently, or if income varies from month to month, enter the
                   average total for the year for the past couple years.
                 </Typography>
-              </Grid2>
-            </Grid2>
-            <Grid2 container justifyContent="space-around">
-              <Grid2 size={{ xs: 6, sm: 4 }}>
+              </Grid>
+            </Grid>
+            <Grid container justifyContent="space-around">
+              <Grid size={{ xs: 6, sm: 4 }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -585,8 +585,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                   }
                   label="Opt Out"
                 />
-              </Grid2>
-              <Grid2
+              </Grid>
+              <Grid
                 size={{ xs: 6, sm: 4 }}
                 style={{ display: family.slidingScaleOptOut ? 'none' : 'block' }}
               >
@@ -595,20 +595,20 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
                   onChange={(value) => handleChange('grossFamilyIncome', value)}
                   label="Gross Family Income"
                 />
-              </Grid2>
-              <Grid2
+              </Grid>
+              <Grid
                 size={{ xs: 6, sm: 4 }}
                 style={{ display: family.slidingScaleOptOut ? 'block' : 'none' }}
               >
-                <Typography variant="body2">
+                <Typography variant="body-sm">
                   Tuition calculation will use the full tuition rate.
                 </Typography>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, LinearProgress, Typography, Divider } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   Contract as ContractType,
   Family,
@@ -188,24 +188,24 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
   return (
     <Box>
       {family && family.students && (
-        <Grid2 container spacing={2} justifyContent="space-around">
+        <Grid container spacing={2} justifyContent="space-around">
           {family.students.map((student) => (
-            <Grid2
+            <Grid
               size={{ xs: 12 / family.students.length, sm: 8 / family.students.length }}
               key={student.id}
             >
               <LabeledData label={student.preferredName || student.firstName} textAlign="center">
                 {contract ? contract.studentDecisions[student.id] : 'Unknown'}
               </LabeledData>
-            </Grid2>
+            </Grid>
           ))}
 
-          <Grid2>
+          <Grid>
             <LabeledData label="Total Tuition" textAlign="center">
               {formatCurrency(contract.tuition || 0)}
             </LabeledData>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       )}
 
       <Box display="flex" justifyContent="center" mt={2} gap={2} flexWrap="wrap">
@@ -249,12 +249,12 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
             return (
               <Box key={guardianId} display="flex" alignItems="center" mb={2}>
                 <Box flexGrow={1} display="flex" alignItems="center">
-                  <Typography variant="body2" sx={{ width: '40%' }}>
+                  <Typography variant="body-sm" sx={{ width: '40%' }}>
                     {guardianNames[guardianId]}:
                   </Typography>
                   {signature ? (
                     <>
-                      <Typography variant="body2" color="success.main">
+                      <Typography variant="body-sm" color="success.main">
                         Signed on {new Date(signature.date).toLocaleDateString()}
                       </Typography>
                       <Box
@@ -276,7 +276,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
                       </Box>
                     </>
                   ) : (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body-sm" color="text.secondary">
                       Not signed
                     </Typography>
                   )}
@@ -318,7 +318,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
           open={signDialogOpen}
           onClose={handleCloseSignDialog}
           onSave={handleSaveSignatures}
-          contract={contract}
+          _contract={contract}
           guardianIds={guardianIds}
           guardianNames={guardianNames}
           existingSignatures={contract.signatures}

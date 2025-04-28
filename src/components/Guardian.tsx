@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Grid2 } from '@mui/material';
+import { Link, Grid } from '@mui/material';
 import LabeledData from './LabeledData';
 import { Guardian as GuardianType } from '../services/firebase/models/types';
 
@@ -15,7 +15,7 @@ const Guardian: React.FC<GuardianProps> = ({ guardian }) => {
   const hasAddress = guardian.address1 || guardian.city;
 
   return (
-    <Grid2 container spacing={2}>
+    <Grid container spacing={2}>
       <LabeledData label={guardian.relationship || 'Guardian'}>
         {guardian.firstName} {guardian.lastName}
       </LabeledData>
@@ -59,7 +59,7 @@ const Guardian: React.FC<GuardianProps> = ({ guardian }) => {
           {guardian.occupation}
         </LabeledData>
       )}
-    </Grid2>
+    </Grid>
   );
 };
 

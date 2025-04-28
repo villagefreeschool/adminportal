@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { VFSAdminUser } from '../services/firebase/models/types';
 
 interface UserFormProps {
@@ -47,8 +47,8 @@ const UserForm: React.FC<UserFormProps> = ({
   };
 
   return (
-    <Grid2 container spacing={2}>
-      <Grid2 size={{ xs: 12 }}>
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12 }}>
         <TextField
           label="Email Address"
           value={user.email || ''}
@@ -59,8 +59,8 @@ const UserForm: React.FC<UserFormProps> = ({
           required
           helperText="They will log in to the system using this address."
         />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="First Name"
           value={user.firstName || ''}
@@ -70,8 +70,8 @@ const UserForm: React.FC<UserFormProps> = ({
           required
           autoFocus={!allowChangingEmail}
         />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Last Name"
           value={user.lastName || ''}
@@ -80,8 +80,8 @@ const UserForm: React.FC<UserFormProps> = ({
           fullWidth
           required
         />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Box>
           <FormControlLabel
             control={
@@ -97,8 +97,8 @@ const UserForm: React.FC<UserFormProps> = ({
         <Typography variant="caption" color="textSecondary">
           Administrators can see all data and can create new users.
         </Typography>
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6 }}>
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Box>
           <FormControlLabel
             control={
@@ -114,8 +114,8 @@ const UserForm: React.FC<UserFormProps> = ({
         <Typography variant="caption" color="textSecondary">
           Staff have access to the backend area.
         </Typography>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };
 

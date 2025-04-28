@@ -23,7 +23,7 @@ import {
   useTheme,
   Tooltip,
 } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -385,41 +385,41 @@ function YearContracts() {
       <Box sx={{ p: 2 }}>
         <Card sx={{ mb: 3 }}>
           <CardContent>
-            <Grid2 container spacing={2} justifyContent="center" textAlign="center">
-              <Grid2 size={{ xs: 6, sm: 4 }}>
+            <Grid container spacing={2} justifyContent="center" textAlign="center">
+              <Grid size={{ xs: 6, sm: 4 }}>
                 <Typography variant="h5">
                   {signedContracts.length} ({formatCurrency(signedRevenue)})
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body-md">
                   Signed
                   <Typography variant="caption" display="block">
                     ({formatAverage(signedRevenue, signedStudentCount)} / child)
                   </Typography>
                 </Typography>
-              </Grid2>
-              <Grid2 size={{ xs: 6, sm: 4 }}>
+              </Grid>
+              <Grid size={{ xs: 6, sm: 4 }}>
                 <Typography variant="h5">
                   {unsignedContracts.length} ({formatCurrency(unsignedRevenue)})
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body-md">
                   Unsigned
                   <Typography variant="caption" display="block">
                     ({formatAverage(unsignedRevenue, unsignedStudentCount)} / child)
                   </Typography>
                 </Typography>
-              </Grid2>
-              <Grid2 size={{ xs: 6, sm: 4 }}>
+              </Grid>
+              <Grid size={{ xs: 6, sm: 4 }}>
                 <Typography variant="h5">
                   {contracts.length} ({formatCurrency(revenue)})
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body-md">
                   Total
                   <Typography variant="caption" display="block">
                     ({formatAverage(revenue, studentCount)} / child)
                   </Typography>
                 </Typography>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
 
@@ -536,11 +536,11 @@ function YearContracts() {
         )}
 
         <Box mt={4}>
-          <Grid2 container justifyContent="center" textAlign="center">
+          <Grid container justifyContent="center" textAlign="center">
             <LabeledData label="Assistance Given" xs={12} sm={4}>
               <Typography variant="h5">{formatCurrency(assistance)}</Typography>
             </LabeledData>
-          </Grid2>
+          </Grid>
         </Box>
       </Box>
 

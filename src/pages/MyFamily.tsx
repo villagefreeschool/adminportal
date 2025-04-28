@@ -12,7 +12,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Family } from '../services/firebase/models/types';
 import { fetchFamily, saveFamily, calculatedNameForFamily } from '../services/firebase/families';
@@ -115,12 +115,12 @@ function MyFamily() {
           </Tooltip>
         </Box>
 
-        <Grid2 container spacing={3}>
-          <Grid2 size={{ xs: 12 }}>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12 }}>
             <Card>
               <CardHeader title="Family Information" />
               <CardContent>
-                <Grid2 container spacing={2}>
+                <Grid container spacing={2}>
                   <LabeledData label="Family Name" xs={12} sm={6}>
                     {family.name}
                   </LabeledData>
@@ -133,57 +133,57 @@ function MyFamily() {
                       </span>
                     )}
                   </LabeledData>
-                </Grid2>
+                </Grid>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
-          <Grid2 size={{ xs: 12 }}>
+          <Grid size={{ xs: 12 }}>
             <Card>
               <CardHeader title="Students" />
               <CardContent>
-                <Grid2 container spacing={2}>
+                <Grid container spacing={2}>
                   {family.students.map((student, index) => (
-                    <Grid2 size={{ xs: 12, md: 6 }} key={index}>
+                    <Grid size={{ xs: 12, md: 6 }} key={index}>
                       <Card variant="outlined">
                         <CardContent>
                           <Student student={student} />
                         </CardContent>
                       </Card>
-                    </Grid2>
+                    </Grid>
                   ))}
-                </Grid2>
+                </Grid>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
-          <Grid2 size={{ xs: 12 }}>
+          <Grid size={{ xs: 12 }}>
             <Card>
               <CardHeader title="Parents and Guardians" />
               <CardContent>
-                <Grid2 container spacing={2}>
+                <Grid container spacing={2}>
                   {family.guardians.map((guardian, index) => (
-                    <Grid2 size={{ xs: 12, md: 6 }} key={index}>
+                    <Grid size={{ xs: 12, md: 6 }} key={index}>
                       <Card variant="outlined">
                         <CardContent>
                           <Guardian guardian={guardian} />
                         </CardContent>
                       </Card>
-                    </Grid2>
+                    </Grid>
                   ))}
-                </Grid2>
+                </Grid>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
           {family.emergencyContacts && family.emergencyContacts.length > 0 && (
-            <Grid2 size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
               <Card>
                 <CardHeader title="Emergency Contacts" />
                 <CardContent>
-                  <Grid2 container spacing={2}>
+                  <Grid container spacing={2}>
                     {family.emergencyContacts.map((contact, index) => (
-                      <Grid2 size={{ xs: 12, md: 6 }} key={index}>
+                      <Grid size={{ xs: 12, md: 6 }} key={index}>
                         <LabeledData label={`Contact ${index + 1}`}>
                           {contact.firstName} {contact.lastName}
                           {contact.relationship && <span> ({contact.relationship})</span>}
@@ -202,22 +202,22 @@ function MyFamily() {
                             </span>
                           )}
                         </LabeledData>
-                      </Grid2>
+                      </Grid>
                     ))}
-                  </Grid2>
+                  </Grid>
                 </CardContent>
               </Card>
-            </Grid2>
+            </Grid>
           )}
 
           {family.medicalProviders && family.medicalProviders.length > 0 && (
-            <Grid2 size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
               <Card>
                 <CardHeader title="Medical Providers" />
                 <CardContent>
-                  <Grid2 container spacing={2}>
+                  <Grid container spacing={2}>
                     {family.medicalProviders.map((provider, index) => (
-                      <Grid2 size={{ xs: 12, md: 6 }} key={index}>
+                      <Grid size={{ xs: 12, md: 6 }} key={index}>
                         <LabeledData
                           label={
                             provider.type
@@ -233,27 +233,27 @@ function MyFamily() {
                             </span>
                           )}
                         </LabeledData>
-                      </Grid2>
+                      </Grid>
                     ))}
-                  </Grid2>
+                  </Grid>
                 </CardContent>
               </Card>
-            </Grid2>
+            </Grid>
           )}
 
           {family.pickupList && (
-            <Grid2 size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
               <Card>
                 <CardHeader title="Pick Up List" />
                 <CardContent>
-                  <Typography variant="body1" component="pre" sx={{ whiteSpace: 'pre-wrap' }}>
+                  <Typography variant="body-md" component="pre" sx={{ whiteSpace: 'pre-wrap' }}>
                     {family.pickupList}
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid2>
+            </Grid>
           )}
-        </Grid2>
+        </Grid>
       </Paper>
 
       <Divider sx={{ my: 3 }} />

@@ -22,7 +22,7 @@ interface ContractSignDialogProps {
   onSave: (signatures: Record<string, SignatureData>) => Promise<void>;
   // Technically we don't use the contract directly, but we include it for future extensions
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  contract: ContractType;
+  _contract: ContractType;
   guardianIds: string[];
   guardianNames: Record<string, string>;
   existingSignatures?: Record<string, SignatureData>;
@@ -194,7 +194,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
             <Typography variant="h5" gutterBottom align="center">
               Contract Signature Status
             </Typography>
-            <Typography variant="body1" paragraph align="center">
+            <Typography variant="body-md" paragraph align="center">
               All guardians must sign this contract to complete the enrollment process.
             </Typography>
 
@@ -227,12 +227,12 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                 </Typography>
               </Box>
 
-              <Typography variant="body1" paragraph>
+              <Typography variant="body-md" paragraph>
                 To sign this contract, click the <strong>&quot;Sign Now&quot;</strong> button next
                 to each guardian&apos;s name.
               </Typography>
 
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body-sm" color="text.secondary">
                 Once all guardians have signed, click &quot;Complete & Submit&quot; at the bottom of
                 this page to finalize the contract.
               </Typography>
@@ -276,7 +276,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                         </Typography>
                         {isSigned && (
                           <Typography
-                            variant="body2"
+                            variant="body-sm"
                             color="success.main"
                             sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                           >
@@ -345,7 +345,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                   >
                     No Guardians Found
                   </Typography>
-                  <Typography variant="body1">
+                  <Typography variant="body-md">
                     There are no guardians associated with this family record. Please add guardians
                     to the family profile before attempting to sign the contract.
                   </Typography>
@@ -376,7 +376,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                       ? 'All signatures complete!'
                       : `${signedGuardians.length} of ${guardianIds.length} guardians signed`}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body-sm" color="text.secondary">
                     {allSigned
                       ? 'Your contract is ready to be submitted'
                       : 'Please make sure all guardians sign the contract'}

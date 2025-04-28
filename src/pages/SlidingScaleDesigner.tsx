@@ -549,7 +549,7 @@ function SlidingScaleDesigner() {
             </FormControl>
 
             {estimatedRevenue > 0 && (
-              <Typography variant="body1">
+              <Typography variant="body-md">
                 Estimated Revenue: {formatCurrency(estimatedRevenue)}
               </Typography>
             )}

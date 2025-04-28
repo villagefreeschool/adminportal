@@ -141,7 +141,7 @@ function Layout({ children }: LayoutProps) {
     <Box sx={{ overflow: 'auto', height: '100%', position: 'relative' }}>
       <List sx={{ mt: 8 }}>
         {navItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
+          <ListItem key={item.text}>
             <ListItemButton
               selected={location.pathname === item.path}
               onClick={() => {
@@ -184,7 +184,7 @@ function Layout({ children }: LayoutProps) {
                 alt={currentUser?.displayName || 'User Avatar'}
               />
               <Box>
-                <Typography variant="body2" noWrap>
+                <Typography variant="body-sm" noWrap>
                   {currentUser?.displayName || currentUser?.email}
                 </Typography>
                 {isAdmin && (
@@ -194,7 +194,7 @@ function Layout({ children }: LayoutProps) {
                 )}
               </Box>
             </Box>
-            <ListItem disablePadding>
+            <ListItem>
               <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
                   <LogoutIcon />

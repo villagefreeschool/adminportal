@@ -19,14 +19,17 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"]
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
-    "@mui/icons-material": "^6.4.8",
-    "@mui/material": "^6.4.8",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
     "@mui/x-date-pickers": "^7.28.0",
     "@types/plotly.js": "^2.35.5",
     "@types/react-plotly.js": "^2.6.3",
