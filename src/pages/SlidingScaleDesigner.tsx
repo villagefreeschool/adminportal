@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useState, useMemo, ChangeEvent, useCallback } from 'react';
+import { useState, useMemo, useEffect, ChangeEvent, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -13,6 +13,11 @@ import {
   TableBody,
   Box,
   Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from '@mui/material';
 import Plot from 'react-plotly.js';
 import {
@@ -23,6 +28,9 @@ import {
   DefaultMaximumTuition,
   formatCurrency,
 } from '../services/tuitioncalc';
+import { fetchYears, enrolledFamiliesInYear } from '../services/firebase/years';
+import { fetchContracts } from '../services/firebase/contracts';
+import { Family, Year, Contract } from '../services/firebase/models/types';
 
 // Income steps for the table display
 const INCOME_STEPS = [
@@ -50,7 +58,61 @@ function SlidingScaleDesigner() {
   const [maxTuition, setMaxTuition] = useState(DefaultMaximumTuition);
   const [steepness, setSteepness] = useState(Steepness);
 
-  // No additional configuration options needed
+  // State for year selection and family data
+  const [years, setYears] = useState<Year[]>([]);
+  const [selectedYearId, setSelectedYearId] = useState<string>('');
+  const [families, setFamilies] = useState<Family[]>([]);
+  const [contractsData, setContractsData] = useState<Contract[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Fetch available years on component mount
+  useEffect(() => {
+    const loadYears = async () => {
+      try {
+        const yearsData = await fetchYears();
+        setYears(yearsData);
+
+        // Select the first year by default if available
+        if (yearsData.length > 0) {
+          setSelectedYearId(yearsData[0].id);
+        }
+      } catch (error) {
+        console.error('Error fetching years:', error);
+      }
+    };
+
+    loadYears();
+  }, []);
+
+  // Fetch families and contracts when selected year changes
+  useEffect(() => {
+    const loadFamilyData = async () => {
+      if (!selectedYearId) return;
+
+      setLoading(true);
+      try {
+        // Fetch both families and contracts in parallel
+        const [familiesData, contractsData] = await Promise.all([
+          enrolledFamiliesInYear(selectedYearId),
+          fetchContracts(selectedYearId),
+        ]);
+
+        setFamilies(familiesData);
+        setContractsData(contractsData);
+      } catch (error) {
+        console.error('Error fetching family data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFamilyData();
+  }, [selectedYearId]);
+
+  // Handle year selection change
+  const handleYearChange = (event: SelectChangeEvent<string>) => {
+    setSelectedYearId(event.target.value);
+  };
 
   // Custom exponential transform function for the calculator
   const calculatorExponentTransform = useCallback((x: number, steepnessValue: number): number => {
@@ -83,6 +145,119 @@ function SlidingScaleDesigner() {
     [minIncome, maxIncome, minTuition, maxTuition, steepness, calculatorExponentTransform],
   );
 
+  // Function to create histogram bins for family incomes
+  const generateHistogramData = useCallback(() => {
+    if (!families.length) return { x: [], y: [], bins: [] };
+
+    // Define bin width (e.g., $5,000 or $10,000 increments)
+    const binWidth = 10000;
+    const minBin = 0;
+    const maxBin = Math.max(maxIncome + 50000, 300000); // Ensure we cover high incomes
+
+    // Create histogram bins
+    const bins: number[] = [];
+    for (let i = minBin; i <= maxBin; i += binWidth) {
+      bins.push(i);
+    }
+
+    // Initialize counts for each bin
+    const binCounts = new Array(bins.length).fill(0);
+
+    // Count families in each income bin
+    families.forEach((family) => {
+      let income = family.grossFamilyIncome;
+
+      // Handle families that opted out or didn't provide income
+      if (income === null || income === undefined || family.slidingScaleOptOut) {
+        // Place them in the bin that includes maxTuition
+        income = maxIncome;
+      }
+
+      // Find the appropriate bin
+      const binIndex = Math.min(Math.floor((income - minBin) / binWidth), binCounts.length - 1);
+
+      // Increment the bin count
+      if (binIndex >= 0 && binIndex < binCounts.length) {
+        binCounts[binIndex]++;
+      }
+    });
+
+    // Filter out empty bins to make the visualization cleaner
+    const filteredBins = [];
+    const filteredCounts = [];
+    const centerPoints = [];
+
+    for (let i = 0; i < bins.length - 1; i++) {
+      if (binCounts[i] > 0) {
+        filteredBins.push(bins[i]);
+        filteredCounts.push(binCounts[i]);
+        centerPoints.push(bins[i] + binWidth / 2); // Center of the bin for x position
+      }
+    }
+
+    return {
+      x: centerPoints,
+      y: filteredCounts,
+      bins: filteredBins,
+    };
+  }, [families, maxIncome]);
+
+  // Calculate estimated revenue based on current tuition parameters
+  const estimatedRevenue = useMemo(() => {
+    if (!contractsData.length) return 0;
+
+    let totalRevenue = 0;
+
+    contractsData.forEach((contract) => {
+      if (!contract.studentDecisions) return;
+
+      // Get the family that corresponds to this contract
+      const family = families.find((f) => f.id === contract.familyID);
+      if (!family) return;
+
+      let income = family.grossFamilyIncome;
+
+      // Handle families that opted out or didn't provide income
+      if (income === null || income === undefined || family.slidingScaleOptOut) {
+        income = maxIncome;
+      }
+
+      // Count full-time, part-time students
+      let fullTimeCount = 0;
+      let partTimeCount = 0;
+      let siblingCount = 0;
+
+      for (const studentID in contract.studentDecisions) {
+        const decision = contract.studentDecisions[studentID];
+
+        if (decision === 'Full Time') {
+          if (fullTimeCount === 0) {
+            fullTimeCount = 1;
+          } else {
+            siblingCount++;
+          }
+        } else if (decision === 'Part Time') {
+          partTimeCount++;
+        }
+      }
+
+      // Calculate base tuition for this family
+      const baseTuition = customTuitionForIncome(income);
+
+      // Calculate tuition factoring in full-time, part-time, and siblings
+      const fullTimeFactor = fullTimeCount;
+      const partTimeFactor = partTimeCount * 0.625; // Part-time discount
+      const siblingFactor = siblingCount * 0.85; // Sibling discount
+
+      const familyTuition = Math.round(
+        baseTuition * (fullTimeFactor + partTimeFactor + siblingFactor),
+      );
+      totalRevenue += familyTuition;
+    });
+
+    return totalRevenue;
+  }, [contractsData, families, maxIncome, customTuitionForIncome]);
+
   // Generate data for the graph
   const graphData = useMemo(() => {
     // Create a combined set of income points
@@ -112,14 +287,18 @@ function SlidingScaleDesigner() {
     // Create marker sizes array - only show markers for table income values
     const markerSizes = combinedIncomes.map((income) => (INCOME_STEPS.includes(income) ? 6 : 0));
 
+    // Generate histogram data
+    const histogramData = generateHistogramData();
+
     return {
       incomes: combinedIncomes,
       fullTuitions,
       halfTuitions,
       siblingTuitions,
       markerSizes,
+      histogramData,
     };
-  }, [minIncome, maxIncome, customTuitionForIncome]);
+  }, [minIncome, maxIncome, customTuitionForIncome, generateHistogramData]);
 
   // Handle input changes
   const handleMinIncomeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -349,6 +528,32 @@ function SlidingScaleDesigner() {
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6">Tuition Scale Visualization</Typography>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <FormControl sx={{ minWidth: 200 }}>
+              <InputLabel id="year-select-label">Show Families from Year</InputLabel>
+              <Select
+                labelId="year-select-label"
+                id="year-select"
+                value={selectedYearId}
+                label="Show Families from Year"
+                onChange={handleYearChange}
+                disabled={loading}
+              >
+                {years.map((year) => (
+                  <MenuItem key={year.id} value={year.id}>
+                    {year.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {estimatedRevenue > 0 && (
+              <Typography variant="body1">
+                Estimated Revenue: {formatCurrency(estimatedRevenue)}
+              </Typography>
+            )}
+          </Box>
         </Box>
 
         <Divider sx={{ mb: 3 }} />
@@ -365,6 +570,7 @@ function SlidingScaleDesigner() {
                 line: { color: '#1976d2' },
                 marker: { size: graphData.markerSizes },
                 hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+                yaxis: 'y',
               },
               {
                 x: graphData.incomes,
@@ -375,6 +581,7 @@ function SlidingScaleDesigner() {
                 line: { color: '#4caf50' },
                 marker: { size: graphData.markerSizes },
                 hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+                yaxis: 'y',
               },
               {
                 x: graphData.incomes,
@@ -385,6 +592,23 @@ function SlidingScaleDesigner() {
                 line: { color: '#ff9800' },
                 marker: { size: graphData.markerSizes },
                 hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+                yaxis: 'y',
+              },
+              {
+                x: graphData.histogramData.x,
+                y: graphData.histogramData.y,
+                type: 'bar',
+                name: 'Family Count',
+                marker: {
+                  color: 'rgba(180, 180, 180, 0.6)',
+                  line: {
+                    color: 'rgba(150, 150, 150, 1.0)',
+                    width: 1,
+                  },
+                },
+                yaxis: 'y2',
+                hovertemplate: 'Income Bin: %{x:$,.0f}<br>Families: %{y}<extra></extra>',
+                opacity: 0.7,
               },
             ]}
             layout={{
@@ -398,12 +622,21 @@ function SlidingScaleDesigner() {
                 title: 'Annual Tuition ($)',
                 tickformat: '$,.0f',
               },
+              yaxis2: {
+                title: 'Number of Families',
+                titlefont: { color: 'rgb(148, 148, 148)' },
+                tickfont: { color: 'rgb(148, 148, 148)' },
+                overlaying: 'y',
+                side: 'right',
+                showgrid: false,
+              },
               legend: {
                 x: 0.07,
                 y: 0.95,
               },
-              margin: { l: 70, r: 40, t: 50, b: 50 },
+              margin: { l: 70, r: 70, t: 50, b: 50 },
               hovermode: 'closest',
+              barmode: 'group',
             }}
             useResizeHandler={true}
             style={{ width: '100%', height: '100%' }}
