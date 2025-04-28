@@ -572,20 +572,20 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             Based on your family&apos;s income
           </Typography>
 
-          <Grid container spacing={2} justifyContent="space-between" mt={1}>
-            <Grid size={{ xs: 4 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', mt: 1, gap: 2 }}>
+            <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
               <Typography variant="body-sm">Full Time</Typography>
               <Typography variant="body-md">{formatCurrency(fullTimeTuition)}</Typography>
-            </Grid>
-            <Grid size={{ xs: 4 }}>
+            </Box>
+            <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
               <Typography variant="body-sm">Full Time Sibling</Typography>
               <Typography variant="body-md">{formatCurrency(siblingTuition)}</Typography>
-            </Grid>
-            <Grid size={{ xs: 4 }}>
+            </Box>
+            <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
               <Typography variant="body-sm">Part Time</Typography>
               <Typography variant="body-md">{formatCurrency(partTimeTuition)}</Typography>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Paper>
 
         {/* Attendance Decisions */}
@@ -594,10 +594,13 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             Who&apos;s Attending This Year?
           </Typography>
 
-          <Grid container spacing={2}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
             {family.students?.map((student) => (
-              <Grid
-                size={{ xs: 12, sm: family.students.length > 0 ? 12 / family.students.length : 12 }}
+              <Box 
+                sx={{ 
+                  flex: family.students.length > 1 ? `1 1 ${90 / family.students.length}%` : '1 1 100%', 
+                  minWidth: '200px' 
+                }}
                 key={student.id}
               >
                 <EnrollmentTypeSelector
@@ -608,9 +611,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   error={!studentDecisions[student.id]}
                   helperText={!studentDecisions[student.id] ? 'Required' : ''}
                 />
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Box>
 
         {/* Annual Tuition Section */}
@@ -626,23 +629,26 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                 livelihood, and current compensation does not include health insurance.
               </Typography>
 
-              <Grid
-                container
-                spacing={2}
-                alignItems="flex-end"
-                justifyContent="space-around"
-                textAlign="center"
+              <Box 
+                sx={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  alignItems: 'flex-end',
+                  justifyContent: 'space-around',
+                  textAlign: 'center',
+                  gap: 2
+                }}
               >
-                <Grid size={{ xs: 3 }}>
+                <Box sx={{ flex: '1 1 20%', minWidth: '100px' }}>
                   <Typography variant="caption" color="text.secondary">
                     Over 10 Months
                   </Typography>
                   <Typography variant="body-sm" color="text.secondary">
                     {formatCurrency(tuition / 10)}/mo
                   </Typography>
-                </Grid>
+                </Box>
 
-                <Grid size={{ xs: 6 }}>
+                <Box sx={{ flex: '2 1 50%', minWidth: '200px' }}>
                   <Typography variant="overline" color="text.secondary">
                     Total {year.name} Tuition
                   </Typography>
@@ -669,72 +675,71 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       {`Previous year: ${formatCurrency(prevYearContract.tuition || 0)}`}
                     </Typography>
                   )}
-                </Grid>
+                </Box>
 
-                <Grid size={{ xs: 3 }}>
+                <Box sx={{ flex: '1 1 20%', minWidth: '100px' }}>
                   <Typography variant="caption" color="text.secondary">
                     Over 12 Months
                   </Typography>
                   <Typography variant="body-sm" color="text.secondary">
                     {formatCurrency(tuition / 12)}/mo
                   </Typography>
-                </Grid>
-              </Grid>
+                </Box>
+              </Box>
             </Box>
 
             {/* Slider Interface */}
-            <Grid container spacing={2}>
-              <Grid size={{ xs: 12 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <IconButton
-                    color="primary"
-                    onClick={decrementTuition}
-                    sx={{ color: theme.palette.brown[500] }}
-                  >
-                    <RemoveIcon />
-                  </IconButton>
+            <Box sx={{ width: '100%', mt: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <IconButton
+                  color="primary"
+                  onClick={decrementTuition}
+                  sx={{ color: theme.palette.brown[500] }}
+                >
+                  <RemoveIcon />
+                </IconButton>
 
-                  <Slider
-                    value={tuition}
-                    min={500}
-                    max={maxTuition}
-                    onChange={handleTuitionChange}
-                    aria-labelledby="tuition-slider"
-                    sx={{
-                      mx: 2,
-                      '& .MuiSlider-thumb': {
-                        color: theme.palette.green[800],
-                      },
-                      '& .MuiSlider-track': {
-                        color: theme.palette.green[700],
-                      },
-                    }}
-                  />
+                <Slider
+                  value={tuition}
+                  min={500}
+                  max={maxTuition}
+                  onChange={handleTuitionChange}
+                  aria-labelledby="tuition-slider"
+                  sx={{
+                    mx: 2,
+                    '& .MuiSlider-thumb': {
+                      color: theme.palette.green[800],
+                    },
+                    '& .MuiSlider-track': {
+                      color: theme.palette.green[700],
+                    },
+                  }}
+                />
 
-                  <IconButton
-                    color="primary"
-                    onClick={incrementTuition}
-                    sx={{ color: theme.palette.green[800] }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </Box>
-                {tuition < minTuition && !tuitionAssistanceRequested && (
-                  <Typography color="error.main" variant="caption">
-                    Tuition Assistance Required
-                  </Typography>
-                )}
-                {prevYearContract && !decisionsChangedFromPreviousYear && (
-                  <Typography variant="caption" color="text.secondary">
-                    Year-over-year change limited to ±{MaxYearOverYearChange * 100}%
-                  </Typography>
-                )}
-              </Grid>
+                <IconButton
+                  color="primary"
+                  onClick={incrementTuition}
+                  sx={{ color: theme.palette.green[800] }}
+                >
+                  <AddIcon />
+                </IconButton>
+              </Box>
+              {tuition < minTuition && !tuitionAssistanceRequested && (
+                <Typography color="error.main" variant="caption">
+                  Tuition Assistance Required
+                </Typography>
+              )}
+              {prevYearContract && !decisionsChangedFromPreviousYear && (
+                <Typography variant="caption" color="text.secondary">
+                  Year-over-year change limited to ±{MaxYearOverYearChange * 100}%
+                </Typography>
+              )}
+            </Box>
 
               {/* Tuition Assistance Options */}
               {(isAdmin || tuition < minTuition) && (
-                <>
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -746,9 +751,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }
                       label="Request Tuition Assistance"
                     />
-                  </Grid>
+                  </Box>
 
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
                     <TextField
                       label="Tuition Assistance Amount"
                       type="number"
@@ -759,14 +764,14 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }}
                       fullWidth
                     />
-                  </Grid>
-                </>
+                  </Box>
+                </Box>
               )}
 
               {/* Admin-only options */}
               {allAttendanceDecisionsMade && isAdmin && (
-                <Grid container size={{ xs: 12 }} spacing={2}>
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -776,9 +781,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }
                       label="Signed Contract Received"
                     />
-                  </Grid>
+                  </Box>
 
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -791,13 +796,13 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       }
                       label="Tuition Assistance Granted"
                     />
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               )}
 
               {/* Metadata for admins */}
               {isAdmin && contract.lastSavedAt && (
-                <Grid size={{ xs: 12 }}>
+                <Box sx={{ width: '100%' }}>
                   <Divider sx={{ my: 2 }} />
                   <List dense>
                     {contract.lastSavedBy && (
@@ -814,9 +819,9 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                       </ListItem>
                     )}
                   </List>
-                </Grid>
+                </Box>
               )}
-            </Grid>
+            
           </>
         )}
       </DialogContent>
