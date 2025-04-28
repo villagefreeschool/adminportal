@@ -6,19 +6,12 @@ import {
   Paper,
   Slider,
   TextField,
-  Grid2,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Box,
-  Card,
-  CardContent,
   Divider,
 } from '@mui/material';
 import Plot from 'react-plotly.js';
@@ -57,9 +50,7 @@ function SlidingScaleDesigner() {
   const [maxTuition, setMaxTuition] = useState(DefaultMaximumTuition);
   const [steepness, setSteepness] = useState(Steepness);
 
-  // Additional configuration options
-  const [displayMode, setDisplayMode] = useState<'table' | 'graph'>('graph');
-  const [scenarioType, setScenarioType] = useState<'new' | 'returning'>('new');
+  // No additional configuration options needed
 
   // Custom exponential transform function for the calculator
   const calculatorExponentTransform = useCallback((x: number, steepnessValue: number): number => {
@@ -94,26 +85,41 @@ function SlidingScaleDesigner() {
 
   // Generate data for the graph
   const graphData = useMemo(() => {
-    const incomes = generateIncomeDataPoints(Math.max(10000, minIncome - 10000), maxIncome + 50000);
+    // Create a combined set of income points
+    // Start with the table income steps
+    const tableIncomes = [...INCOME_STEPS];
+
+    // Add additional points for a smooth curve, focusing on the minIncome to maxIncome range
+    const additionalIncomes = generateIncomeDataPoints(
+      Math.max(10000, minIncome - 10000),
+      maxIncome + 50000,
+    );
+
+    // Combine and remove duplicates
+    const combinedIncomes = [...new Set([...tableIncomes, ...additionalIncomes])].sort(
+      (a, b) => a - b,
+    );
 
     // Calculate tuition for each income using our custom function that respects UI steepness
-    const tuitions = incomes.map((income) => customTuitionForIncome(income));
+    const fullTuitions = combinedIncomes.map((income) => customTuitionForIncome(income));
 
-    // For returning families, show what they would pay with max 10% increase
-    let returningTuitions: number[] = [];
-    if (scenarioType === 'returning') {
-      returningTuitions = incomes.map((income, i) => {
-        const previousTuition = tuitions[i] * 0.9; // Simulating previous year's tuition
-        return Math.min(tuitions[i], previousTuition * 1.1); // Max 10% increase
-      });
-    }
+    // Calculate half-time tuition (62.5% of full tuition)
+    const halfTuitions = fullTuitions.map((tuition) => tuition * 0.625);
+
+    // Calculate sibling discount tuition (15% discount)
+    const siblingTuitions = fullTuitions.map((tuition) => tuition * 0.85);
+
+    // Create marker sizes array - only show markers for table income values
+    const markerSizes = combinedIncomes.map((income) => (INCOME_STEPS.includes(income) ? 6 : 0));
 
     return {
-      incomes,
-      tuitions,
-      returningTuitions,
+      incomes: combinedIncomes,
+      fullTuitions,
+      halfTuitions,
+      siblingTuitions,
+      markerSizes,
     };
-  }, [minIncome, maxIncome, customTuitionForIncome, scenarioType]);
+  }, [minIncome, maxIncome, customTuitionForIncome]);
 
   // Handle input changes
   const handleMinIncomeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -170,29 +176,52 @@ function SlidingScaleDesigner() {
     }
   };
 
+  // Transform slider value (0-100) to steepness (1-50) with emphasis on lower range
+  const sliderToSteepness = (sliderValue: number): number => {
+    // Map 0-30 on slider to 1-5 steepness (more precision in lower range)
+    if (sliderValue <= 30) {
+      return 1 + (sliderValue / 30) * 4;
+    }
+    // Map 30-100 on slider to 5-50 steepness (faster change in higher range)
+    else {
+      return 5 + ((sliderValue - 30) / 70) * 45;
+    }
+  };
+
+  // Inverse function: Transform steepness (1-50) to slider value (0-100)
+  const steepnessToSlider = (steepnessValue: number): number => {
+    if (steepnessValue <= 5) {
+      return ((steepnessValue - 1) / 4) * 30;
+    } else {
+      return 30 + ((steepnessValue - 5) / 45) * 70;
+    }
+  };
+
+  // The current position of the slider (0-100)
+  const [sliderPosition, setSliderPosition] = useState(steepnessToSlider(steepness));
+
   const handleSteepnessChange = (_event: unknown, value: number | number[]) => {
-    setSteepness(value as number);
+    const sliderValue = value as number;
+    setSliderPosition(sliderValue);
+    setSteepness(sliderToSteepness(sliderValue));
   };
 
   // Calculate tuition for the table view
   const calculateTuitionTable = () => {
     return INCOME_STEPS.map((income) => {
-      const newFamilyTuition = customTuitionForIncome(income);
-
-      // Simulate returning family with previous year's tuition
-      const previousTuition = newFamilyTuition * 0.9; // Simulating previous year's tuition
-      const returningFamilyTuition = Math.min(newFamilyTuition, previousTuition * 1.1); // Max 10% increase
+      const fullTuition = customTuitionForIncome(income);
 
       // Calculate per month and part-time rates
-      const monthlyNewTuition = newFamilyTuition / 12;
-      const partTimeNewTuition = newFamilyTuition * 0.625;
+      const monthlyTuition = fullTuition / 12;
+      const halfTimeTuition = fullTuition * 0.625;
+      const siblingDiscountTuition = fullTuition * 0.85;
 
       return {
         income,
-        newFamilyTuition,
-        returningFamilyTuition,
-        monthlyNewTuition,
-        partTimeNewTuition,
+        fullTuition,
+        halfTimeTuition,
+        siblingDiscountTuition,
+        monthlyTuition,
       };
     });
   };
@@ -291,21 +320,27 @@ function SlidingScaleDesigner() {
 
           {/* Steepness slider (full width) */}
           <Box sx={{ mt: 3, width: '100%' }}>
-            <Typography gutterBottom>Curve Steepness: {steepness.toFixed(2)}</Typography>
+            <Typography gutterBottom>Curve Steepness Factor: {steepness.toFixed(2)}</Typography>
             <Box sx={{ px: 1 }}>
               <Slider
-                value={steepness}
+                value={sliderPosition}
                 onChange={handleSteepnessChange}
-                min={1.0}
-                max={50.0}
-                step={0.1}
-                valueLabelDisplay="auto"
+                min={0}
+                max={100}
+                step={1}
                 aria-labelledby="steepness-slider"
+                marks={[
+                  { value: 0, label: '1.0' },
+                  { value: 30, label: '5.0' },
+                  { value: 65, label: '25.0' },
+                  { value: 100, label: '50.0' },
+                ]}
               />
             </Box>
             <Typography variant="caption" color="textSecondary">
               Higher values make the curve steeper, requiring higher incomes to reach higher tuition
-              levels. The default value is 1.56.
+              levels. The slider provides finer control in the 1-5 range where small changes have
+              the most impact. The default value is 1.56.
             </Typography>
           </Box>
         </Box>
@@ -316,108 +351,95 @@ function SlidingScaleDesigner() {
           <Typography variant="h6">Tuition Scale Visualization</Typography>
 
           <Box sx={{ display: 'flex', gap: 2 }}>
-            <FormControl sx={{ minWidth: 150 }}>
-              <InputLabel>Family Type</InputLabel>
-              <Select
-                value={scenarioType}
-                label="Family Type"
-                onChange={(e) => setScenarioType(e.target.value as 'new' | 'returning')}
-              >
-                <MenuItem value="new">New Families</MenuItem>
-                <MenuItem value="returning">Returning Families</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl sx={{ minWidth: 150 }}>
-              <InputLabel>View Mode</InputLabel>
-              <Select
-                value={displayMode}
-                label="View Mode"
-                onChange={(e) => setDisplayMode(e.target.value as 'table' | 'graph')}
-              >
-                <MenuItem value="graph">Graph</MenuItem>
-                <MenuItem value="table">Table</MenuItem>
-              </Select>
-            </FormControl>
+            <Typography variant="subtitle1">
+              Showing full time, half time, and sibling discount tuition rates
+            </Typography>
           </Box>
         </Box>
 
         <Divider sx={{ mb: 3 }} />
 
-        {displayMode === 'graph' ? (
-          <Box sx={{ height: 500, width: '100%' }}>
-            <Plot
-              data={[
-                {
-                  x: graphData.incomes,
-                  y: graphData.tuitions,
-                  type: 'scatter',
-                  mode: 'lines',
-                  name: 'New Family Tuition',
-                  line: { color: '#1976d2' },
-                },
-                ...(scenarioType === 'returning'
-                  ? [
-                      {
-                        x: graphData.incomes,
-                        y: graphData.returningTuitions,
-                        type: 'scatter',
-                        mode: 'lines',
-                        name: 'Returning Family Tuition',
-                        line: { color: '#4caf50', dash: 'dash' },
-                      },
-                    ]
-                  : []),
-              ]}
-              layout={{
-                title: 'Tuition by Income',
-                autosize: true,
-                xaxis: {
-                  title: 'Annual Income ($)',
-                  tickformat: '$,.0f',
-                },
-                yaxis: {
-                  title: 'Annual Tuition ($)',
-                  tickformat: '$,.0f',
-                },
-                legend: {
-                  x: 0.05,
-                  y: 0.95,
-                },
-                margin: { l: 70, r: 40, t: 50, b: 50 },
-              }}
-              useResizeHandler={true}
-              style={{ width: '100%', height: '100%' }}
-            />
-          </Box>
-        ) : (
-          <Box sx={{ overflowX: 'auto' }}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Annual Income</TableCell>
-                  <TableCell>New Family Tuition</TableCell>
-                  {scenarioType === 'returning' && <TableCell>Returning Family Tuition</TableCell>}
-                  <TableCell>Monthly Payment</TableCell>
-                  <TableCell>Part-Time Tuition</TableCell>
+        <Box sx={{ height: 500, width: '100%', mb: 4 }}>
+          <Plot
+            data={[
+              {
+                x: graphData.incomes,
+                y: graphData.fullTuitions,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Full Tuition',
+                line: { color: '#1976d2' },
+                marker: { size: graphData.markerSizes },
+                hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+              },
+              {
+                x: graphData.incomes,
+                y: graphData.halfTuitions,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Half-Time Tuition',
+                line: { color: '#4caf50' },
+                marker: { size: graphData.markerSizes },
+                hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+              },
+              {
+                x: graphData.incomes,
+                y: graphData.siblingTuitions,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Sibling Discount (85%)',
+                line: { color: '#ff9800' },
+                marker: { size: graphData.markerSizes },
+                hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+              },
+            ]}
+            layout={{
+              title: 'Tuition by Income',
+              autosize: true,
+              xaxis: {
+                title: 'Annual Income ($)',
+                tickformat: '$,.0f',
+              },
+              yaxis: {
+                title: 'Annual Tuition ($)',
+                tickformat: '$,.0f',
+              },
+              legend: {
+                x: 0.05,
+                y: 0.95,
+              },
+              margin: { l: 70, r: 40, t: 50, b: 50 },
+              hovermode: 'closest',
+            }}
+            useResizeHandler={true}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </Box>
+
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Annual Income</TableCell>
+                <TableCell>Full Tuition</TableCell>
+                <TableCell>Half-Time Tuition</TableCell>
+                <TableCell>Sibling Discount</TableCell>
+                <TableCell>Monthly Payment</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {calculateTuitionTable().map((row) => (
+                <TableRow key={row.income}>
+                  <TableCell>{formatCurrency(row.income)}</TableCell>
+                  <TableCell>{formatCurrency(row.fullTuition)}</TableCell>
+                  <TableCell>{formatCurrency(row.halfTimeTuition)}</TableCell>
+                  <TableCell>{formatCurrency(row.siblingDiscountTuition)}</TableCell>
+                  <TableCell>{formatCurrency(row.monthlyTuition)}</TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {calculateTuitionTable().map((row) => (
-                  <TableRow key={row.income}>
-                    <TableCell>{formatCurrency(row.income)}</TableCell>
-                    <TableCell>{formatCurrency(row.newFamilyTuition)}</TableCell>
-                    {scenarioType === 'returning' && (
-                      <TableCell>{formatCurrency(row.returningFamilyTuition)}</TableCell>
-                    )}
-                    <TableCell>{formatCurrency(row.monthlyNewTuition)}</TableCell>
-                    <TableCell>{formatCurrency(row.partTimeNewTuition)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        )}
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       </Paper>
     </Container>
   );
