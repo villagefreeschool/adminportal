@@ -21,6 +21,7 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
+import TuneIcon from '@mui/icons-material/Tune';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import _ from 'lodash';
@@ -132,6 +133,7 @@ function Layout({ children }: LayoutProps) {
       { text: 'Families', path: '/families', icon: <PeopleIcon /> },
       { text: 'School Years', path: '/years', icon: <DateRangeIcon /> },
       { text: 'User Accounts', path: '/users', icon: <PersonIcon /> },
+      { text: 'Sliding Scale Designer', path: '/sliding-scale', icon: <TuneIcon /> },
     );
   }
 

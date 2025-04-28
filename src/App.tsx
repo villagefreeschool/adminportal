@@ -21,6 +21,7 @@ import YearList from './pages/YearList';
 import YearRoster from './pages/YearRoster';
 import Users from './pages/Users';
 import YearContracts from './pages/YearContracts';
+import SlidingScaleDesigner from './pages/SlidingScaleDesigner';
 
 function App() {
   return (
@@ -130,6 +131,16 @@ function App() {
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
                   <Users />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sliding-scale"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <Layout>
+                  <SlidingScaleDesigner />
                 </Layout>
               </ProtectedRoute>
             }
