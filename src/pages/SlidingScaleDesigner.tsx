@@ -27,7 +27,7 @@ import {
 // Income steps for the table display
 const INCOME_STEPS = [
   0, 5000, 10000, 15000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 120000,
-  140000, 160000, 180000, 200000, 250000, 300000, 400000, 500000,
+  140000, 160000, 180000, 200000, 225000, 250000,
 ];
 
 // Generate income data points for the graph visualization
@@ -349,12 +349,6 @@ function SlidingScaleDesigner() {
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6">Tuition Scale Visualization</Typography>
-
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Typography variant="subtitle1">
-              Showing full time, half time, and sibling discount tuition rates
-            </Typography>
-          </Box>
         </Box>
 
         <Divider sx={{ mb: 3 }} />
@@ -405,7 +399,7 @@ function SlidingScaleDesigner() {
                 tickformat: '$,.0f',
               },
               legend: {
-                x: 0.05,
+                x: 0.07,
                 y: 0.95,
               },
               margin: { l: 70, r: 40, t: 50, b: 50 },
