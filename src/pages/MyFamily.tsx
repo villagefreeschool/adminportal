@@ -121,17 +121,8 @@ function MyFamily() {
               <CardHeader title="Family Information" />
               <CardContent>
                 <Grid container spacing={2}>
-                  <LabeledData label="Family Name" xs={12} sm={6}>
+                  <LabeledData label="Family Name" xs={12}>
                     {family.name}
-                  </LabeledData>
-                  <LabeledData label="Address" xs={12} sm={6}>
-                    {family.address}
-                    {family.city && family.state && (
-                      <span>
-                        <br />
-                        {family.city}, {family.state} {family.zip}
-                      </span>
-                    )}
                   </LabeledData>
                 </Grid>
               </CardContent>
