@@ -160,16 +160,8 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
       return;
     }
 
-    // If it's empty but we had an initialSignature, use that
-    if (isEmpty && initialSignature) {
-      console.log('Using initial signature instead of empty canvas');
-      onSave(initialSignature);
-      return;
-    }
-
-    // Don't save if empty and no initial signature
     if (isEmpty) {
-      console.log('Canvas is empty, nothing to save');
+      onSave('');
       return;
     }
 
@@ -275,7 +267,6 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
             color="primary"
             startIcon={<SaveIcon />}
             onClick={saveSignature}
-            disabled={isEmpty && !initialSignature}
             sx={{
               fontWeight: 'bold',
               bgcolor: '#3f51b5',

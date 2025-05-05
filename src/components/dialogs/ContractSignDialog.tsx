@@ -80,6 +80,17 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
   // Handle signature save
   const handleSaveSignature = (guardianId: string, signatureData: string) => {
     console.log('Saving signature for guardian:', guardianId);
+
+    // If signature data is empty, remove the signature
+    if (!signatureData) {
+      console.log('Removing signature for guardian:', guardianId);
+      const updatedSignatures = { ...signatures };
+      delete updatedSignatures[guardianId];
+      setSignatures(updatedSignatures);
+      setActiveGuardian(null);
+      return;
+    }
+
     const now = new Date();
 
     const updatedSignatures = {
