@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy } from 'react';
 import {
   ListItem,
   ListItemButton,
@@ -7,18 +7,21 @@ import {
   CircularProgress,
 } from '@mui/material';
 import PdfIcon from '@mui/icons-material/PictureAsPdf';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import * as pdfMaketype from 'pdfmake/interfaces';
 import moment from 'moment';
 import _ from 'lodash';
 
+// Lazy load pdfMake
+const loadPdfMake = async () => {
+  const pdfMakeModule = await import('pdfmake/build/pdfmake');
+  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
+  pdfMakeModule.default.vfs = pdfFontsModule.default.vfs;
+  return pdfMakeModule.default;
+};
+
 import { enrolledFamiliesInYear } from '../services/firebase/families';
 import { dataURLFromImagePath, PDF_STYLES, PDF_DEFAULT_STYLE } from '../utils/pdfUtil';
 import { Year, Family } from '../services/firebase/models/types';
-
-// Initialize pdfMake
-pdfMake.vfs = pdfFonts.vfs;
 
 interface DirectoryPDFGeneratorProps {
   year: Year;
@@ -46,6 +49,9 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
 
     try {
       console.log('Starting to generate directory PDF for year:', year.id);
+
+      // Dynamically load pdfMake only when needed
+      const pdfMake = await loadPdfMake();
 
       // Try to generate a full directory with families from Firebase
       let families: Family[] = [];

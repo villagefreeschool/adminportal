@@ -1,27 +1,25 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import { Suspense, lazy } from 'react';
 
 // Components
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import LoadingSpinner from './components/LoadingSpinner';
 
-// Pages
-import Home from './pages/Home';
-import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
-import MyFamily from './pages/MyFamily';
-import FamilyList from './pages/FamilyList';
-import FamilyShow from './pages/FamilyShow';
-import Registration from './pages/Registration';
-import YearList from './pages/YearList';
-import YearRoster from './pages/YearRoster';
-import Users from './pages/Users';
-import YearContracts from './pages/YearContracts';
-import SlidingScaleDesigner from './pages/SlidingScaleDesigner';
+// Lazy-loaded Pages
+const Home = lazy(() => import('./pages/Home'));
+const Login = lazy(() => import('./pages/Login'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const MyFamily = lazy(() => import('./pages/MyFamily'));
+const FamilyList = lazy(() => import('./pages/FamilyList'));
+const FamilyShow = lazy(() => import('./pages/FamilyShow'));
+const Registration = lazy(() => import('./pages/Registration'));
+const YearList = lazy(() => import('./pages/YearList'));
+const YearRoster = lazy(() => import('./pages/YearRoster'));
+const Users = lazy(() => import('./pages/Users'));
+const YearContracts = lazy(() => import('./pages/YearContracts'));
+const SlidingScaleDesigner = lazy(() => import('./pages/SlidingScaleDesigner'));
 
 function App() {
   return (
@@ -29,8 +27,22 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/login"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <Login />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ForgotPassword />
+              </Suspense>
+            }
+          />
 
           {/* Protected routes with Layout */}
           <Route
@@ -38,7 +50,9 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <Home />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Home />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -48,7 +62,9 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <MyFamily />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <MyFamily />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -58,7 +74,9 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <Registration />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Registration />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -70,7 +88,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <FamilyList />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <FamilyList />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -80,7 +100,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <FamilyShow />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <FamilyShow />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -90,7 +112,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <Registration />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Registration />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -100,7 +124,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <YearList />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <YearList />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -110,7 +136,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <YearRoster />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <YearRoster />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -120,7 +148,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <YearContracts />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <YearContracts />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -130,7 +160,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <Users />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Users />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
@@ -140,7 +172,9 @@ function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <Layout>
-                  <SlidingScaleDesigner />
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <SlidingScaleDesigner />
+                  </Suspense>
                 </Layout>
               </ProtectedRoute>
             }
