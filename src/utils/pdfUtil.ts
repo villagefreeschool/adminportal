@@ -12,6 +12,7 @@ export const PDF_DEFAULT_STYLE: Style = {
   fontSize: 9,
   lineHeight: 1.2,
   margin: [0, 15, 0, 15] as [number, number, number, number],
+  // No font specified - use default
 };
 
 /**
@@ -45,7 +46,6 @@ export const PDF_STYLES: StyleDictionary = {
     color: '#8a8a8a',
   },
   signature: {
-    font: 'Times',
     italics: true,
     fontSize: 16,
     color: '#000066',
