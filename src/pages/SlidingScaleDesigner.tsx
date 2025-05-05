@@ -1,25 +1,26 @@
 /* eslint-disable no-undef */
-import { useState, useMemo, useEffect, ChangeEvent, useCallback } from 'react';
-import {
-  Container,
-  Typography,
-  Paper,
-  Slider,
-  TextField,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Box,
-  Divider,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-} from '@mui/material';
-import Plot from 'react-plotly.js';
+import { useState, useMemo, useEffect, ChangeEvent, useCallback, lazy, Suspense } from 'react';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import CircularProgress from '@mui/material/CircularProgress';
+import type { SelectChangeEvent } from '@mui/material/Select';
+
+// Lazy load the Plot component to reduce initial bundle size
+const Plot = lazy(() => import('../components/PlotlySetup'));
 import {
   Steepness,
   DefaultMinimumIncome,
@@ -559,88 +560,103 @@ function SlidingScaleDesigner() {
         <Divider sx={{ mb: 3 }} />
 
         <Box sx={{ height: 500, width: '100%', mb: 4 }}>
-          <Plot
-            data={[
-              {
-                x: graphData.incomes,
-                y: graphData.fullTuitions,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'Full Tuition',
-                line: { color: '#1976d2' },
-                marker: { size: graphData.markerSizes },
-                hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
-                yaxis: 'y',
-              },
-              {
-                x: graphData.incomes,
-                y: graphData.halfTuitions,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'Half-Time Tuition',
-                line: { color: '#4caf50' },
-                marker: { size: graphData.markerSizes },
-                hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
-                yaxis: 'y',
-              },
-              {
-                x: graphData.incomes,
-                y: graphData.siblingTuitions,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'Sibling Discount (85%)',
-                line: { color: '#ff9800' },
-                marker: { size: graphData.markerSizes },
-                hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
-                yaxis: 'y',
-              },
-              {
-                x: graphData.histogramData.x,
-                y: graphData.histogramData.y,
-                type: 'bar',
-                name: 'Family Count',
-                marker: {
-                  color: 'rgba(180, 180, 180, 0.6)',
-                  line: {
-                    color: 'rgba(150, 150, 150, 1.0)',
-                    width: 1,
-                  },
+          <Suspense
+            fallback={
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '500px',
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            }
+          >
+            <Plot
+              data={[
+                {
+                  x: graphData.incomes,
+                  y: graphData.fullTuitions,
+                  type: 'scatter',
+                  mode: 'lines+markers',
+                  name: 'Full Tuition',
+                  line: { color: '#1976d2' },
+                  marker: { size: graphData.markerSizes },
+                  hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+                  yaxis: 'y',
                 },
-                yaxis: 'y2',
-                hovertemplate: 'Income Bin: %{x:$,.0f}<br>Families: %{y}<extra></extra>',
-                opacity: 0.7,
-              },
-            ]}
-            layout={{
-              title: 'Tuition by Income',
-              autosize: true,
-              xaxis: {
-                title: 'Annual Income ($)',
-                tickformat: '$,.0f',
-              },
-              yaxis: {
-                title: 'Annual Tuition ($)',
-                tickformat: '$,.0f',
-              },
-              yaxis2: {
-                title: 'Number of Families',
-                titlefont: { color: 'rgb(148, 148, 148)' },
-                tickfont: { color: 'rgb(148, 148, 148)' },
-                overlaying: 'y',
-                side: 'right',
-                showgrid: false,
-              },
-              legend: {
-                x: 0.07,
-                y: 0.95,
-              },
-              margin: { l: 70, r: 70, t: 50, b: 50 },
-              hovermode: 'closest',
-              barmode: 'group',
-            }}
-            useResizeHandler={true}
-            style={{ width: '100%', height: '100%' }}
-          />
+                {
+                  x: graphData.incomes,
+                  y: graphData.halfTuitions,
+                  type: 'scatter',
+                  mode: 'lines+markers',
+                  name: 'Half-Time Tuition',
+                  line: { color: '#4caf50' },
+                  marker: { size: graphData.markerSizes },
+                  hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+                  yaxis: 'y',
+                },
+                {
+                  x: graphData.incomes,
+                  y: graphData.siblingTuitions,
+                  type: 'scatter',
+                  mode: 'lines+markers',
+                  name: 'Sibling Discount (85%)',
+                  line: { color: '#ff9800' },
+                  marker: { size: graphData.markerSizes },
+                  hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
+                  yaxis: 'y',
+                },
+                {
+                  x: graphData.histogramData.x,
+                  y: graphData.histogramData.y,
+                  type: 'bar',
+                  name: 'Family Count',
+                  marker: {
+                    color: 'rgba(180, 180, 180, 0.6)',
+                    line: {
+                      color: 'rgba(150, 150, 150, 1.0)',
+                      width: 1,
+                    },
+                  },
+                  yaxis: 'y2',
+                  hovertemplate: 'Income Bin: %{x:$,.0f}<br>Families: %{y}<extra></extra>',
+                  opacity: 0.7,
+                },
+              ]}
+              layout={{
+                title: 'Tuition by Income',
+                autosize: true,
+                xaxis: {
+                  title: 'Annual Income ($)',
+                  tickformat: '$,.0f',
+                },
+                yaxis: {
+                  title: 'Annual Tuition ($)',
+                  tickformat: '$,.0f',
+                },
+                yaxis2: {
+                  title: 'Number of Families',
+                  titlefont: { color: 'rgb(148, 148, 148)' },
+                  tickfont: { color: 'rgb(148, 148, 148)' },
+                  overlaying: 'y',
+                  side: 'right',
+                  showgrid: false,
+                },
+                legend: {
+                  x: 0.07,
+                  y: 0.95,
+                },
+                margin: { l: 70, r: 70, t: 50, b: 50 },
+                hovermode: 'closest',
+                barmode: 'group',
+              }}
+              useResizeHandler={true}
+              style={{ width: '100%', height: '100%' }}
+            />
+          </Suspense>
         </Box>
 
         <Box sx={{ overflowX: 'auto' }}>
