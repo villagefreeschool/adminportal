@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
+    "check": "tsc --noEmit && npm run lint && npm run format",
     "dev": "npm run start",
     "format": "prettier --write .",
     "lint-staged": "lint-staged",
