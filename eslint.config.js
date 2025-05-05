@@ -3,7 +3,6 @@ import tseslintPlugin from '@typescript-eslint/eslint-plugin';
 import tseslintParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
-import prettierPlugin from 'eslint-plugin-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
@@ -90,12 +89,8 @@ export default [
   },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      prettier: prettierPlugin,
-    },
-    rules: {
-      ...prettierPlugin.configs.recommended.rules,
-    },
+    plugins: {},
+    rules: {},
   },
   prettierConfig,
   {
