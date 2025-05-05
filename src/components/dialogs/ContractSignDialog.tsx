@@ -388,24 +388,9 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                       : `${signedGuardians.length} of ${guardianIds.length} guardians signed`}
                   </Typography>
                   <Typography variant="body-sm" color="text.secondary">
-                    {allSigned
-                      ? 'Your contract is ready to be submitted'
-                      : 'Please make sure all guardians sign the contract'}
+                    {allSigned ? 'Your contract is ready to be submitted' : ''}
                   </Typography>
                 </Box>
-
-                {allSigned && (
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={handleSaveAll}
-                    disabled={saving}
-                    startIcon={<AssignmentTurnedInIcon />}
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    Complete Signing Process
-                  </Button>
-                )}
               </Box>
             </Paper>
           </Box>
@@ -440,8 +425,8 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
         </Box>
       )}
 
-      {/* Only show the Complete & Submit button on the overview page when all have signed */}
-      {!activeGuardian && !allSigned && (
+      {/* Only show the Close button on the overview page when not all have signed */}
+      {!activeGuardian && (
         <Box
           sx={{
             position: 'fixed',
@@ -455,7 +440,16 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
         >
           <Box maxWidth="800px" mx="auto" display="flex" justifyContent="flex-end" gap={2}>
             <Button onClick={handleClose} color="inherit" disabled={saving}>
-              Close
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color={allSigned ? 'success' : 'primary'}
+              onClick={handleSaveAll}
+              disabled={saving}
+              startIcon={<AssignmentTurnedInIcon />}
+            >
+              {allSigned ? 'Complete Signing Process' : 'Save Signatures'}
             </Button>
           </Box>
         </Box>
