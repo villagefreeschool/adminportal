@@ -99,7 +99,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
             onChange={(e) => handleCurrencyChange('minimumTuition', e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
-              startAdornment: <Typography>$</Typography>
+              startAdornment: <Typography>$</Typography>,
             }}
             inputProps={{ 'data-testid': 'minimum-tuition-input' }}
           />
@@ -114,7 +114,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
             onChange={(e) => handleCurrencyChange('maximumTuition', e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
-              startAdornment: <Typography>$</Typography>
+              startAdornment: <Typography>$</Typography>,
             }}
             inputProps={{ 'data-testid': 'maximum-tuition-input' }}
           />
@@ -131,7 +131,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
             onChange={(e) => handleCurrencyChange('minimumIncome', e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
-              startAdornment: <Typography>$</Typography>
+              startAdornment: <Typography>$</Typography>,
             }}
             inputProps={{ 'data-testid': 'minimum-income-input' }}
           />
@@ -146,7 +146,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
             onChange={(e) => handleCurrencyChange('maximumIncome', e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
-              startAdornment: <Typography>$</Typography>
+              startAdornment: <Typography>$</Typography>,
             }}
             inputProps={{ 'data-testid': 'maximum-income-input' }}
           />

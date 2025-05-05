@@ -20,7 +20,6 @@ import {
   ListItem,
   ListItemText,
 } from '@mui/material';
-import { Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Contract, Family, Year, Enrollment } from '../../services/firebase/models/types';
@@ -572,7 +571,15 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             Based on your family&apos;s income
           </Typography>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', mt: 1, gap: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              mt: 1,
+              gap: 2,
+            }}
+          >
             <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
               <Typography variant="body-sm">Full Time</Typography>
               <Typography variant="body-md">{formatCurrency(fullTimeTuition)}</Typography>
@@ -596,10 +603,11 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
             {family.students?.map((student) => (
-              <Box 
-                sx={{ 
-                  flex: family.students.length > 1 ? `1 1 ${90 / family.students.length}%` : '1 1 100%', 
-                  minWidth: '200px' 
+              <Box
+                sx={{
+                  flex:
+                    family.students.length > 1 ? `1 1 ${90 / family.students.length}%` : '1 1 100%',
+                  minWidth: '200px',
                 }}
                 key={student.id}
               >
@@ -629,14 +637,14 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                 livelihood, and current compensation does not include health insurance.
               </Typography>
 
-              <Box 
-                sx={{ 
-                  display: 'flex', 
-                  flexWrap: 'wrap', 
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
                   alignItems: 'flex-end',
                   justifyContent: 'space-around',
                   textAlign: 'center',
-                  gap: 2
+                  gap: 2,
                 }}
               >
                 <Box sx={{ flex: '1 1 20%', minWidth: '100px' }}>
@@ -736,92 +744,91 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
               )}
             </Box>
 
-              {/* Tuition Assistance Options */}
-              {(isAdmin || tuition < minTuition) && (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
-                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={tuitionAssistanceRequested}
-                          onChange={(e) =>
-                            handleCheckboxChange('tuitionAssistanceRequested', e.target.checked)
-                          }
-                        />
-                      }
-                      label="Request Tuition Assistance"
-                    />
-                  </Box>
-
-                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                    <TextField
-                      label="Tuition Assistance Amount"
-                      type="number"
-                      value={assistanceAmount}
-                      InputProps={{
-                        startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-                        readOnly: true,
-                      }}
-                      fullWidth
-                    />
-                  </Box>
+            {/* Tuition Assistance Options */}
+            {(isAdmin || tuition < minTuition) && (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={tuitionAssistanceRequested}
+                        onChange={(e) =>
+                          handleCheckboxChange('tuitionAssistanceRequested', e.target.checked)
+                        }
+                      />
+                    }
+                    label="Request Tuition Assistance"
+                  />
                 </Box>
-              )}
 
-              {/* Admin-only options */}
-              {allAttendanceDecisionsMade && isAdmin && (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={isSigned}
-                          onChange={(e) => handleCheckboxChange('isSigned', e.target.checked)}
-                        />
-                      }
-                      label="Signed Contract Received"
-                    />
-                  </Box>
-
-                  <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={tuitionAssistanceGranted}
-                          onChange={(e) =>
-                            handleCheckboxChange('tuitionAssistanceGranted', e.target.checked)
-                          }
-                          disabled={!tuitionAssistanceRequested}
-                        />
-                      }
-                      label="Tuition Assistance Granted"
-                    />
-                  </Box>
+                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+                  <TextField
+                    label="Tuition Assistance Amount"
+                    type="number"
+                    value={assistanceAmount}
+                    InputProps={{
+                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                      readOnly: true,
+                    }}
+                    fullWidth
+                  />
                 </Box>
-              )}
+              </Box>
+            )}
 
-              {/* Metadata for admins */}
-              {isAdmin && contract.lastSavedAt && (
-                <Box sx={{ width: '100%' }}>
-                  <Divider sx={{ my: 2 }} />
-                  <List dense>
-                    {contract.lastSavedBy && (
-                      <ListItem>
-                        <ListItemText primary="Last Saved By" secondary={contract.lastSavedBy} />
-                      </ListItem>
-                    )}
-                    {contract.lastSavedAt && (
-                      <ListItem>
-                        <ListItemText
-                          primary="Last Saved At"
-                          secondary={new Date(contract.lastSavedAt).toLocaleString()}
-                        />
-                      </ListItem>
-                    )}
-                  </List>
+            {/* Admin-only options */}
+            {allAttendanceDecisionsMade && isAdmin && (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isSigned}
+                        onChange={(e) => handleCheckboxChange('isSigned', e.target.checked)}
+                      />
+                    }
+                    label="Signed Contract Received"
+                  />
                 </Box>
-              )}
-            
+
+                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={tuitionAssistanceGranted}
+                        onChange={(e) =>
+                          handleCheckboxChange('tuitionAssistanceGranted', e.target.checked)
+                        }
+                        disabled={!tuitionAssistanceRequested}
+                      />
+                    }
+                    label="Tuition Assistance Granted"
+                  />
+                </Box>
+              </Box>
+            )}
+
+            {/* Metadata for admins */}
+            {isAdmin && contract.lastSavedAt && (
+              <Box sx={{ width: '100%' }}>
+                <Divider sx={{ my: 2 }} />
+                <List dense>
+                  {contract.lastSavedBy && (
+                    <ListItem>
+                      <ListItemText primary="Last Saved By" secondary={contract.lastSavedBy} />
+                    </ListItem>
+                  )}
+                  {contract.lastSavedAt && (
+                    <ListItem>
+                      <ListItemText
+                        primary="Last Saved At"
+                        secondary={new Date(contract.lastSavedAt).toLocaleString()}
+                      />
+                    </ListItem>
+                  )}
+                </List>
+              </Box>
+            )}
           </>
         )}
       </DialogContent>
