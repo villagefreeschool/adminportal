@@ -89,17 +89,6 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
     });
   }
 
-  // Log for debugging
-  console.log('Contract Component Debug:', {
-    familyId,
-    yearId,
-    'family?.guardians': family?.guardians,
-    'guardians with IDs': family?.guardians?.filter((g) => g.id),
-    'guardian IDs array': family?.guardians?.map((g) => g.id),
-    guardianIds,
-    guardianNames,
-  });
-
   // Open contract edit dialog
   const handleEdit = () => {
     setDialogOpen(true);
