@@ -1,19 +1,17 @@
 import React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  Button,
-  TextField,
-  Divider,
-  Box,
-  FormControlLabel,
-  Checkbox,
-  IconButton,
-  useTheme,
-} from '@mui/material';
-import { Grid } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
+import { useTheme } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import StudentForm from './StudentForm';

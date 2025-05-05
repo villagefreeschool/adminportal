@@ -1,5 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
-import { TextField, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { VFSAdminUser } from '../services/firebase/models/types';
 
 interface UserFormProps {
@@ -57,7 +61,7 @@ const UserForm: React.FC<UserFormProps> = ({
         required
         helperText="They will log in to the system using this address."
       />
-      
+
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
           <TextField
@@ -70,7 +74,7 @@ const UserForm: React.FC<UserFormProps> = ({
             autoFocus={!allowChangingEmail}
           />
         </Box>
-        
+
         <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
           <TextField
             label="Last Name"
@@ -82,7 +86,7 @@ const UserForm: React.FC<UserFormProps> = ({
           />
         </Box>
       </Box>
-      
+
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
           <Box>
@@ -101,7 +105,7 @@ const UserForm: React.FC<UserFormProps> = ({
             Administrators can see all data and can create new users.
           </Typography>
         </Box>
-        
+
         <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
           <Box>
             <FormControlLabel

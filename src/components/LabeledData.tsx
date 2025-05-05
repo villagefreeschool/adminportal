@@ -1,5 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Box, Typography, SxProps, Theme, Grid } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 interface LabeledDataProps {
   label: string;

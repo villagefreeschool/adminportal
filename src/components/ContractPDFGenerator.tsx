@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, IconButton, useTheme } from '@mui/material';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import { useTheme } from '@mui/material/styles';
 import { Contract, Family, Year } from '../services/firebase/models/types';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import {
   PDF_DEFAULT_STYLE,
@@ -11,10 +11,7 @@ import {
   dataURLFromImagePath,
   normalizeSignatureForPdf,
 } from '../utils/pdfUtil';
-
-// Configure pdfMake
-// @ts-expect-error - pdfFonts structure varies depending on version
-pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
+import { loadPdfMake } from '../utils/pdfMakeLoader';
 
 // Currency formatter
 const formatter = new Intl.NumberFormat('en-US', {
@@ -673,9 +670,13 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
   };
 
   // Function to generate and download the PDF
-  const download = () => {
+  const download = async () => {
     try {
       setGenerating(true);
+
+      // Dynamically load pdfMake
+      const pdfMake = await loadPdfMake();
+
       const content: Content[] = [
         ...titlePage(),
         ...terms(),
@@ -692,6 +693,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
           styles: PDF_STYLES,
           defaultStyle: PDF_DEFAULT_STYLE,
           footer: pdfFooter,
+          // No need to specify fonts here as they're configured in the loader
         } as TDocumentDefinitions)
         .download(fileName);
     } catch (error) {

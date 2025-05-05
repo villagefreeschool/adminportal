@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import LabeledData from './LabeledData';
 import { Student as StudentType } from '../services/firebase/models/types';
 

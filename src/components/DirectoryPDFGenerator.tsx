@@ -1,23 +1,16 @@
-import { useState, useEffect, lazy } from 'react';
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  CircularProgress,
-} from '@mui/material';
+import { useState, useEffect } from 'react';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import CircularProgress from '@mui/material/CircularProgress';
 import PdfIcon from '@mui/icons-material/PictureAsPdf';
 import * as pdfMaketype from 'pdfmake/interfaces';
 import moment from 'moment';
 import _ from 'lodash';
 
-// Lazy load pdfMake
-const loadPdfMake = async () => {
-  const pdfMakeModule = await import('pdfmake/build/pdfmake');
-  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
-  pdfMakeModule.default.vfs = pdfFontsModule.default.vfs;
-  return pdfMakeModule.default;
-};
+// Import the centralized PDFMake loader
+import { loadPdfMake } from '../utils/pdfMakeLoader';
 
 import { enrolledFamiliesInYear } from '../services/firebase/families';
 import { dataURLFromImagePath, PDF_STYLES, PDF_DEFAULT_STYLE } from '../utils/pdfUtil';
@@ -141,6 +134,7 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
           styles: PDF_STYLES,
           defaultStyle: PDF_DEFAULT_STYLE,
           footer: pdfFooter as unknown as pdfMaketype.DynamicContent,
+          // No need to specify fonts here as they're configured in the loader
         })
         .download(fileName);
 
