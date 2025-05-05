@@ -4,25 +4,23 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "dev": "npm run start",
     "build": "tsc && vite build",
+    "dev": "npm run start",
+    "format": "prettier --write .",
+    "lint-staged": "lint-staged",
+    "prepare": "husky",
+    "preview": "npm run serve",
+    "start": "vite",
     "serve": "vite preview",
     "lint": "eslint .",
     "lint-fix": "eslint --fix .",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "format": "prettier --write .",
-    "prepare": "husky",
-    "ts-script": "tsx",
-    "lint-staged": "lint-staged"
+    "ts-script": "tsx"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"]
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -39,7 +37,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "pdfmake": "^0.2.10",
-    "plotly.js": "^3.0.1",
+    "plotly.js-basic-dist": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-plotly.js": "^2.6.0",
