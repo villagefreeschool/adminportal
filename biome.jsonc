@@ -1,0 +1,59 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+
+  "files": {
+    "ignore": [".husky/**", "dist/**", "node_modules/**", "coverage/**"]
+  },
+
+  "linter": {
+    "enabled": true,
+
+    "rules": {
+      "recommended": true,
+
+      "correctness": {},
+
+      "suspicious": {},
+
+      "style": {
+        "noNonNullAssertion": "off"
+      }
+    },
+
+    "ignore": [
+      ".env",
+      ".env.local",
+      ".husky/**",
+      "dist/**",
+      "node_modules/**",
+      "coverage/**",
+      "package-lock.json"
+    ]
+  },
+
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always"
+    }
+  },
+
+  "json": {
+    "formatter": {
+      "lineWidth": 100,
+      "trailingCommas": "none"
+    }
+  },
+
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  }
+}
