@@ -1,20 +1,20 @@
-import _ from 'lodash';
 import {
   collection,
-  doc,
-  setDoc,
-  getDocs,
-  getDoc,
   deleteDoc,
-  where,
-  query,
+  doc,
   documentId,
-} from 'firebase/firestore';
-import { CHUNK_SIZE } from './core';
-import { EmergencyContact, Family } from './models/types';
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import _ from "lodash";
+import { CHUNK_SIZE } from "./core";
+import type { EmergencyContact, Family } from "./models/types";
 
 // Import collection references
-import { familyDB, studentDB, userFamilyDB, yearDB } from './collections';
+import { familyDB, studentDB, userFamilyDB, yearDB } from "./collections";
 
 /**
  * Fetches all families from Firestore
@@ -28,7 +28,7 @@ export async function fetchFamilies(): Promise<Family[]> {
       families.push({ id: doc.id, ...doc.data() } as Family);
     });
   } catch (error) {
-    console.error('Error fetching families:', error);
+    console.error("Error fetching families:", error);
     throw error;
   }
 
@@ -50,7 +50,7 @@ export async function fetchFamily(id: string): Promise<Family | null> {
       return null;
     }
   } catch (error) {
-    console.error('Error fetching family:', error);
+    console.error("Error fetching family:", error);
     throw error;
   }
 }
@@ -94,17 +94,17 @@ export async function saveFamily(family: Family): Promise<Family> {
     emails.push(...family.guardians.map((g) => g.email));
 
     // Process otherEmails from guardians
-    const otherEmails = family.guardians.map((g) => _.split(g.otherEmails || '', ',')).flat();
+    const otherEmails = family.guardians.flatMap((g) => _.split(g.otherEmails || "", ","));
     emails.push(...otherEmails);
 
     // Add student email address
-    emails.push(...family.students.map((s) => s.email || ''));
+    emails.push(...family.students.map((s) => s.email || ""));
 
     // Clean them up by flattening and trimming.
     emails = _.chain(emails)
       .flattenDeep()
       .map(_.trim)
-      .map((s) => (s || '').toLowerCase())
+      .map((s) => (s || "").toLowerCase())
       .compact()
       .value();
 
@@ -115,14 +115,14 @@ export async function saveFamily(family: Family): Promise<Family> {
         familyID: familyID,
         familyName: family.name,
       }).catch(() => {
-        console.log('Failed to set userFamilyRecord for ', email);
+        console.log("Failed to set userFamilyRecord for ", email);
       });
     }
 
     // Save each student
     for (let i = 0; i < family.students.length; i++) {
       const student = family.students[i];
-      let studentID = student.id;
+      const studentID = student.id;
       const studentData = { ...student, familyID: familyID };
       await setDoc(doc(studentDB, studentID), studentData);
     }
@@ -151,25 +151,25 @@ export async function deleteFamily(family: Family): Promise<void> {
   const familyID = family.id;
 
   // Delete student records
-  const studentIDs = _.map(family.students || [], 'id');
+  const studentIDs = _.map(family.students || [], "id");
   for (let i = 0; i < studentIDs.length; i++) {
-    console.log('Deleting students/' + studentIDs[i]);
+    console.log("Deleting students/" + studentIDs[i]);
     await deleteDoc(doc(studentDB, studentIDs[i]));
   }
 
   const yearSnap = await getDocs(yearDB);
   yearSnap.forEach((yearDoc) => {
     const yearID = yearDoc.id;
-    console.log('Deleting years/' + yearID + '/contracts/' + familyID);
-    deleteDoc(doc(collection(doc(yearDB, yearID), 'contracts'), familyID));
+    console.log("Deleting years/" + yearID + "/contracts/" + familyID);
+    deleteDoc(doc(collection(doc(yearDB, yearID), "contracts"), familyID));
     for (let i = 0; i < studentIDs.length; i++) {
-      console.log('Deleting years/' + yearID + '/enrollments/' + studentIDs[i]);
-      deleteDoc(doc(collection(doc(yearDB, yearID), 'enrollments'), studentIDs[i]));
+      console.log("Deleting years/" + yearID + "/enrollments/" + studentIDs[i]);
+      deleteDoc(doc(collection(doc(yearDB, yearID), "enrollments"), studentIDs[i]));
     }
   });
 
   // Finally delete the actual family
-  console.log('Deleting families/' + familyID);
+  console.log("Deleting families/" + familyID);
   await deleteDoc(doc(familyDB, familyID));
 }
 
@@ -190,7 +190,7 @@ export async function fetchFamiliesWithIDs(ids: string[]): Promise<Family[]> {
   const chunks = _.chain([ids]).flatten().uniq().chunk(CHUNK_SIZE).value();
 
   for (const chunk of chunks) {
-    const q = query(familyDB, where(documentId(), 'in', chunk));
+    const q = query(familyDB, where(documentId(), "in", chunk));
     const snap = await getDocs(q);
     snap.forEach((doc) => {
       families.push({ id: doc.id, ...doc.data() } as Family);
@@ -214,16 +214,16 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
   try {
     // Verify yearID is not empty
     if (!yearID) {
-      console.error('Year ID is empty');
+      console.error("Year ID is empty");
       return [];
     }
 
     const familyIDs: string[] = [];
-    const validDecisions = ['Full Time', 'Part Time'];
+    const validDecisions = ["Full Time", "Part Time"];
 
     try {
       // Get the contracts collection for this year
-      const contractsRef = collection(doc(yearDB, yearID), 'contracts');
+      const contractsRef = collection(doc(yearDB, yearID), "contracts");
       console.log(`Querying contracts collection for year ${yearID}`);
 
       const contractsDocs = await getDocs(contractsRef);
@@ -240,13 +240,13 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
 
       console.log(`Found ${familyIDs.length} families with enrolled students`);
     } catch (error) {
-      console.error('Error fetching contracts:', error);
+      console.error("Error fetching contracts:", error);
       throw new Error(`Failed to fetch contracts for year ${yearID}: ${error}`);
     }
 
     // If no families found, return empty array
     if (familyIDs.length === 0) {
-      console.log('No enrolled families found');
+      console.log("No enrolled families found");
       return [];
     }
 
@@ -257,7 +257,7 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
 
     return results;
   } catch (error) {
-    console.error('Error in enrolledFamiliesInYear:', error);
+    console.error("Error in enrolledFamiliesInYear:", error);
     throw error;
   }
 }
@@ -268,11 +268,11 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
 export function calculatedNameForFamily(family: Family): string {
   return (
     _.chain([...family.students, ...family.guardians])
-      .map((s) => (s.lastName ? s.lastName : '').trim())
+      .map((s) => (s.lastName ? s.lastName : "").trim())
       .sort()
       .uniq()
       .value()
-      .join(' / ') + ' Family'
+      .join(" / ") + " Family"
   );
 }
 
@@ -282,7 +282,7 @@ export function calculatedNameForFamily(family: Family): string {
 export function guardianNamesForFamily(family: Family): string {
   return _.chain(family.guardians)
     .map((g) => g.firstName)
-    .join(', ')
+    .join(", ")
     .value();
 }
 
@@ -291,12 +291,12 @@ export function guardianNamesForFamily(family: Family): string {
  */
 export function contactToString(contact: EmergencyContact | null): string {
   if (!contact) {
-    return '';
+    return "";
   }
-  const firstName = _.get(contact, 'firstName');
-  const cellPhone = _.get(contact, 'cellPhone');
-  const rel = _.get(contact, 'relationship');
-  let str = '';
+  const firstName = _.get(contact, "firstName");
+  const cellPhone = _.get(contact, "cellPhone");
+  const rel = _.get(contact, "relationship");
+  let str = "";
   if (!firstName) {
     return str;
   }

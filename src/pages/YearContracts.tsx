@@ -1,10 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import DownloadIcon from "@mui/icons-material/Download";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import EditIcon from "@mui/icons-material/Edit";
+import InboxIcon from "@mui/icons-material/Inbox";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import SearchIcon from "@mui/icons-material/Search";
 import {
-  Paper,
-  Typography,
+  AppBar,
   Box,
   Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  Link,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -12,48 +23,37 @@ import {
   TableHead,
   TableRow,
   TextField,
-  InputAdornment,
-  CircularProgress,
-  Card,
-  CardContent,
-  Link,
-  AppBar,
   Toolbar,
-  IconButton,
-  useTheme,
   Tooltip,
-} from '@mui/material';
-import { Grid } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/Download';
-import EditIcon from '@mui/icons-material/Edit';
-import InboxIcon from '@mui/icons-material/Inbox';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import _ from 'lodash';
-import { useAuth } from '../contexts/useAuth';
-import { Contract, Enrollment, Year, Family } from '../services/firebase/models/types';
-import { fetchYear, enrolledStudentsInYear } from '../services/firebase/years';
-import { enrolledFamiliesInYear } from '../services/firebase/years';
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { Grid } from "@mui/material";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+import _ from "lodash";
+import React, { useState, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import ContractPDFGenerator from "../components/ContractPDFGenerator";
+import LabeledData from "../components/LabeledData";
+import ContractEditDialog from "../components/dialogs/ContractEditDialog";
+import { useAuth } from "../contexts/useAuth";
 import {
   fetchContracts,
-  studentCountForContract,
   prepareContractsForDisplay,
-} from '../services/firebase/contracts';
-import ContractEditDialog from '../components/dialogs/ContractEditDialog';
-import ContractPDFGenerator from '../components/ContractPDFGenerator';
-import LabeledData from '../components/LabeledData';
-import ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
+  studentCountForContract,
+} from "../services/firebase/contracts";
+import type { Contract, Enrollment, Family, Year } from "../services/firebase/models/types";
+import { enrolledStudentsInYear, fetchYear } from "../services/firebase/years";
+import { enrolledFamiliesInYear } from "../services/firebase/years";
 
 // Format currency values
 const formatCurrency = (value: number | undefined): string => {
-  if (value === undefined) return '$0.00';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  if (value === undefined) return "$0.00";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
   }).format(value);
 };
 
@@ -67,19 +67,19 @@ const formatAverage = (total: number, count: number): string => {
 interface Column {
   id: string;
   label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
+  align?: "inherit" | "left" | "center" | "right" | "justify";
   sortable?: boolean;
 }
 
 // Define table columns
 const columns: Column[] = [
-  { id: 'familyNameAndGuardians', label: 'Family', align: 'left' },
-  { id: 'tuition', label: 'Tuition', align: 'right' },
-  { id: 'fullTimeNames', label: 'Full Time', align: 'left' },
-  { id: 'partTimeNames', label: 'Part Time', align: 'left' },
-  { id: 'tuitionAssistance', label: 'Tuition Assistance', align: 'center' },
-  { id: 'isSigned', label: 'Signed', align: 'center' },
-  { id: 'actions', label: 'Actions', align: 'center', sortable: false },
+  { id: "familyNameAndGuardians", label: "Family", align: "left" },
+  { id: "tuition", label: "Tuition", align: "right" },
+  { id: "fullTimeNames", label: "Full Time", align: "left" },
+  { id: "partTimeNames", label: "Part Time", align: "left" },
+  { id: "tuitionAssistance", label: "Tuition Assistance", align: "center" },
+  { id: "isSigned", label: "Signed", align: "center" },
+  { id: "actions", label: "Actions", align: "center", sortable: false },
 ];
 
 /**
@@ -101,11 +101,11 @@ function YearContracts() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   // Dialog state
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [selectedFamilyId, setSelectedFamilyId] = useState<string>('');
+  const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
 
   // Load data when component mounts or ID changes
   useEffect(() => {
@@ -124,7 +124,7 @@ function YearContracts() {
       const yearData = await fetchYear(yearId);
 
       if (!yearData) {
-        setError('Year not found');
+        setError("Year not found");
         setLoading(false);
         return;
       }
@@ -150,8 +150,8 @@ function YearContracts() {
 
       setContracts(preparedContracts);
     } catch (err) {
-      console.error('Error loading contracts data:', err);
-      setError('Error loading data');
+      console.error("Error loading contracts data:", err);
+      setError("Error loading data");
     } finally {
       setLoading(false);
     }
@@ -186,7 +186,7 @@ function YearContracts() {
 
     // Create workbook and worksheet
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'admin.villagefreeschool.org';
+    workbook.creator = "admin.villagefreeschool.org";
     workbook.created = new Date();
 
     const sheetName = `${year.name} Contracts`;
@@ -194,21 +194,21 @@ function YearContracts() {
 
     // Define columns
     worksheet.columns = [
-      { header: 'Family', key: 'family', width: 25 },
-      { header: 'Signed', key: 'signed', width: 10 },
-      { header: 'Tuition', key: 'tuition', width: 12 },
-      { header: 'Full Time', key: 'fullTime', width: 20 },
-      { header: 'Part Time', key: 'partTime', width: 20 },
+      { header: "Family", key: "family", width: 25 },
+      { header: "Signed", key: "signed", width: 10 },
+      { header: "Tuition", key: "tuition", width: 12 },
+      { header: "Full Time", key: "fullTime", width: 20 },
+      { header: "Part Time", key: "partTime", width: 20 },
     ];
 
     // Add data rows
     sortedContracts.forEach((contract) => {
       worksheet.addRow({
-        family: contract.familyName || '',
-        signed: contract.isSigned ? 'Signed' : '',
-        tuition: contract.tuition?.toFixed(2) || '0.00',
-        fullTime: contract.fullTimeNames || '',
-        partTime: contract.partTimeNames || '',
+        family: contract.familyName || "",
+        signed: contract.isSigned ? "Signed" : "",
+        tuition: contract.tuition?.toFixed(2) || "0.00",
+        fullTime: contract.fullTimeNames || "",
+        partTime: contract.partTimeNames || "",
       });
     });
 
@@ -218,11 +218,11 @@ function YearContracts() {
     // Generate Excel file
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new window.Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
     // Create safe filename
-    const safeName = year.name.replace(/[\W_]+/g, '');
+    const safeName = year.name.replace(/[\W_]+/g, "");
     saveAs(blob, `${safeName}Contracts.xlsx`);
   };
 
@@ -230,7 +230,7 @@ function YearContracts() {
 
   // Sorted contracts
   const sortedContracts = useMemo(() => {
-    return _.orderBy(contracts, 'familyNameAndGuardians', 'asc');
+    return _.orderBy(contracts, "familyNameAndGuardians", "asc");
   }, [contracts]);
 
   // Filtered contracts based on search
@@ -240,16 +240,16 @@ function YearContracts() {
     const searchLower = search.toLowerCase();
     return sortedContracts.filter((contract) => {
       return (
-        String(contract.familyName || '')
+        String(contract.familyName || "")
           .toLowerCase()
           .includes(searchLower) ||
-        String(contract.familyNameAndGuardians || '')
+        String(contract.familyNameAndGuardians || "")
           .toLowerCase()
           .includes(searchLower) ||
-        String(contract.fullTimeNames || '')
+        String(contract.fullTimeNames || "")
           .toLowerCase()
           .includes(searchLower) ||
-        String(contract.partTimeNames || '')
+        String(contract.partTimeNames || "")
           .toLowerCase()
           .includes(searchLower)
       );
@@ -268,22 +268,22 @@ function YearContracts() {
 
   // Total revenue
   const revenue = useMemo(() => {
-    return _.sumBy(contracts, 'tuition') || 0;
+    return _.sumBy(contracts, "tuition") || 0;
   }, [contracts]);
 
   // Assistance amount
   const assistance = useMemo(() => {
-    return _.sumBy(contracts, 'assistanceAmount') || 0;
+    return _.sumBy(contracts, "assistanceAmount") || 0;
   }, [contracts]);
 
   // Signed revenue
   const signedRevenue = useMemo(() => {
-    return _.sumBy(signedContracts, 'tuition') || 0;
+    return _.sumBy(signedContracts, "tuition") || 0;
   }, [signedContracts]);
 
   // Unsigned revenue
   const unsignedRevenue = useMemo(() => {
-    return _.sumBy(unsignedContracts, 'tuition') || 0;
+    return _.sumBy(unsignedContracts, "tuition") || 0;
   }, [unsignedContracts]);
 
   // Student counts
@@ -330,14 +330,14 @@ function YearContracts() {
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h5" color="error">
-          {error || 'Year not found'}
+          {error || "Year not found"}
         </Typography>
       </Paper>
     );
   }
 
   return (
-    <Paper elevation={2} sx={{ overflow: 'hidden' }}>
+    <Paper elevation={2} sx={{ overflow: "hidden" }}>
       <AppBar position="relative" sx={{ bgcolor: theme.palette.green[900] }}>
         <Toolbar>
           <Typography variant="h6" component="h1">
@@ -351,24 +351,24 @@ function YearContracts() {
             size="small"
             sx={{
               ml: 2,
-              width: { xs: '120px', sm: '200px' },
-              '& .MuiOutlinedInput-root': {
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-                '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.15)',
+              width: { xs: "120px", sm: "200px" },
+              "& .MuiOutlinedInput-root": {
+                bgcolor: "rgba(255, 255, 255, 0.1)",
+                "&:hover": {
+                  bgcolor: "rgba(255, 255, 255, 0.15)",
                 },
               },
-              '& .MuiInputBase-input': {
-                color: 'white',
+              "& .MuiInputBase-input": {
+                color: "white",
               },
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'rgba(255, 255, 255, 0.3)',
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255, 255, 255, 0.3)",
               },
             }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ color: 'white' }} />
+                  <SearchIcon sx={{ color: "white" }} />
                 </InputAdornment>
               ),
             }}
@@ -436,7 +436,7 @@ function YearContracts() {
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
+                      sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
                     >
                       {column.label}
                     </TableCell>
@@ -457,8 +457,8 @@ function YearContracts() {
                       </Link>
                     </TableCell>
                     <TableCell align="right">{formatCurrency(contract.tuition)}</TableCell>
-                    <TableCell>{contract.fullTimeNames || ''}</TableCell>
-                    <TableCell>{contract.partTimeNames || ''}</TableCell>
+                    <TableCell>{contract.fullTimeNames || ""}</TableCell>
+                    <TableCell>{contract.partTimeNames || ""}</TableCell>
                     <TableCell align="center">
                       {contract.tuitionAssistanceRequested &&
                         !contract.tuitionAssistanceGranted && (
@@ -482,9 +482,9 @@ function YearContracts() {
                     <TableCell align="center">
                       <Box
                         sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                           gap: 1,
                         }}
                       >
@@ -493,15 +493,15 @@ function YearContracts() {
                             size="small"
                             onClick={() => handleEditContract(contract.familyID)}
                             sx={{
-                              color: 'white',
+                              color: "white",
                               bgcolor: theme.palette.brown[500],
-                              '&:hover': { bgcolor: theme.palette.brown[700] },
-                              p: '3px',
-                              width: '24px',
-                              height: '24px',
+                              "&:hover": { bgcolor: theme.palette.brown[700] },
+                              p: "3px",
+                              width: "24px",
+                              height: "24px",
                             }}
                           >
-                            <EditIcon sx={{ fontSize: '16px' }} />
+                            <EditIcon sx={{ fontSize: "16px" }} />
                           </IconButton>
                         </Tooltip>
 
@@ -513,15 +513,15 @@ function YearContracts() {
                             customButton={
                               <IconButton
                                 sx={{
-                                  color: 'white',
+                                  color: "white",
                                   bgcolor: theme.palette.green[800],
-                                  '&:hover': { bgcolor: theme.palette.green[900] },
-                                  p: '3px',
-                                  width: '24px',
-                                  height: '24px',
+                                  "&:hover": { bgcolor: theme.palette.green[900] },
+                                  p: "3px",
+                                  width: "24px",
+                                  height: "24px",
                                 }}
                               >
-                                <PictureAsPdfIcon sx={{ fontSize: '16px' }} />
+                                <PictureAsPdfIcon sx={{ fontSize: "16px" }} />
                               </IconButton>
                             }
                           />
@@ -547,7 +547,7 @@ function YearContracts() {
       {/* Contract Edit Dialog */}
       <ContractEditDialog
         open={editDialogOpen}
-        yearId={id || ''}
+        yearId={id || ""}
         familyId={selectedFamilyId}
         onClose={() => setEditDialogOpen(false)}
         onSave={handleContractSaved}

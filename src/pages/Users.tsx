@@ -1,4 +1,4 @@
-import UserList from './UserList';
+import UserList from "./UserList";
 
 function Users() {
   return <UserList />;

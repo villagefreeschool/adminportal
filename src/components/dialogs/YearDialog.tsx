@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
 import {
-  Dialog,
-  DialogContent,
-  DialogActions,
+  AppBar,
+  Box,
   Button,
   CircularProgress,
-  AppBar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
   Toolbar,
   Typography,
-  Box,
-  IconButton,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import SaveIcon from '@mui/icons-material/Save';
-import YearForm from '../YearForm';
-import YearTuitionChart from '../YearTuitionChart';
-import { Year } from '../../services/firebase/years';
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import type { Year } from "../../services/firebase/years";
+import YearForm from "../YearForm";
+import YearTuitionChart from "../YearTuitionChart";
 
 interface YearDialogProps {
   open: boolean;
@@ -71,7 +71,7 @@ export default function YearDialog({
       await onSave(formData);
       onClose();
     } catch (error) {
-      console.error('Error saving year:', error);
+      console.error("Error saving year:", error);
     } finally {
       setSaving(false);
     }
@@ -85,7 +85,7 @@ export default function YearDialog({
       maxWidth="md"
       aria-labelledby="year-dialog-title"
     >
-      <AppBar position="static" color="primary" sx={{ bgcolor: 'green.900' }}>
+      <AppBar position="static" color="primary" sx={{ bgcolor: "green.900" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} id="year-dialog-title">
             {title}
@@ -131,9 +131,9 @@ export default function YearDialog({
             variant="contained"
             startIcon={<SaveIcon />}
             disabled={!formValid || saving}
-            sx={{ bgcolor: 'brown.500', '&:hover': { bgcolor: 'brown.700' } }}
+            sx={{ bgcolor: "brown.500", "&:hover": { bgcolor: "brown.700" } }}
           >
-            {saving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+            {saving ? <CircularProgress size={24} color="inherit" /> : "Save"}
           </Button>
         </DialogActions>
       </form>

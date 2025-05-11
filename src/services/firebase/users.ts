@@ -1,6 +1,6 @@
-import { doc, getDocs, setDoc, getDoc, collection } from 'firebase/firestore';
-import { VFSAdminUser } from './models/types';
-import { db } from './core';
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { db } from "./core";
+import type { VFSAdminUser } from "./models/types";
 
 /**
  * Fetch all users
@@ -8,32 +8,32 @@ import { db } from './core';
 export async function fetchUsers(): Promise<VFSAdminUser[]> {
   try {
     // Ensure we're using the correct collection reference
-    const usersCollection = collection(db, 'users');
+    const usersCollection = collection(db, "users");
     const querySnapshot = await getDocs(usersCollection);
     const users: VFSAdminUser[] = [];
 
     if (querySnapshot.empty) {
-      console.log('No users found in the database');
+      console.log("No users found in the database");
       return [];
     }
 
     querySnapshot.forEach((docSnapshot) => {
       if (docSnapshot.exists()) {
-        const data = docSnapshot.data() as Omit<VFSAdminUser, 'email'>;
+        const data = docSnapshot.data() as Omit<VFSAdminUser, "email">;
         users.push({
           ...data,
           email: docSnapshot.id,
           isAdmin: data.isAdmin ?? false,
           isStaff: data.isStaff ?? false,
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
         });
       }
     });
 
     return users;
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error("Error fetching users:", error);
     throw error;
   }
 }
@@ -44,7 +44,7 @@ export async function fetchUsers(): Promise<VFSAdminUser[]> {
 export async function fetchUser(email: string): Promise<VFSAdminUser | null> {
   try {
     // Use direct collection reference
-    const userDoc = await getDoc(doc(collection(db, 'users'), email));
+    const userDoc = await getDoc(doc(collection(db, "users"), email));
 
     if (!userDoc.exists()) {
       console.log(`User ${email} not found in database`);
@@ -57,8 +57,8 @@ export async function fetchUser(email: string): Promise<VFSAdminUser | null> {
       email: userDoc.id,
       isAdmin: userData.isAdmin ?? false,
       isStaff: userData.isStaff ?? false,
-      firstName: userData.firstName || '',
-      lastName: userData.lastName || '',
+      firstName: userData.firstName || "",
+      lastName: userData.lastName || "",
     } as VFSAdminUser;
   } catch (error) {
     console.error(`Error fetching user ${email}:`, error);
@@ -72,7 +72,7 @@ export async function fetchUser(email: string): Promise<VFSAdminUser | null> {
 export async function saveUser(user: VFSAdminUser): Promise<VFSAdminUser> {
   try {
     if (!user.email) {
-      throw new Error('User email is required');
+      throw new Error("User email is required");
     }
 
     // Create a copy of the user object with boolean values ensured
@@ -83,8 +83,8 @@ export async function saveUser(user: VFSAdminUser): Promise<VFSAdminUser> {
     userCopy.isStaff = Boolean(userCopy.isStaff);
 
     // Ensure firstName and lastName are strings
-    userCopy.firstName = String(userCopy.firstName || '');
-    userCopy.lastName = String(userCopy.lastName || '');
+    userCopy.firstName = String(userCopy.firstName || "");
+    userCopy.lastName = String(userCopy.lastName || "");
 
     // Create a copy of the data to save, excluding the email
     const userToSave = {
@@ -95,10 +95,10 @@ export async function saveUser(user: VFSAdminUser): Promise<VFSAdminUser> {
     };
 
     // Email is used as the document ID - use direct collection reference
-    await setDoc(doc(collection(db, 'users'), user.email), userToSave);
+    await setDoc(doc(collection(db, "users"), user.email), userToSave);
     return { ...userToSave, email: user.email };
   } catch (error) {
-    console.error('Error saving user:', error);
+    console.error("Error saving user:", error);
     throw error;
   }
 }

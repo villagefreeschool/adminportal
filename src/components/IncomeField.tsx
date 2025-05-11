@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import EditIcon from '@mui/icons-material/Edit';
-import CheckIcon from '@mui/icons-material/Check';
-import BlockIcon from '@mui/icons-material/Block';
+import BlockIcon from "@mui/icons-material/Block";
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 interface IncomeFieldProps {
   value: number | null | undefined;
@@ -25,7 +26,7 @@ interface IncomeFieldProps {
 const IncomeField: React.FC<IncomeFieldProps> = ({
   value,
   onChange,
-  label = 'Income',
+  label = "Income",
   required = false,
   error = false,
   helperText,
@@ -74,13 +75,13 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: React.ChangeEvent<any>) => {
     const input = e.target.value;
-    const numbers = input.replace(/[^0-9]/g, '');
+    const numbers = input.replace(/[^0-9]/g, "");
 
-    if (numbers === '') {
+    if (numbers === "") {
       setDisplayedValue(null);
       onChange(null);
     } else {
-      const numericValue = parseInt(numbers, 10);
+      const numericValue = Number.parseInt(numbers, 10);
       setDisplayedValue(numericValue);
       onChange(numericValue);
     }
@@ -88,10 +89,10 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
 
   // Format the value for display
   const formatValue = (input: number | null | undefined): string => {
-    if (input === null || input === undefined) return '';
+    if (input === null || input === undefined) return "";
 
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
+    return new Intl.NumberFormat("en-US", {
+      style: "decimal",
       maximumFractionDigits: 0,
     }).format(input);
   };

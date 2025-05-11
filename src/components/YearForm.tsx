@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
-import { TextField, Checkbox, FormControlLabel, Typography, Box } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import {
-  DefaultMinimumIncome,
   DefaultMaximumIncome,
-  DefaultMinimumTuition,
   DefaultMaximumTuition,
-  Year,
-} from '../services/firebase/years';
+  DefaultMinimumIncome,
+  DefaultMinimumTuition,
+  type Year,
+} from "../services/firebase/years";
 
 // Input formatter for currency fields
 const formatCurrency = (value: string): string => {
-  const numericValue = value.replace(/[^0-9]/g, '');
+  const numericValue = value.replace(/[^0-9]/g, "");
 
-  if (!numericValue) return '';
+  if (!numericValue) return "";
 
-  const number = parseInt(numericValue, 10);
-  return number.toLocaleString('en-US');
+  const number = Number.parseInt(numericValue, 10);
+  return number.toLocaleString("en-US");
 };
 
 // Parse currency string to number value
 const parseCurrency = (value: string): number => {
-  return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+  return Number.parseInt(value.replace(/[^0-9]/g, ""), 10) || 0;
 };
 
 interface YearFormProps {
@@ -32,7 +32,7 @@ interface YearFormProps {
 export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormProps) {
   // Local state for form handling
   const [formValues, setFormValues] = useState<Partial<Year>>({
-    name: '',
+    name: "",
     minimumTuition: DefaultMinimumTuition,
     maximumTuition: DefaultMaximumTuition,
     minimumIncome: DefaultMinimumIncome,
@@ -45,7 +45,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
   // Update local state when props change
   useEffect(() => {
     setFormValues({
-      name: '',
+      name: "",
       minimumTuition: DefaultMinimumTuition,
       maximumTuition: DefaultMaximumTuition,
       minimumIncome: DefaultMinimumIncome,
@@ -71,84 +71,84 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
 
   // Handle key down events for Enter key
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && onEnterKeySubmit && !e.shiftKey) {
+    if (e.key === "Enter" && onEnterKeySubmit && !e.shiftKey) {
       e.preventDefault();
       onEnterKeySubmit();
     }
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <TextField
         label="Name"
         fullWidth
         required
-        value={formValues.name || ''}
-        onChange={(e) => handleChange('name', e.target.value)}
+        value={formValues.name || ""}
+        onChange={(e) => handleChange("name", e.target.value)}
         onKeyDown={handleKeyDown}
-        inputProps={{ 'data-testid': 'year-name-input' }}
+        inputProps={{ "data-testid": "year-name-input" }}
       />
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <TextField
             label="Minimum Tuition"
             fullWidth
             required
-            value={formatCurrency(formValues.minimumTuition?.toString() || '')}
-            onChange={(e) => handleCurrencyChange('minimumTuition', e.target.value)}
+            value={formatCurrency(formValues.minimumTuition?.toString() || "")}
+            onChange={(e) => handleCurrencyChange("minimumTuition", e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
               startAdornment: <Typography>$</Typography>,
             }}
-            inputProps={{ 'data-testid': 'minimum-tuition-input' }}
+            inputProps={{ "data-testid": "minimum-tuition-input" }}
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <TextField
             label="Maximum Tuition"
             fullWidth
             required
-            value={formatCurrency(formValues.maximumTuition?.toString() || '')}
-            onChange={(e) => handleCurrencyChange('maximumTuition', e.target.value)}
+            value={formatCurrency(formValues.maximumTuition?.toString() || "")}
+            onChange={(e) => handleCurrencyChange("maximumTuition", e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
               startAdornment: <Typography>$</Typography>,
             }}
-            inputProps={{ 'data-testid': 'maximum-tuition-input' }}
+            inputProps={{ "data-testid": "maximum-tuition-input" }}
           />
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <TextField
             label="Minimum Income"
             fullWidth
             required
-            value={formatCurrency(formValues.minimumIncome?.toString() || '')}
-            onChange={(e) => handleCurrencyChange('minimumIncome', e.target.value)}
+            value={formatCurrency(formValues.minimumIncome?.toString() || "")}
+            onChange={(e) => handleCurrencyChange("minimumIncome", e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
               startAdornment: <Typography>$</Typography>,
             }}
-            inputProps={{ 'data-testid': 'minimum-income-input' }}
+            inputProps={{ "data-testid": "minimum-income-input" }}
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <TextField
             label="Maximum Income"
             fullWidth
             required
-            value={formatCurrency(formValues.maximumIncome?.toString() || '')}
-            onChange={(e) => handleCurrencyChange('maximumIncome', e.target.value)}
+            value={formatCurrency(formValues.maximumIncome?.toString() || "")}
+            onChange={(e) => handleCurrencyChange("maximumIncome", e.target.value)}
             onKeyDown={handleKeyDown}
             InputProps={{
               startAdornment: <Typography>$</Typography>,
             }}
-            inputProps={{ 'data-testid': 'maximum-income-input' }}
+            inputProps={{ "data-testid": "maximum-income-input" }}
           />
         </Box>
       </Box>
@@ -158,7 +158,7 @@ export default function YearForm({ year, onChange, onEnterKeySubmit }: YearFormP
           control={
             <Checkbox
               checked={formValues.isAcceptingRegistrations || false}
-              onChange={(e) => handleChange('isAcceptingRegistrations', e.target.checked)}
+              onChange={(e) => handleChange("isAcceptingRegistrations", e.target.checked)}
               data-testid="registration-checkbox"
             />
           }

@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import {
-  Container,
+  Alert,
   Card,
   CardContent,
   CardHeader,
-  Typography,
-  Alert,
+  Container,
   LinearProgress,
-} from '@mui/material';
-import { Grid } from '@mui/material';
-import { Family, Year } from '../services/firebase/models/types';
-import { fetchFamily } from '../services/firebase/families';
-import { fetchYears } from '../services/firebase/years';
-import Contract from '../components/Contract';
-import { useAuth } from '../contexts/useAuth';
+  Typography,
+} from "@mui/material";
+import { Grid } from "@mui/material";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Contract from "../components/Contract";
+import { useAuth } from "../contexts/useAuth";
+import { fetchFamily } from "../services/firebase/families";
+import type { Family, Year } from "../services/firebase/models/types";
+import { fetchYears } from "../services/firebase/years";
 
 /**
  * Registration page shows contract information for family registration
@@ -47,7 +48,7 @@ const Registration: React.FC = () => {
           setFamily(myFamily);
         }
       } catch (error) {
-        console.error('Error loading data:', error);
+        console.error("Error loading data:", error);
       } finally {
         setLoading(false);
       }
@@ -87,7 +88,7 @@ const Registration: React.FC = () => {
             <Card>
               <CardHeader
                 title={`${family.name} Registration For ${year.name}`}
-                sx={{ bgcolor: 'green.900', color: 'white' }}
+                sx={{ bgcolor: "green.900", color: "white" }}
               />
               <CardContent>
                 {!family.students ? (

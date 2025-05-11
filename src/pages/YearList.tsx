@@ -1,65 +1,65 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import AddIcon from "@mui/icons-material/Add";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DescriptionIcon from "@mui/icons-material/Description";
+import EditIcon from "@mui/icons-material/Edit";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import {
+  AppBar,
+  Box,
+  CircularProgress,
+  Fab,
+  IconButton,
+  Link,
   Paper,
-  Typography,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
-  Link,
-  Box,
-  CircularProgress,
-  Fab,
-  Tooltip,
-  AppBar,
-  Toolbar,
   TableSortLabel,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import DescriptionIcon from '@mui/icons-material/Description';
-import YearDialog from '../components/dialogs/YearDialog';
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import YearDialog from "../components/dialogs/YearDialog";
 import {
-  Year,
-  fetchYears,
-  fetchYear,
-  createYear,
-  updateYear,
-  DefaultMinimumIncome,
   DefaultMaximumIncome,
-  DefaultMinimumTuition,
   DefaultMaximumTuition,
-} from '../services/firebase/years';
+  DefaultMinimumIncome,
+  DefaultMinimumTuition,
+  type Year,
+  createYear,
+  fetchYear,
+  fetchYears,
+  updateYear,
+} from "../services/firebase/years";
 
-type Order = 'asc' | 'desc';
+type Order = "asc" | "desc";
 type OrderBy = keyof Year;
 
 interface HeadCell {
   id: OrderBy;
   label: string;
   numeric: boolean;
-  align?: 'left' | 'right' | 'center';
+  align?: "left" | "right" | "center";
   sortable: boolean;
 }
 
 const headCells: HeadCell[] = [
-  { id: 'name', label: 'Name', numeric: false, align: 'left', sortable: true },
-  { id: 'minimumTuition', label: 'Min Tuition', numeric: true, align: 'right', sortable: true },
-  { id: 'maximumTuition', label: 'Max Tuition', numeric: true, align: 'right', sortable: true },
+  { id: "name", label: "Name", numeric: false, align: "left", sortable: true },
+  { id: "minimumTuition", label: "Min Tuition", numeric: true, align: "right", sortable: true },
+  { id: "maximumTuition", label: "Max Tuition", numeric: true, align: "right", sortable: true },
   {
-    id: 'isAcceptingRegistrations',
-    label: 'Registration Open',
+    id: "isAcceptingRegistrations",
+    label: "Registration Open",
     numeric: false,
-    align: 'center',
+    align: "center",
     sortable: true,
   },
-  { id: 'id', label: 'Actions', numeric: false, align: 'center', sortable: false },
+  { id: "id", label: "Actions", numeric: false, align: "center", sortable: false },
 ];
 
 function YearList() {
@@ -69,8 +69,8 @@ function YearList() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedYear, setSelectedYear] = useState<Year | null>(null);
   const [fetchingYear, setFetchingYear] = useState(false);
-  const [order, setOrder] = useState<Order>('desc');
-  const [orderBy, setOrderBy] = useState<OrderBy>('name');
+  const [order, setOrder] = useState<Order>("desc");
+  const [orderBy, setOrderBy] = useState<OrderBy>("name");
 
   // Initial data fetch
   useEffect(() => {
@@ -84,7 +84,7 @@ function YearList() {
       const data = await fetchYears();
       setYears(data);
     } catch (error) {
-      console.error('Error fetching years:', error);
+      console.error("Error fetching years:", error);
     } finally {
       setLoading(false);
     }
@@ -93,8 +93,8 @@ function YearList() {
   // Handler for new year dialog
   const handleNewYear = () => {
     setSelectedYear({
-      id: '',
-      name: '',
+      id: "",
+      name: "",
       minimumTuition: DefaultMinimumTuition,
       maximumTuition: DefaultMaximumTuition,
       minimumIncome: DefaultMinimumIncome,
@@ -115,7 +115,7 @@ function YearList() {
         setSelectedYear(year);
       }
     } catch (error) {
-      console.error('Error fetching year:', error);
+      console.error("Error fetching year:", error);
     } finally {
       setFetchingYear(false);
     }
@@ -124,10 +124,10 @@ function YearList() {
   // Handler for saving a new year
   const handleSaveNewYear = async (yearData: Partial<Year>) => {
     try {
-      await createYear(yearData as Omit<Year, 'id'>);
+      await createYear(yearData as Omit<Year, "id">);
       await loadYears();
     } catch (error) {
-      console.error('Error creating year:', error);
+      console.error("Error creating year:", error);
       throw error;
     }
   };
@@ -140,16 +140,16 @@ function YearList() {
       await updateYear(yearData as Year);
       await loadYears();
     } catch (error) {
-      console.error('Error updating year:', error);
+      console.error("Error updating year:", error);
       throw error;
     }
   };
 
   // Format currency for display
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
@@ -157,8 +157,8 @@ function YearList() {
 
   // Handle column sort changes
   const handleRequestSort = (property: OrderBy) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -174,32 +174,32 @@ function YearList() {
       }
 
       // For boolean values
-      if (typeof aValue === 'boolean') {
-        return (order === 'asc' ? 1 : -1) * (aValue === bValue ? 0 : aValue ? -1 : 1);
+      if (typeof aValue === "boolean") {
+        return (order === "asc" ? 1 : -1) * (aValue === bValue ? 0 : aValue ? -1 : 1);
       }
 
       // For string values (case-insensitive comparison)
-      if (typeof aValue === 'string') {
-        return (order === 'asc' ? 1 : -1) * aValue.localeCompare(bValue as string);
+      if (typeof aValue === "string") {
+        return (order === "asc" ? 1 : -1) * aValue.localeCompare(bValue as string);
       }
 
       // For numeric values
-      return (order === 'asc' ? 1 : -1) * ((aValue as number) - (bValue as number));
+      return (order === "asc" ? 1 : -1) * ((aValue as number) - (bValue as number));
     });
     return sortedData;
   }, [years, order, orderBy]);
 
   return (
     <>
-      <Paper elevation={2} sx={{ overflow: 'hidden' }}>
-        <AppBar position="relative" sx={{ bgcolor: 'green.900' }}>
+      <Paper elevation={2} sx={{ overflow: "hidden" }}>
+        <AppBar position="relative" sx={{ bgcolor: "green.900" }}>
           <Toolbar>
             <Typography variant="h6" component="h1">
               School Years
             </Typography>
           </Toolbar>
           {/* Toolbar extension with the FAB */}
-          <Box sx={{ position: 'relative', height: '28px' }}>
+          <Box sx={{ position: "relative", height: "28px" }}>
             <Tooltip title="Add new school year">
               <Fab
                 color="primary"
@@ -207,7 +207,7 @@ function YearList() {
                 onClick={handleNewYear}
                 size="large"
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   bottom: -21,
                   left: 24,
                   zIndex: 1,
@@ -232,17 +232,17 @@ function YearList() {
                     {headCells.map((headCell) => (
                       <TableCell
                         key={headCell.id}
-                        align={headCell.align || 'left'}
+                        align={headCell.align || "left"}
                         sortDirection={orderBy === headCell.id ? order : false}
                         sx={{
-                          fontWeight: 'bold',
-                          whiteSpace: 'nowrap',
+                          fontWeight: "bold",
+                          whiteSpace: "nowrap",
                         }}
                       >
                         {headCell.sortable ? (
                           <TableSortLabel
                             active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
+                            direction={orderBy === headCell.id ? order : "asc"}
                             onClick={() => handleRequestSort(headCell.id)}
                           >
                             {headCell.label}
@@ -268,9 +268,9 @@ function YearList() {
                       <TableCell align="center">
                         <Box
                           sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
                             gap: 1,
                           }}
                         >
@@ -280,11 +280,11 @@ function YearList() {
                               to={`/years/${year.id}/contracts`}
                               color="inherit"
                               sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                textDecoration: 'none',
-                                '&:hover': {
-                                  color: 'brown.500',
+                                display: "flex",
+                                alignItems: "center",
+                                textDecoration: "none",
+                                "&:hover": {
+                                  color: "brown.500",
                                 },
                               }}
                             >
@@ -299,11 +299,11 @@ function YearList() {
                               to={`/years/${year.id}/roster`}
                               color="inherit"
                               sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                textDecoration: 'none',
-                                '&:hover': {
-                                  color: 'brown.500',
+                                display: "flex",
+                                alignItems: "center",
+                                textDecoration: "none",
+                                "&:hover": {
+                                  color: "brown.500",
                                 },
                               }}
                             >
@@ -317,7 +317,7 @@ function YearList() {
                               size="small"
                               onClick={() => handleEditYear(year.id)}
                               color="primary"
-                              sx={{ color: 'brown.500', p: 0 }}
+                              sx={{ color: "brown.500", p: 0 }}
                             >
                               <EditIcon fontSize="small" />
                             </IconButton>
@@ -345,7 +345,7 @@ function YearList() {
       {/* Edit Year Dialog */}
       <YearDialog
         open={editDialogOpen}
-        title={`Edit Year ${selectedYear?.name || ''}`}
+        title={`Edit Year ${selectedYear?.name || ""}`}
         year={selectedYear || {}}
         loading={fetchingYear}
         onClose={() => setEditDialogOpen(false)}

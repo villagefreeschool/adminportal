@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { tuitionForIncome, formatCurrency } from '../services/tuitioncalc';
-import { Year } from '../services/firebase/years';
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import { useMemo } from "react";
+import type { Year } from "../services/firebase/years";
+import { formatCurrency, tuitionForIncome } from "../services/tuitioncalc";
 
 interface YearTuitionChartProps {
   year: Year;
@@ -35,7 +35,7 @@ export default function YearTuitionChart({ year }: YearTuitionChartProps) {
   };
 
   return (
-    <Paper sx={{ bgcolor: 'grey.100', p: 3, mt: 3 }} elevation={0}>
+    <Paper sx={{ bgcolor: "grey.100", p: 3, mt: 3 }} elevation={0}>
       <Typography variant="h5" component="h3" gutterBottom>
         Sliding Scale
       </Typography>
@@ -43,7 +43,7 @@ export default function YearTuitionChart({ year }: YearTuitionChartProps) {
       <TableContainer component={Paper} elevation={0}>
         <Table size="small" aria-label="tuition sliding scale">
           <TableHead>
-            <TableRow sx={{ '& .MuiTableCell-root': { fontWeight: 'bold' } }}>
+            <TableRow sx={{ "& .MuiTableCell-root": { fontWeight: "bold" } }}>
               <TableCell align="right">Income</TableCell>
               <TableCell align="right">Full Time</TableCell>
               <TableCell align="right">Part Time</TableCell>

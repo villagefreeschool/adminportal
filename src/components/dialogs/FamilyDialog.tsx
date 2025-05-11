@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SaveIcon from "@mui/icons-material/Save";
 import {
-  Dialog,
-  DialogContent,
-  DialogActions,
+  AppBar,
+  Box,
   Button,
   CircularProgress,
-  AppBar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
   Toolbar,
   Typography,
-  Box,
-  IconButton,
   useMediaQuery,
   useTheme,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FamilyForm from '../FamilyForm';
-import { Family } from '../../services/firebase/models/types';
+} from "@mui/material";
+import React, { useState } from "react";
+import type { Family } from "../../services/firebase/models/types";
+import FamilyForm from "../FamilyForm";
 
 interface FamilyDialogProps {
   open: boolean;
@@ -47,7 +47,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   isEditing = false,
 }) => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const fullScreen = forcedFullScreen !== undefined ? forcedFullScreen : isSmallScreen;
   const [localFamily, setLocalFamily] = useState<Family>(family);
   const [saving, setSaving] = useState(false);
@@ -72,8 +72,8 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
       await onSave(localFamily);
       onClose();
     } catch (err) {
-      console.error('Error saving family:', err);
-      setError('An error occurred while saving. Please try again.');
+      console.error("Error saving family:", err);
+      setError("An error occurred while saving. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -83,7 +83,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   const handleDelete = async () => {
     if (
       !onDelete ||
-      !window.confirm('Are you sure you want to delete this family? This action cannot be undone.')
+      !window.confirm("Are you sure you want to delete this family? This action cannot be undone.")
     ) {
       return;
     }
@@ -95,8 +95,8 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
       await onDelete(localFamily);
       onClose();
     } catch (err) {
-      console.error('Error deleting family:', err);
-      setError('An error occurred while deleting. Please try again.');
+      console.error("Error deleting family:", err);
+      setError("An error occurred while deleting. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -155,7 +155,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
             variant="outlined"
             disabled={saving || loading}
             startIcon={<DeleteIcon />}
-            sx={{ mr: 'auto' }}
+            sx={{ mr: "auto" }}
           >
             Delete
           </Button>
@@ -168,7 +168,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
           startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
           sx={{
             bgcolor: theme.palette.brown[500],
-            '&:hover': { bgcolor: theme.palette.brown[700] },
+            "&:hover": { bgcolor: theme.palette.brown[700] },
           }}
         >
           Save

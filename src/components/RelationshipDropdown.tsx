@@ -1,6 +1,6 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import type React from "react";
 
 interface RelationshipDropdownProps {
   value: string;
@@ -22,29 +22,29 @@ const RelationshipDropdown: React.FC<RelationshipDropdownProps> = ({
   helperText,
 }) => {
   const relationships = [
-    'Father',
-    'Mother',
-    'Parent',
-    'Grandparent',
-    'Stepfather',
-    'Stepmother',
-    'Brother',
-    'Sister',
-    'Legal Guardian',
-    'Uncle',
-    'Aunt',
-    'Step-grandparent',
-    'Friend',
-    'Neighbor',
-    'Housemate',
-    'Other',
+    "Father",
+    "Mother",
+    "Parent",
+    "Grandparent",
+    "Stepfather",
+    "Stepmother",
+    "Brother",
+    "Sister",
+    "Legal Guardian",
+    "Uncle",
+    "Aunt",
+    "Step-grandparent",
+    "Friend",
+    "Neighbor",
+    "Housemate",
+    "Other",
   ];
 
   return (
     <TextField
       select
       label="Relationship"
-      value={value || ''}
+      value={value || ""}
       onChange={(e) => onChange(e.target.value)}
       fullWidth
       required={required}

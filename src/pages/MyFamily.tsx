@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import EditIcon from "@mui/icons-material/Edit";
 import {
-  Paper,
-  Typography,
   Box,
   Button,
   Card,
-  CardHeader,
   CardContent,
-  Divider,
+  CardHeader,
   CircularProgress,
+  Divider,
   IconButton,
+  Paper,
   Tooltip,
-} from '@mui/material';
-import { Grid } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import { Family } from '../services/firebase/models/types';
-import { fetchFamily, saveFamily, calculatedNameForFamily } from '../services/firebase/families';
-import FamilyDialog from '../components/dialogs/FamilyDialog';
-import { useAuth } from '../contexts/useAuth';
-import LabeledData from '../components/LabeledData';
-import Guardian from '../components/Guardian';
-import Student from '../components/Student';
+  Typography,
+} from "@mui/material";
+import { Grid } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import Guardian from "../components/Guardian";
+import LabeledData from "../components/LabeledData";
+import Student from "../components/Student";
+import FamilyDialog from "../components/dialogs/FamilyDialog";
+import { useAuth } from "../contexts/useAuth";
+import { calculatedNameForFamily, fetchFamily, saveFamily } from "../services/firebase/families";
+import type { Family } from "../services/firebase/models/types";
 
 function MyFamily() {
   const { myFamily: contextFamily, isLoading: authLoading } = useAuth();
@@ -51,11 +51,11 @@ function MyFamily() {
       if (data) {
         setFamily(data);
       } else {
-        setError('Family not found');
+        setError("Family not found");
       }
     } catch (err) {
-      console.error('Error loading family:', err);
-      setError('Error loading family data');
+      console.error("Error loading family:", err);
+      setError("Error loading family data");
     } finally {
       setLoading(false);
     }
@@ -68,7 +68,7 @@ function MyFamily() {
       await loadFamily(updatedFamily.id);
       setEditDialogOpen(false);
     } catch (err) {
-      console.error('Error updating family:', err);
+      console.error("Error updating family:", err);
       throw err;
     }
   };
@@ -91,8 +91,8 @@ function MyFamily() {
         </Typography>
         <Typography>
           {authLoading
-            ? 'Loading your profile...'
-            : 'You do not have a family profile yet. Please contact the school to set up your account.'}
+            ? "Loading your profile..."
+            : "You do not have a family profile yet. Please contact the school to set up your account."}
         </Typography>
       </Paper>
     );
@@ -237,7 +237,7 @@ function MyFamily() {
               <Card>
                 <CardHeader title="Pick Up List" />
                 <CardContent>
-                  <Typography variant="body-md" component="pre" sx={{ whiteSpace: 'pre-wrap' }}>
+                  <Typography variant="body-md" component="pre" sx={{ whiteSpace: "pre-wrap" }}>
                     {family.pickupList}
                   </Typography>
                 </CardContent>

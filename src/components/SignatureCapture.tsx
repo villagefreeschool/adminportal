@@ -1,7 +1,7 @@
-import React, { useRef, useState, useCallback } from 'react';
-import { Box, Button, Typography, Paper } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import SaveIcon from '@mui/icons-material/Save';
+import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
+import { Box, Button, Paper, Typography } from "@mui/material";
+import React, { useRef, useState, useCallback } from "react";
 
 interface SignatureCaptureProps {
   onSave: (signatureData: string) => void;
@@ -20,7 +20,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
   onCancel,
   width = 500,
   height = 200,
-  label = 'Sign here',
+  label = "Sign here",
   initialSignature,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -46,19 +46,19 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Set canvas context properties
     ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#000';
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#000";
 
     // If there's an initial signature, load it
     if (initialSignature) {
       // Create image element for loading the signature
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.onload = () => {
         if (ctx) {
           // Clear first
@@ -69,12 +69,12 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
         }
       };
       img.onerror = (err) => {
-        console.error('Error loading initial signature:', err);
+        console.error("Error loading initial signature:", err);
         clearCanvas();
       };
       img.src = initialSignature;
     } else {
-      console.log('No initial signature, clearing canvas');
+      console.log("No initial signature, clearing canvas");
       clearCanvas();
     }
   }, [initialSignature, clearCanvas]);
@@ -84,7 +84,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     setIsDrawing(true);
@@ -103,7 +103,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Get coordinates and draw line
@@ -119,7 +119,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     setIsDrawing(false);
@@ -134,7 +134,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
     const rect = canvas.getBoundingClientRect();
 
     // Get coordinates based on event type
-    if ('clientX' in e) {
+    if ("clientX" in e) {
       // Mouse event
       return {
         x: e.clientX - rect.left,
@@ -153,29 +153,29 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
 
   // Save the signature as data URL
   const saveSignature = () => {
-    console.log('Save signature clicked. Canvas ref:', !!canvasRef.current, 'isEmpty:', isEmpty);
+    console.log("Save signature clicked. Canvas ref:", !!canvasRef.current, "isEmpty:", isEmpty);
 
     if (!canvasRef.current) {
-      console.log('No canvas reference found');
+      console.log("No canvas reference found");
       return;
     }
 
     if (isEmpty) {
-      onSave('');
+      onSave("");
       return;
     }
 
     try {
-      const dataUrl = canvasRef.current.toDataURL('image/png');
-      console.log('Generated signature data URL, length:', dataUrl.length);
+      const dataUrl = canvasRef.current.toDataURL("image/png");
+      console.log("Generated signature data URL, length:", dataUrl.length);
       onSave(dataUrl);
     } catch (err) {
-      console.error('Error generating signature data URL:', err);
+      console.error("Error generating signature data URL:", err);
     }
   };
 
   return (
-    <Box sx={{ width: width, maxWidth: '100%' }}>
+    <Box sx={{ width: width, maxWidth: "100%" }}>
       <Typography variant="subtitle1" mb={1}>
         {label}
       </Typography>
@@ -184,25 +184,25 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
         sx={{
           p: 2,
           mb: 2,
-          position: 'relative',
-          border: '2px solid #3f51b5',
+          position: "relative",
+          border: "2px solid #3f51b5",
           borderRadius: 1,
-          backgroundColor: '#f9f9f9',
+          backgroundColor: "#f9f9f9",
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-          <Typography variant="subtitle2" sx={{ color: '#3f51b5', fontWeight: 'bold' }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+          <Typography variant="subtitle2" sx={{ color: "#3f51b5", fontWeight: "bold" }}>
             Draw your signature below:
           </Typography>
           <Typography
             variant="caption"
             sx={{
-              display: 'inline-block',
-              bgcolor: '#e3f2fd',
+              display: "inline-block",
+              bgcolor: "#e3f2fd",
               px: 1,
               py: 0.5,
               borderRadius: 1,
-              border: '1px dashed #2196f3',
+              border: "1px dashed #2196f3",
             }}
           >
             Click and drag to sign
@@ -211,24 +211,24 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
 
         <Box
           sx={{
-            position: 'relative',
-            border: '1px solid #3f51b5',
-            borderRadius: '4px',
-            backgroundColor: '#fff',
-            overflow: 'hidden',
-            boxShadow: 'inset 0 0 5px rgba(0,0,0,0.1)',
+            position: "relative",
+            border: "1px solid #3f51b5",
+            borderRadius: "4px",
+            backgroundColor: "#fff",
+            overflow: "hidden",
+            boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
           }}
         >
           {isEmpty && !initialSignature && (
             <Typography
               variant="body-sm"
               sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                color: '#aaa',
-                pointerEvents: 'none', // Make sure this doesn't interfere with canvas events
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                color: "#aaa",
+                pointerEvents: "none", // Make sure this doesn't interfere with canvas events
               }}
             >
               Draw here
@@ -246,9 +246,9 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
             onTouchMove={draw}
             onTouchEnd={stopDrawing}
             style={{
-              touchAction: 'none', // Prevent scrolling while drawing on mobile
-              cursor: 'crosshair',
-              display: 'block', // Remove any spacing issues
+              touchAction: "none", // Prevent scrolling while drawing on mobile
+              cursor: "crosshair",
+              display: "block", // Remove any spacing issues
             }}
           />
         </Box>
@@ -268,9 +268,9 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
             startIcon={<SaveIcon />}
             onClick={saveSignature}
             sx={{
-              fontWeight: 'bold',
-              bgcolor: '#3f51b5',
-              '&:hover': { bgcolor: '#303f9f' },
+              fontWeight: "bold",
+              bgcolor: "#3f51b5",
+              "&:hover": { bgcolor: "#303f9f" },
               px: 2,
             }}
           >

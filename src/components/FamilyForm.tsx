@@ -1,31 +1,31 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Grid from '@mui/material/Grid';
-import { useTheme } from '@mui/material/styles';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import StudentForm from './StudentForm';
-import GuardianForm from './GuardianForm';
-import EmergencyContactForm from './EmergencyContactForm';
-import MedicalProviderForm from './MedicalProviderForm';
-import IncomeField from './IncomeField';
-import {
-  Family,
-  Student,
-  Guardian,
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Checkbox from "@mui/material/Checkbox";
+import Divider from "@mui/material/Divider";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
+import type React from "react";
+import type {
   EmergencyContact,
+  Family,
+  Guardian,
   MedicalProvider,
-} from '../services/firebase/models/types';
+  Student,
+} from "../services/firebase/models/types";
+import EmergencyContactForm from "./EmergencyContactForm";
+import GuardianForm from "./GuardianForm";
+import IncomeField from "./IncomeField";
+import MedicalProviderForm from "./MedicalProviderForm";
+import StudentForm from "./StudentForm";
 
 interface FamilyFormProps {
   family: Family;
@@ -56,87 +56,87 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
   const handleStudentChange = (index: number, student: Student) => {
     const students = [...family.students];
     students[index] = student;
-    handleChange('students', students);
+    handleChange("students", students);
   };
 
   const addStudent = () => {
     const students = [...family.students];
     students.push({
-      id: '',
-      familyID: family.id || '',
-      firstName: '',
-      lastName: '',
+      id: "",
+      familyID: family.id || "",
+      firstName: "",
+      lastName: "",
       mediaRelease: true,
     });
-    handleChange('students', students);
+    handleChange("students", students);
   };
 
   const removeStudent = (index: number) => {
     const students = [...family.students];
     students.splice(index, 1);
-    handleChange('students', students);
+    handleChange("students", students);
   };
 
   // Guardian handlers
   const handleGuardianChange = (index: number, guardian: Guardian) => {
     const guardians = [...family.guardians];
     guardians[index] = guardian;
-    handleChange('guardians', guardians);
+    handleChange("guardians", guardians);
   };
 
   const addGuardian = () => {
     const guardians = [...family.guardians];
     guardians.push({
-      firstName: '',
-      lastName: '',
-      email: '',
+      firstName: "",
+      lastName: "",
+      email: "",
       atSameAddress: true,
     });
-    handleChange('guardians', guardians);
+    handleChange("guardians", guardians);
   };
 
   const removeGuardian = (index: number) => {
     const guardians = [...family.guardians];
     guardians.splice(index, 1);
-    handleChange('guardians', guardians);
+    handleChange("guardians", guardians);
   };
 
   // Emergency contact handlers
   const handleEmergencyContactChange = (index: number, contact: EmergencyContact) => {
     const contacts = [...(family.emergencyContacts || [])];
     contacts[index] = contact;
-    handleChange('emergencyContacts', contacts);
+    handleChange("emergencyContacts", contacts);
   };
 
   const addEmergencyContact = () => {
     const contacts = [...(family.emergencyContacts || [])];
-    contacts.push({ firstName: '' });
-    handleChange('emergencyContacts', contacts);
+    contacts.push({ firstName: "" });
+    handleChange("emergencyContacts", contacts);
   };
 
   const removeEmergencyContact = (index: number) => {
     const contacts = [...(family.emergencyContacts || [])];
     contacts.splice(index, 1);
-    handleChange('emergencyContacts', contacts);
+    handleChange("emergencyContacts", contacts);
   };
 
   // Medical provider handlers
   const handleMedicalProviderChange = (index: number, provider: MedicalProvider) => {
     const providers = [...(family.medicalProviders || [])];
     providers[index] = provider;
-    handleChange('medicalProviders', providers);
+    handleChange("medicalProviders", providers);
   };
 
   const addMedicalProvider = () => {
     const providers = [...(family.medicalProviders || [])];
-    providers.push({ name: '' });
-    handleChange('medicalProviders', providers);
+    providers.push({ name: "" });
+    handleChange("medicalProviders", providers);
   };
 
   const removeMedicalProvider = (index: number) => {
     const providers = [...(family.medicalProviders || [])];
     providers.splice(index, 1);
-    handleChange('medicalProviders', providers);
+    handleChange("medicalProviders", providers);
   };
 
   // Copy guardian to emergency contact
@@ -158,15 +158,15 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         notes: src.notes,
       };
 
-      handleChange('emergencyContacts', contacts);
+      handleChange("emergencyContacts", contacts);
     }
   };
 
   // Sliding scale opt out handler
   const handleSlidingScaleOptOutChange = (checked: boolean) => {
-    handleChange('slidingScaleOptOut', checked);
+    handleChange("slidingScaleOptOut", checked);
     if (checked) {
-      handleChange('grossFamilyIncome', null);
+      handleChange("grossFamilyIncome", null);
     }
   };
 
@@ -183,28 +183,28 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
   // Ensure minimum number of items in collections
   while (family.students.length < MIN_STUDENTS) {
     family.students.push({
-      id: '',
-      familyID: family.id || '',
-      firstName: '',
-      lastName: '',
+      id: "",
+      familyID: family.id || "",
+      firstName: "",
+      lastName: "",
       mediaRelease: true,
     });
   }
 
   while (family.guardians.length < MIN_GUARDIANS) {
     family.guardians.push({
-      firstName: '',
-      lastName: '',
-      email: '',
+      firstName: "",
+      lastName: "",
+      email: "",
     });
   }
 
   while (family.emergencyContacts.length < MIN_EMERGENCY_CONTACTS) {
-    family.emergencyContacts.push({ firstName: '' });
+    family.emergencyContacts.push({ firstName: "" });
   }
 
   while (family.medicalProviders.length < MIN_MEDICAL_PROVIDERS) {
-    family.medicalProviders.push({ name: '' });
+    family.medicalProviders.push({ name: "" });
   }
 
   return (
@@ -214,13 +214,13 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         <Card>
           <CardHeader
             title="Family Nickname"
-            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+            sx={{ bgcolor: theme.palette.green[900], color: "white" }}
           />
           <CardContent>
             <TextField
               label="What Should We Call Your Family?"
-              value={family.name || ''}
-              onChange={(e) => handleChange('name', e.target.value)}
+              value={family.name || ""}
+              onChange={(e) => handleChange("name", e.target.value)}
               helperText="Examples: 'Smith Family' or 'The Smiths'"
               fullWidth
               required
@@ -248,7 +248,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           <Card>
             <CardHeader
               title={`Student #${index + 1}`}
-              sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+              sx={{ bgcolor: theme.palette.green[900], color: "white" }}
               action={
                 index >= MIN_STUDENTS && (
                   <IconButton onClick={() => removeStudent(index)} color="inherit">
@@ -271,7 +271,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         <Card>
           <CardHeader
             title={`Student #${family.students.length + 1}`}
-            sx={{ bgcolor: theme.palette.grey[500], color: 'white' }}
+            sx={{ bgcolor: theme.palette.grey[500], color: "white" }}
           />
           <CardContent>
             <Box display="flex" justifyContent="center">
@@ -303,7 +303,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           <Card>
             <CardHeader
               title={`Parent / Guardian #${index + 1}`}
-              sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+              sx={{ bgcolor: theme.palette.green[900], color: "white" }}
               action={
                 index >= MIN_GUARDIANS && (
                   <IconButton onClick={() => removeGuardian(index)} color="inherit">
@@ -324,10 +324,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       ))}
 
       <Grid size={{ xs: 12, md: 6 }}>
-        <Card sx={{ height: '100%' }}>
+        <Card sx={{ height: "100%" }}>
           <CardHeader
             title={`Parent / Guardian #${family.guardians.length + 1}`}
-            sx={{ bgcolor: theme.palette.grey[500], color: 'white' }}
+            sx={{ bgcolor: theme.palette.grey[500], color: "white" }}
           />
           <CardContent>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
@@ -357,7 +357,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         <Card>
           <CardHeader
             title="Additional Adults Authorized to Pick Up"
-            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+            sx={{ bgcolor: theme.palette.green[900], color: "white" }}
           />
           <CardContent>
             <Typography variant="body-sm" paragraph>
@@ -366,8 +366,8 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
             </Typography>
             <TextField
               label="Pick Up List"
-              value={family.pickupList || ''}
-              onChange={(e) => handleChange('pickupList', e.target.value)}
+              value={family.pickupList || ""}
+              onChange={(e) => handleChange("pickupList", e.target.value)}
               multiline
               rows={4}
               fullWidth
@@ -393,7 +393,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           <Card>
             <CardHeader
               title={`Emergency Contact #${index + 1}`}
-              sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+              sx={{ bgcolor: theme.palette.green[900], color: "white" }}
               action={
                 index >= MIN_EMERGENCY_CONTACTS && (
                   <IconButton onClick={() => removeEmergencyContact(index)} color="inherit">
@@ -427,10 +427,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       ))}
 
       <Grid size={{ xs: 12, md: 6 }}>
-        <Card sx={{ height: '100%' }}>
+        <Card sx={{ height: "100%" }}>
           <CardHeader
             title={`Emergency Contact #${family.emergencyContacts.length + 1}`}
-            sx={{ bgcolor: theme.palette.grey[500], color: 'white' }}
+            sx={{ bgcolor: theme.palette.grey[500], color: "white" }}
           />
           <CardContent>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
@@ -460,24 +460,24 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         <Card>
           <CardHeader
             title="Medical Insurance"
-            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+            sx={{ bgcolor: theme.palette.green[900], color: "white" }}
           />
           <CardContent>
             <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Insurance Provider"
-                  value={family.medicalInsuranceProvider || ''}
-                  onChange={(e) => handleChange('medicalInsuranceProvider', e.target.value)}
+                  value={family.medicalInsuranceProvider || ""}
+                  onChange={(e) => handleChange("medicalInsuranceProvider", e.target.value)}
                   fullWidth
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Name of Primary Insured"
-                  value={family.medicalInsuranceNameOfPrimaryInsured || ''}
+                  value={family.medicalInsuranceNameOfPrimaryInsured || ""}
                   onChange={(e) =>
-                    handleChange('medicalInsuranceNameOfPrimaryInsured', e.target.value)
+                    handleChange("medicalInsuranceNameOfPrimaryInsured", e.target.value)
                   }
                   fullWidth
                 />
@@ -485,16 +485,16 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Policy Number"
-                  value={family.medicalInsurancePolicyNumber || ''}
-                  onChange={(e) => handleChange('medicalInsurancePolicyNumber', e.target.value)}
+                  value={family.medicalInsurancePolicyNumber || ""}
+                  onChange={(e) => handleChange("medicalInsurancePolicyNumber", e.target.value)}
                   fullWidth
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Group Number"
-                  value={family.medicalInsuranceGroupNumber || ''}
-                  onChange={(e) => handleChange('medicalInsuranceGroupNumber', e.target.value)}
+                  value={family.medicalInsuranceGroupNumber || ""}
+                  onChange={(e) => handleChange("medicalInsuranceGroupNumber", e.target.value)}
                   fullWidth
                 />
               </Grid>
@@ -508,7 +508,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
           <Card>
             <CardHeader
               title={`Medical Provider #${index + 1}`}
-              sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+              sx={{ bgcolor: theme.palette.green[900], color: "white" }}
               action={
                 index >= MIN_MEDICAL_PROVIDERS && (
                   <IconButton onClick={() => removeMedicalProvider(index)} color="inherit">
@@ -528,10 +528,10 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       ))}
 
       <Grid size={{ xs: 12, md: 6 }}>
-        <Card sx={{ height: '100%' }}>
+        <Card sx={{ height: "100%" }}>
           <CardHeader
             title={`Medical Provider #${family.medicalProviders.length + 1}`}
-            sx={{ bgcolor: theme.palette.grey[500], color: 'white' }}
+            sx={{ bgcolor: theme.palette.grey[500], color: "white" }}
           />
           <CardContent>
             <Box display="flex" justifyContent="center" height="100%" alignItems="center">
@@ -557,7 +557,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
         <Card>
           <CardHeader
             title="Sliding Scale"
-            sx={{ bgcolor: theme.palette.green[900], color: 'white' }}
+            sx={{ bgcolor: theme.palette.green[900], color: "white" }}
           />
           <CardContent>
             <Grid container justifyContent="center">
@@ -586,17 +586,17 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
               </Grid>
               <Grid
                 size={{ xs: 6, sm: 4 }}
-                style={{ display: family.slidingScaleOptOut ? 'none' : 'block' }}
+                style={{ display: family.slidingScaleOptOut ? "none" : "block" }}
               >
                 <IncomeField
                   value={family.grossFamilyIncome}
-                  onChange={(value) => handleChange('grossFamilyIncome', value)}
+                  onChange={(value) => handleChange("grossFamilyIncome", value)}
                   label="Gross Family Income"
                 />
               </Grid>
               <Grid
                 size={{ xs: 6, sm: 4 }}
-                style={{ display: family.slidingScaleOptOut ? 'block' : 'none' }}
+                style={{ display: family.slidingScaleOptOut ? "block" : "none" }}
               >
                 <Typography variant="body-sm">
                   Tuition calculation will use the full tuition rate.

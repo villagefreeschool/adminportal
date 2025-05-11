@@ -1,23 +1,23 @@
-import { useState, FormEvent } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import {
-  Container,
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  TextField,
-  Button,
   Alert,
-  CardHeader,
   Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Container,
   Link,
-} from '@mui/material';
-import { useAuth } from '../contexts/useAuth';
-import { FirebaseError } from 'firebase/app';
+  TextField,
+  Typography,
+} from "@mui/material";
+import type { FirebaseError } from "firebase/app";
+import { type FormEvent, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { useAuth } from "../contexts/useAuth";
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [formErrors, setFormErrors] = useState<{ email?: string }>({});
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
@@ -30,7 +30,7 @@ export default function ForgotPassword() {
     let isValid = true;
 
     if (!email) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
       isValid = false;
     }
 
@@ -49,10 +49,10 @@ export default function ForgotPassword() {
       await sendPasswordReset(email);
       setIsSent(true);
     } catch (error) {
-      console.error('Password reset error:', error);
+      console.error("Password reset error:", error);
       const firebaseError = error as FirebaseError;
-      if (firebaseError.code === 'auth/user-not-found') {
-        setErrorMessage('No account found with this email address');
+      if (firebaseError.code === "auth/user-not-found") {
+        setErrorMessage("No account found with this email address");
       } else {
         setErrorMessage(firebaseError.message);
       }
@@ -96,7 +96,7 @@ export default function ForgotPassword() {
       <Card>
         <CardHeader
           title="Forgot Password?"
-          sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}
+          sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}
         />
 
         <CardContent>
@@ -129,7 +129,7 @@ export default function ForgotPassword() {
           </Box>
         </CardContent>
 
-        <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+        <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
           <Link component={RouterLink} to="/login" variant="body-sm">
             Back to Login
           </Link>
@@ -145,7 +145,7 @@ export default function ForgotPassword() {
         </CardActions>
       </Card>
 
-      <Box sx={{ mt: 3, textAlign: 'center' }}>
+      <Box sx={{ mt: 3, textAlign: "center" }}>
         <Typography variant="body-sm" sx={{ mb: 1 }}>
           If you haven&apos;t created an account on the VFS Portal yet, and you don&apos;t have a
           Google Account, then you&apos;ll need to create one:

@@ -18,24 +18,24 @@ interface FirebaseConfig {
  * They're identical to the Vue configs to maintain compatibility.
  */
 export const firebaseProjectConfigs: Record<string, FirebaseConfig> = {
-  'vfsadmin-dev': {
-    apiKey: 'AIzaSyAAcO2NPCeYd5Gp4IpzMoI8zjavccf7lsk',
-    authDomain: 'vfsadmin-dev.firebaseapp.com',
-    projectId: 'vfsadmin-dev',
-    storageBucket: 'vfsadmin-dev.appspot.com',
-    messagingSenderId: '711628810105',
-    appId: '1:711628810105:web:cc7dae01d97cbc9272b1a8',
-    measurementId: 'G-X4Z5Y0KFWM',
+  "vfsadmin-dev": {
+    apiKey: "AIzaSyAAcO2NPCeYd5Gp4IpzMoI8zjavccf7lsk",
+    authDomain: "vfsadmin-dev.firebaseapp.com",
+    projectId: "vfsadmin-dev",
+    storageBucket: "vfsadmin-dev.appspot.com",
+    messagingSenderId: "711628810105",
+    appId: "1:711628810105:web:cc7dae01d97cbc9272b1a8",
+    measurementId: "G-X4Z5Y0KFWM",
   },
   vfsadmin: {
-    apiKey: 'AIzaSyCVGq822-4eqNWdA2JiLJb6ute4i-2Q78k',
-    authDomain: 'vfsadmin.firebaseapp.com',
-    databaseURL: 'https://vfsadmin.firebaseio.com',
-    projectId: 'vfsadmin',
-    storageBucket: 'vfsadmin.appspot.com',
-    messagingSenderId: '216985456646',
-    appId: '1:216985456646:web:0f6cda01fd0bb02134b387',
-    measurementId: 'G-X9QMPDKSGP',
+    apiKey: "AIzaSyCVGq822-4eqNWdA2JiLJb6ute4i-2Q78k",
+    authDomain: "vfsadmin.firebaseapp.com",
+    databaseURL: "https://vfsadmin.firebaseio.com",
+    projectId: "vfsadmin",
+    storageBucket: "vfsadmin.appspot.com",
+    messagingSenderId: "216985456646",
+    appId: "1:216985456646:web:0f6cda01fd0bb02134b387",
+    measurementId: "G-X9QMPDKSGP",
   },
 };
 
@@ -62,7 +62,7 @@ export function getFirebaseConfig(): FirebaseConfig {
   }
 
   // If no environment variables, fall back to hardcoded configs
-  const projectName = import.meta.env.VITE_FIREBASE_PROJECT || 'vfsadmin';
+  const projectName = import.meta.env.VITE_FIREBASE_PROJECT || "vfsadmin";
   const config = firebaseProjectConfigs[projectName];
 
   if (!config) {

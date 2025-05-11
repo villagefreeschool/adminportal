@@ -1,37 +1,37 @@
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import type { SelectChangeEvent } from "@mui/material/Select";
+import Slider from "@mui/material/Slider";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 /* eslint-disable no-undef */
-import { useState, useMemo, useEffect, ChangeEvent, useCallback, lazy, Suspense } from 'react';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Slider from '@mui/material/Slider';
-import TextField from '@mui/material/TextField';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import CircularProgress from '@mui/material/CircularProgress';
-import type { SelectChangeEvent } from '@mui/material/Select';
+import { type ChangeEvent, Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
 
 // Lazy load the Plot component to reduce initial bundle size
-const Plot = lazy(() => import('../components/PlotlySetup'));
+const Plot = lazy(() => import("../components/PlotlySetup"));
+import { fetchContracts } from "../services/firebase/contracts";
+import type { Contract, Family, Year } from "../services/firebase/models/types";
+import { enrolledFamiliesInYear, fetchYears } from "../services/firebase/years";
 import {
-  Steepness,
-  DefaultMinimumIncome,
   DefaultMaximumIncome,
-  DefaultMinimumTuition,
   DefaultMaximumTuition,
+  DefaultMinimumIncome,
+  DefaultMinimumTuition,
+  Steepness,
   formatCurrency,
-} from '../services/tuitioncalc';
-import { fetchYears, enrolledFamiliesInYear } from '../services/firebase/years';
-import { fetchContracts } from '../services/firebase/contracts';
-import { Family, Year, Contract } from '../services/firebase/models/types';
+} from "../services/tuitioncalc";
 
 // Income steps for the table display
 const INCOME_STEPS = [
@@ -61,7 +61,7 @@ function SlidingScaleDesigner() {
 
   // State for year selection and family data
   const [years, setYears] = useState<Year[]>([]);
-  const [selectedYearId, setSelectedYearId] = useState<string>('');
+  const [selectedYearId, setSelectedYearId] = useState<string>("");
   const [families, setFamilies] = useState<Family[]>([]);
   const [contractsData, setContractsData] = useState<Contract[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -78,7 +78,7 @@ function SlidingScaleDesigner() {
           setSelectedYearId(yearsData[0].id);
         }
       } catch (error) {
-        console.error('Error fetching years:', error);
+        console.error("Error fetching years:", error);
       }
     };
 
@@ -101,7 +101,7 @@ function SlidingScaleDesigner() {
         setFamilies(familiesData);
         setContractsData(contractsData);
       } catch (error) {
-        console.error('Error fetching family data:', error);
+        console.error("Error fetching family data:", error);
       } finally {
         setLoading(false);
       }
@@ -231,13 +231,13 @@ function SlidingScaleDesigner() {
       for (const studentID in contract.studentDecisions) {
         const decision = contract.studentDecisions[studentID];
 
-        if (decision === 'Full Time') {
+        if (decision === "Full Time") {
           if (fullTimeCount === 0) {
             fullTimeCount = 1;
           } else {
             siblingCount++;
           }
-        } else if (decision === 'Part Time') {
+        } else if (decision === "Part Time") {
           partTimeCount++;
         }
       }
@@ -304,7 +304,7 @@ function SlidingScaleDesigner() {
   // Handle input changes
   const handleMinIncomeChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Always allow empty string for input editing
-    if (event.target.value === '') {
+    if (event.target.value === "") {
       setMinIncome(0);
       return;
     }
@@ -317,7 +317,7 @@ function SlidingScaleDesigner() {
 
   const handleMaxIncomeChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Always allow empty string for input editing
-    if (event.target.value === '') {
+    if (event.target.value === "") {
       setMaxIncome(0);
       return;
     }
@@ -331,7 +331,7 @@ function SlidingScaleDesigner() {
 
   const handleMinTuitionChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Always allow empty string for input editing
-    if (event.target.value === '') {
+    if (event.target.value === "") {
       setMinTuition(0);
       return;
     }
@@ -344,7 +344,7 @@ function SlidingScaleDesigner() {
 
   const handleMaxTuitionChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Always allow empty string for input editing
-    if (event.target.value === '') {
+    if (event.target.value === "") {
       setMaxTuition(0);
       return;
     }
@@ -417,24 +417,24 @@ function SlidingScaleDesigner() {
           Tuition Scale Parameters
         </Typography>
 
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: "100%" }}>
           {/* Two-column layout for Income Range and Tuition Range */}
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              width: '100%',
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              width: "100%",
               gap: 3,
             }}
           >
             {/* Group 1: Income Range */}
-            <Box sx={{ flex: 1, width: '100%' }}>
+            <Box sx={{ flex: 1, width: "100%" }}>
               <Typography gutterBottom>Income Range</Typography>
-              <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+              <Box sx={{ display: "flex", gap: 2, width: "100%" }}>
                 <TextField
                   label="Minimum Income"
                   type="text"
-                  value={minIncome === 0 ? '' : minIncome}
+                  value={minIncome === 0 ? "" : minIncome}
                   onChange={handleMinIncomeChange}
                   onBlur={() => {
                     if (minIncome <= 0) setMinIncome(DefaultMinimumIncome);
@@ -448,7 +448,7 @@ function SlidingScaleDesigner() {
                 <TextField
                   label="Maximum Income"
                   type="text"
-                  value={maxIncome === 0 ? '' : maxIncome}
+                  value={maxIncome === 0 ? "" : maxIncome}
                   onChange={handleMaxIncomeChange}
                   onBlur={() => {
                     if (maxIncome <= minIncome) setMaxIncome(DefaultMaximumIncome);
@@ -463,13 +463,13 @@ function SlidingScaleDesigner() {
             </Box>
 
             {/* Group 2: Tuition Range */}
-            <Box sx={{ flex: 1, width: '100%' }}>
+            <Box sx={{ flex: 1, width: "100%" }}>
               <Typography gutterBottom>Tuition Range</Typography>
-              <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+              <Box sx={{ display: "flex", gap: 2, width: "100%" }}>
                 <TextField
                   label="Minimum Tuition"
                   type="text"
-                  value={minTuition === 0 ? '' : minTuition}
+                  value={minTuition === 0 ? "" : minTuition}
                   onChange={handleMinTuitionChange}
                   onBlur={() => {
                     if (minTuition <= 0) setMinTuition(DefaultMinimumTuition);
@@ -483,7 +483,7 @@ function SlidingScaleDesigner() {
                 <TextField
                   label="Maximum Tuition"
                   type="text"
-                  value={maxTuition === 0 ? '' : maxTuition}
+                  value={maxTuition === 0 ? "" : maxTuition}
                   onChange={handleMaxTuitionChange}
                   onBlur={() => {
                     if (maxTuition <= minTuition) setMaxTuition(DefaultMaximumTuition);
@@ -499,7 +499,7 @@ function SlidingScaleDesigner() {
           </Box>
 
           {/* Steepness slider (full width) */}
-          <Box sx={{ mt: 3, width: '100%' }}>
+          <Box sx={{ mt: 3, width: "100%" }}>
             <Typography gutterBottom>Curve Steepness Factor: {steepness.toFixed(2)}</Typography>
             <Box sx={{ px: 1 }}>
               <Slider
@@ -510,10 +510,10 @@ function SlidingScaleDesigner() {
                 step={1}
                 aria-labelledby="steepness-slider"
                 marks={[
-                  { value: 0, label: '1.0' },
-                  { value: 30, label: '5.0' },
-                  { value: 65, label: '25.0' },
-                  { value: 100, label: '50.0' },
+                  { value: 0, label: "1.0" },
+                  { value: 30, label: "5.0" },
+                  { value: 65, label: "25.0" },
+                  { value: 100, label: "50.0" },
                 ]}
               />
             </Box>
@@ -527,10 +527,10 @@ function SlidingScaleDesigner() {
       </Paper>
 
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
           <Typography variant="h6">Tuition Scale Visualization</Typography>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <FormControl sx={{ minWidth: 200 }}>
               <InputLabel id="year-select-label">Show Families from Year</InputLabel>
               <Select
@@ -559,15 +559,15 @@ function SlidingScaleDesigner() {
 
         <Divider sx={{ mb: 3 }} />
 
-        <Box sx={{ height: 500, width: '100%', mb: 4 }}>
+        <Box sx={{ height: 500, width: "100%", mb: 4 }}>
           <Suspense
             fallback={
               <Box
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '500px',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "500px",
                 }}
               >
                 <CircularProgress />
@@ -579,70 +579,70 @@ function SlidingScaleDesigner() {
                 {
                   x: graphData.incomes,
                   y: graphData.fullTuitions,
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  name: 'Full Tuition',
-                  line: { color: '#1976d2' },
+                  type: "scatter",
+                  mode: "lines+markers",
+                  name: "Full Tuition",
+                  line: { color: "#1976d2" },
                   marker: { size: graphData.markerSizes },
-                  hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
-                  yaxis: 'y',
+                  hovertemplate: "Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>",
+                  yaxis: "y",
                 },
                 {
                   x: graphData.incomes,
                   y: graphData.halfTuitions,
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  name: 'Half-Time Tuition',
-                  line: { color: '#4caf50' },
+                  type: "scatter",
+                  mode: "lines+markers",
+                  name: "Half-Time Tuition",
+                  line: { color: "#4caf50" },
                   marker: { size: graphData.markerSizes },
-                  hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
-                  yaxis: 'y',
+                  hovertemplate: "Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>",
+                  yaxis: "y",
                 },
                 {
                   x: graphData.incomes,
                   y: graphData.siblingTuitions,
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  name: 'Sibling Discount (85%)',
-                  line: { color: '#ff9800' },
+                  type: "scatter",
+                  mode: "lines+markers",
+                  name: "Sibling Discount (85%)",
+                  line: { color: "#ff9800" },
                   marker: { size: graphData.markerSizes },
-                  hovertemplate: 'Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>',
-                  yaxis: 'y',
+                  hovertemplate: "Income: %{x:$,.0f}<br>Tuition: %{y:$,.0f}<extra></extra>",
+                  yaxis: "y",
                 },
                 {
                   x: graphData.histogramData.x,
                   y: graphData.histogramData.y,
-                  type: 'bar',
-                  name: 'Family Count',
+                  type: "bar",
+                  name: "Family Count",
                   marker: {
-                    color: 'rgba(180, 180, 180, 0.6)',
+                    color: "rgba(180, 180, 180, 0.6)",
                     line: {
-                      color: 'rgba(150, 150, 150, 1.0)',
+                      color: "rgba(150, 150, 150, 1.0)",
                       width: 1,
                     },
                   },
-                  yaxis: 'y2',
-                  hovertemplate: 'Income Bin: %{x:$,.0f}<br>Families: %{y}<extra></extra>',
+                  yaxis: "y2",
+                  hovertemplate: "Income Bin: %{x:$,.0f}<br>Families: %{y}<extra></extra>",
                   opacity: 0.7,
                 },
               ]}
               layout={{
-                title: 'Tuition by Income',
+                title: "Tuition by Income",
                 autosize: true,
                 xaxis: {
-                  title: 'Annual Income ($)',
-                  tickformat: '$,.0f',
+                  title: "Annual Income ($)",
+                  tickformat: "$,.0f",
                 },
                 yaxis: {
-                  title: 'Annual Tuition ($)',
-                  tickformat: '$,.0f',
+                  title: "Annual Tuition ($)",
+                  tickformat: "$,.0f",
                 },
                 yaxis2: {
-                  title: 'Number of Families',
-                  titlefont: { color: 'rgb(148, 148, 148)' },
-                  tickfont: { color: 'rgb(148, 148, 148)' },
-                  overlaying: 'y',
-                  side: 'right',
+                  title: "Number of Families",
+                  titlefont: { color: "rgb(148, 148, 148)" },
+                  tickfont: { color: "rgb(148, 148, 148)" },
+                  overlaying: "y",
+                  side: "right",
                   showgrid: false,
                 },
                 legend: {
@@ -650,16 +650,16 @@ function SlidingScaleDesigner() {
                   y: 0.95,
                 },
                 margin: { l: 70, r: 70, t: 50, b: 50 },
-                hovermode: 'closest',
-                barmode: 'group',
+                hovermode: "closest",
+                barmode: "group",
               }}
               useResizeHandler={true}
-              style={{ width: '100%', height: '100%' }}
+              style={{ width: "100%", height: "100%" }}
             />
           </Suspense>
         </Box>
 
-        <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={{ overflowX: "auto" }}>
           <Table size="small">
             <TableHead>
               <TableRow>

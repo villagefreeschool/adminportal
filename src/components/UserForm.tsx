@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { VFSAdminUser } from '../services/firebase/models/types';
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import type React from "react";
+import { useCallback, useEffect } from "react";
+import type { VFSAdminUser } from "../services/firebase/models/types";
 
 interface UserFormProps {
   user: VFSAdminUser;
@@ -37,24 +38,24 @@ const UserForm: React.FC<UserFormProps> = ({
   // Make staff automatically true when admin is true
   useEffect(() => {
     if (user.isAdmin && !user.isStaff) {
-      handleChange('isStaff', true);
+      handleChange("isStaff", true);
     }
   }, [user.isAdmin, user.isStaff, handleChange]);
 
   // Handle key down events for enter key
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && onEnterKeyPressed && !e.shiftKey) {
+    if (e.key === "Enter" && onEnterKeyPressed && !e.shiftKey) {
       e.preventDefault();
       onEnterKeyPressed();
     }
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <TextField
         label="Email Address"
-        value={user.email || ''}
-        onChange={(e) => handleChange('email', e.target.value)}
+        value={user.email || ""}
+        onChange={(e) => handleChange("email", e.target.value)}
         onKeyDown={handleKeyDown}
         disabled={!allowChangingEmail}
         fullWidth
@@ -62,12 +63,12 @@ const UserForm: React.FC<UserFormProps> = ({
         helperText="They will log in to the system using this address."
       />
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <TextField
             label="First Name"
-            value={user.firstName || ''}
-            onChange={(e) => handleChange('firstName', e.target.value)}
+            value={user.firstName || ""}
+            onChange={(e) => handleChange("firstName", e.target.value)}
             onKeyDown={handleKeyDown}
             fullWidth
             required
@@ -75,11 +76,11 @@ const UserForm: React.FC<UserFormProps> = ({
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <TextField
             label="Last Name"
-            value={user.lastName || ''}
-            onChange={(e) => handleChange('lastName', e.target.value)}
+            value={user.lastName || ""}
+            onChange={(e) => handleChange("lastName", e.target.value)}
             onKeyDown={handleKeyDown}
             fullWidth
             required
@@ -87,14 +88,14 @@ const UserForm: React.FC<UserFormProps> = ({
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <Box>
             <FormControlLabel
               control={
                 <Checkbox
                   checked={user.isAdmin || false}
-                  onChange={(e) => handleChange('isAdmin', e.target.checked)}
+                  onChange={(e) => handleChange("isAdmin", e.target.checked)}
                   color="primary"
                 />
               }
@@ -106,13 +107,13 @@ const UserForm: React.FC<UserFormProps> = ({
           </Typography>
         </Box>
 
-        <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+        <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
           <Box>
             <FormControlLabel
               control={
                 <Checkbox
                   checked={user.isStaff || false}
-                  onChange={(e) => handleChange('isStaff', e.target.checked)}
+                  onChange={(e) => handleChange("isStaff", e.target.checked)}
                   color="primary"
                 />
               }

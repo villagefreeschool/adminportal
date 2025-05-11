@@ -1,9 +1,9 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import LabeledData from './LabeledData';
-import { Student as StudentType } from '../services/firebase/models/types';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import type React from "react";
+import type { Student as StudentType } from "../services/firebase/models/types";
+import LabeledData from "./LabeledData";
 
 interface StudentProps {
   student: StudentType;
@@ -15,7 +15,7 @@ interface StudentProps {
  */
 const Student: React.FC<StudentProps> = ({ student }) => {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       {/* Student Name Header */}
       <Grid container>
         <Grid size={{ xs: 12 }}>
@@ -38,12 +38,12 @@ const Student: React.FC<StudentProps> = ({ student }) => {
           </Box>
         </Grid>
         <Grid size={{ xs: 4 }}>
-          <Box sx={{ textAlign: 'center' }}>
-            <LabeledData label="Middle">{student.middleName || '-'}</LabeledData>
+          <Box sx={{ textAlign: "center" }}>
+            <LabeledData label="Middle">{student.middleName || "-"}</LabeledData>
           </Box>
         </Grid>
         <Grid size={{ xs: 4 }}>
-          <Box sx={{ textAlign: 'right' }}>
+          <Box sx={{ textAlign: "right" }}>
             <LabeledData label="Last">{student.lastName}</LabeledData>
           </Box>
         </Grid>

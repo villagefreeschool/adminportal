@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import CloseIcon from "@mui/icons-material/Close";
 import {
+  AppBar,
+  Box,
+  Button,
   Dialog,
   DialogContent,
-  AppBar,
+  IconButton,
+  Paper,
   Toolbar,
   Typography,
-  Box,
-  IconButton,
   useTheme,
-  Button,
-  Paper,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import { Contract as ContractType, SignatureData } from '../../services/firebase/models/types';
-import SignatureCapture from '../SignatureCapture';
+} from "@mui/material";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { Contract as ContractType, SignatureData } from "../../services/firebase/models/types";
+import SignatureCapture from "../SignatureCapture";
 
 interface ContractSignDialogProps {
   open: boolean;
@@ -79,11 +80,11 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
 
   // Handle signature save
   const handleSaveSignature = (guardianId: string, signatureData: string) => {
-    console.log('Saving signature for guardian:', guardianId);
+    console.log("Saving signature for guardian:", guardianId);
 
     // If signature data is empty, remove the signature
     if (!signatureData) {
-      console.log('Removing signature for guardian:', guardianId);
+      console.log("Removing signature for guardian:", guardianId);
       const updatedSignatures = { ...signatures };
       delete updatedSignatures[guardianId];
       setSignatures(updatedSignatures);
@@ -108,7 +109,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
     // Reset active guardian state after successful save
     setActiveGuardian(null);
 
-    console.log('Updated signatures:', Object.keys(updatedSignatures));
+    console.log("Updated signatures:", Object.keys(updatedSignatures));
   };
 
   // Handle final saving of all signatures
@@ -120,15 +121,15 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
       await onSave(signatures);
       onClose();
     } catch (err) {
-      console.error('Error saving signatures:', err);
-      setError('Failed to save signatures. Please try again.');
+      console.error("Error saving signatures:", err);
+      setError("Failed to save signatures. Please try again.");
     } finally {
       setSaving(false);
     }
   };
 
   // Log information for debugging
-  console.log('Contract Dialog Debug:', {
+  console.log("Contract Dialog Debug:", {
     guardianIds,
     guardianNames,
     signedGuardians,
@@ -144,8 +145,8 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
       maxWidth="md"
       fullScreen
       sx={{
-        '& .MuiDialog-paper': {
-          backgroundColor: '#fafafa',
+        "& .MuiDialog-paper": {
+          backgroundColor: "#fafafa",
         },
       }}
     >
@@ -154,7 +155,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
           <Typography variant="h6" sx={{ flex: 1 }}>
             {activeGuardian
               ? `${guardianNames[activeGuardian]}'s Signature`
-              : 'Contract Signatures'}
+              : "Contract Signatures"}
           </Typography>
           {activeGuardian && (
             <Button
@@ -189,7 +190,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
             mx="auto"
             maxWidth="800px"
           >
-            <Paper elevation={3} sx={{ p: 4, width: '100%', mb: 3, borderRadius: 2 }}>
+            <Paper elevation={3} sx={{ p: 4, width: "100%", mb: 3, borderRadius: 2 }}>
               <SignatureCapture
                 onSave={(data) => handleSaveSignature(activeGuardian, data)}
                 onCancel={() => setActiveGuardian(null)}
@@ -215,9 +216,9 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
               sx={{
                 p: 3,
                 my: 3,
-                bgcolor: '#f5f9ff',
+                bgcolor: "#f5f9ff",
                 borderRadius: 2,
-                border: '1px solid #d0e0ff',
+                border: "1px solid #d0e0ff",
               }}
             >
               <Box
@@ -228,8 +229,8 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                 borderBottom="1px solid #e0e0ff"
                 pb={2}
               >
-                <Box sx={{ backgroundColor: '#e3f2fd', p: 1, borderRadius: '50%' }}>
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                <Box sx={{ backgroundColor: "#e3f2fd", p: 1, borderRadius: "50%" }}>
+                  <Typography variant="h4" sx={{ fontWeight: "bold", color: "#1976d2" }}>
                     i
                   </Typography>
                 </Box>
@@ -254,7 +255,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
               <Typography
                 variant="h6"
                 gutterBottom
-                sx={{ borderBottom: '2px solid #3f51b5', pb: 1, color: '#3f51b5' }}
+                sx={{ borderBottom: "2px solid #3f51b5", pb: 1, color: "#3f51b5" }}
               >
                 Guardian Signatures
               </Typography>
@@ -271,11 +272,11 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                       mb: 3,
                       p: 2,
                       borderRadius: 2,
-                      border: isSigned ? '1px solid #81c784' : '1px dashed #bdbdbd',
-                      backgroundColor: isSigned ? '#f1f8e9' : '#fff',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                      border: isSigned ? "1px solid #81c784" : "1px dashed #bdbdbd",
+                      backgroundColor: isSigned ? "#f1f8e9" : "#fff",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                       },
                     }}
                   >
@@ -289,9 +290,9 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                           <Typography
                             variant="body-sm"
                             color="success.main"
-                            sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                            sx={{ display: "flex", alignItems: "center", gap: 1 }}
                           >
-                            <span style={{ fontSize: '1.2rem' }}>✓</span>
+                            <span style={{ fontSize: "1.2rem" }}>✓</span>
                             Signed on {new Date(signature.date).toLocaleDateString()}
                           </Typography>
                         )}
@@ -314,25 +315,25 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                           <img
                             src={signature.data}
                             alt={`${guardianNames[guardianId]}'s signature`}
-                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                            style={{ maxWidth: "100%", maxHeight: "100%" }}
                           />
                         </Box>
                       )}
 
                       {/* Action button */}
                       <Button
-                        variant={isSigned ? 'outlined' : 'contained'}
-                        color={isSigned ? 'primary' : 'primary'}
+                        variant={isSigned ? "outlined" : "contained"}
+                        color={isSigned ? "primary" : "primary"}
                         size="medium"
                         onClick={() => setActiveGuardian(guardianId)}
                         sx={{
-                          fontWeight: 'bold',
+                          fontWeight: "bold",
                           px: 3,
-                          boxShadow: isSigned ? 'none' : 2,
+                          boxShadow: isSigned ? "none" : 2,
                         }}
                         startIcon={isSigned ? null : <span>✍️</span>}
                       >
-                        {isSigned ? 'View & Edit' : 'Sign Now'}
+                        {isSigned ? "View & Edit" : "Sign Now"}
                       </Button>
                     </Box>
                   </Paper>
@@ -344,15 +345,15 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                   sx={{
                     p: 3,
                     mt: 2,
-                    bgcolor: '#fff8f8',
-                    border: '1px solid #ffcdd2',
+                    bgcolor: "#fff8f8",
+                    border: "1px solid #ffcdd2",
                     borderRadius: 2,
                   }}
                 >
                   <Typography
                     variant="subtitle1"
                     gutterBottom
-                    sx={{ fontWeight: 'bold', color: 'error.main' }}
+                    sx={{ fontWeight: "bold", color: "error.main" }}
                   >
                     No Guardians Found
                   </Typography>
@@ -370,9 +371,9 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
               sx={{
                 p: 3,
                 mt: 3,
-                bgcolor: allSigned ? '#f1f8e9' : '#fff',
+                bgcolor: allSigned ? "#f1f8e9" : "#fff",
                 borderRadius: 2,
-                border: allSigned ? '1px solid #c5e1a5' : '1px solid #e0e0e0',
+                border: allSigned ? "1px solid #c5e1a5" : "1px solid #e0e0e0",
               }}
             >
               <Box
@@ -382,13 +383,13 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
                 flexWrap="wrap"
               >
                 <Box>
-                  <Typography variant="h6" color={allSigned ? 'success.main' : 'text.primary'}>
+                  <Typography variant="h6" color={allSigned ? "success.main" : "text.primary"}>
                     {allSigned
-                      ? 'All signatures complete!'
+                      ? "All signatures complete!"
                       : `${signedGuardians.length} of ${guardianIds.length} guardians signed`}
                   </Typography>
                   <Typography variant="body-sm" color="text.secondary">
-                    {allSigned ? 'Your contract is ready to be submitted' : ''}
+                    {allSigned ? "Your contract is ready to be submitted" : ""}
                   </Typography>
                 </Box>
               </Box>
@@ -408,13 +409,13 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
       {activeGuardian && (
         <Box
           sx={{
-            position: 'fixed',
+            position: "fixed",
             bottom: 0,
             left: 0,
             right: 0,
             p: 2,
-            bgcolor: '#fff',
-            boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
+            bgcolor: "#fff",
+            boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
           }}
         >
           <Box maxWidth="800px" mx="auto" display="flex" justifyContent="flex-end" gap={2}>
@@ -429,13 +430,13 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
       {!activeGuardian && (
         <Box
           sx={{
-            position: 'fixed',
+            position: "fixed",
             bottom: 0,
             left: 0,
             right: 0,
             p: 2,
-            bgcolor: '#fff',
-            boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
+            bgcolor: "#fff",
+            boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
           }}
         >
           <Box maxWidth="800px" mx="auto" display="flex" justifyContent="flex-end" gap={2}>
@@ -444,12 +445,12 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
             </Button>
             <Button
               variant="contained"
-              color={allSigned ? 'success' : 'primary'}
+              color={allSigned ? "success" : "primary"}
               onClick={handleSaveAll}
               disabled={saving}
               startIcon={<AssignmentTurnedInIcon />}
             >
-              {allSigned ? 'Complete Signing Process' : 'Save Signatures'}
+              {allSigned ? "Complete Signing Process" : "Save Signatures"}
             </Button>
           </Box>
         </Box>

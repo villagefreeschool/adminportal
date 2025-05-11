@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import _ from "lodash";
 // import { db } from './core';
-import { yearDB } from './collections';
-import { Contract, Enrollment, Family, SignatureData } from './models/types';
+import { yearDB } from "./collections";
 // import { fetchFamiliesWithIDs } from './families';
-import { calculatedNameForFamily, guardianNamesForFamily } from './families';
+import { calculatedNameForFamily, guardianNamesForFamily } from "./families";
+import type { Contract, Enrollment, Family, SignatureData } from "./models/types";
 
 /**
  * Fetch all contracts for a specific year
@@ -13,7 +13,7 @@ import { calculatedNameForFamily, guardianNamesForFamily } from './families';
  */
 export async function fetchContracts(yearID: string): Promise<Contract[]> {
   try {
-    const contractsCollection = collection(doc(yearDB, yearID), 'contracts');
+    const contractsCollection = collection(doc(yearDB, yearID), "contracts");
     const querySnapshot = await getDocs(contractsCollection);
     const contracts: Contract[] = [];
 
@@ -29,7 +29,7 @@ export async function fetchContracts(yearID: string): Promise<Contract[]> {
 
     return contracts;
   } catch (error) {
-    console.error('Error fetching contracts:', error);
+    console.error("Error fetching contracts:", error);
     throw error;
   }
 }
@@ -42,7 +42,7 @@ export async function fetchContracts(yearID: string): Promise<Contract[]> {
  */
 export async function fetchContract(yearID: string, familyID: string): Promise<Contract | null> {
   try {
-    const contractRef = doc(collection(doc(yearDB, yearID), 'contracts'), familyID);
+    const contractRef = doc(collection(doc(yearDB, yearID), "contracts"), familyID);
     const contractSnapshot = await getDoc(contractRef);
 
     if (!contractSnapshot.exists()) {
@@ -56,7 +56,7 @@ export async function fetchContract(yearID: string, familyID: string): Promise<C
       ...contractSnapshot.data(),
     } as Contract;
   } catch (error) {
-    console.error('Error fetching contract:', error);
+    console.error("Error fetching contract:", error);
     throw error;
   }
 }
@@ -72,13 +72,13 @@ export async function saveContract(contract: Contract): Promise<Contract> {
     const { id, yearID, familyID, ...contractData } = contract;
 
     // Use familyID as the document ID
-    const contractRef = doc(collection(doc(yearDB, yearID), 'contracts'), familyID);
+    const contractRef = doc(collection(doc(yearDB, yearID), "contracts"), familyID);
 
     await setDoc(contractRef, contractData);
 
     return contract;
   } catch (error) {
-    console.error('Error saving contract:', error);
+    console.error("Error saving contract:", error);
     throw error;
   }
 }
@@ -97,7 +97,7 @@ export async function saveContractSignatures(
 ): Promise<void> {
   try {
     // Get reference to the contract document
-    const contractRef = doc(collection(doc(yearDB, yearID), 'contracts'), familyID);
+    const contractRef = doc(collection(doc(yearDB, yearID), "contracts"), familyID);
 
     // Update only the signatures and set isSigned to true
     await updateDoc(contractRef, {
@@ -106,7 +106,7 @@ export async function saveContractSignatures(
       lastSignedAt: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Error saving contract signatures:', error);
+    console.error("Error saving contract signatures:", error);
     throw error;
   }
 }
@@ -119,10 +119,10 @@ export async function saveContractSignatures(
  */
 export async function deleteContract(yearID: string, familyID: string): Promise<void> {
   try {
-    const contractRef = doc(collection(doc(yearDB, yearID), 'contracts'), familyID);
+    const contractRef = doc(collection(doc(yearDB, yearID), "contracts"), familyID);
     await deleteDoc(contractRef);
   } catch (error) {
-    console.error('Error deleting contract:', error);
+    console.error("Error deleting contract:", error);
     throw error;
   }
 }
@@ -139,13 +139,13 @@ export async function fetchPreviousYearContract(
 ): Promise<Contract | null> {
   try {
     // Import findPreviousYearId to avoid circular dependencies
-    const { findPreviousYearId } = await import('./years');
+    const { findPreviousYearId } = await import("./years");
 
     // Find the previous year ID
     const previousYearID = await findPreviousYearId(yearID);
 
     if (!previousYearID) {
-      console.log('No previous year found for year ID:', yearID);
+      console.log("No previous year found for year ID:", yearID);
       return null;
     }
 
@@ -153,7 +153,7 @@ export async function fetchPreviousYearContract(
     const previousContract = await fetchContract(previousYearID, familyID);
     return previousContract;
   } catch (error) {
-    console.error('Error fetching previous year contract:', error);
+    console.error("Error fetching previous year contract:", error);
     return null;
   }
 }
@@ -165,7 +165,7 @@ export async function fetchPreviousYearContract(
  */
 export function studentCountForContract(contract: Contract): number {
   const decisionValues = Object.values(contract.studentDecisions);
-  return decisionValues.filter((value) => value === 'Full Time' || value === 'Part Time').length;
+  return decisionValues.filter((value) => value === "Full Time" || value === "Part Time").length;
 }
 
 /**
@@ -181,7 +181,7 @@ export async function prepareContractsForDisplay(
   enrollments: Enrollment[],
 ): Promise<Contract[]> {
   // Map families by ID for quick lookup
-  const familiesById = _.keyBy(families, 'id');
+  const familiesById = _.keyBy(families, "id");
 
   // Process each contract to add display information
   return contracts.map((contract) => {
@@ -191,21 +191,21 @@ export async function prepareContractsForDisplay(
     const familyEnrollments = enrollments.filter((e) => e.familyID === contract.familyID);
 
     // Filter part time and full time students
-    const partTimers = familyEnrollments.filter((e) => e.enrollmentType === 'Part Time');
-    const fullTimers = familyEnrollments.filter((e) => e.enrollmentType === 'Full Time');
+    const partTimers = familyEnrollments.filter((e) => e.enrollmentType === "Part Time");
+    const fullTimers = familyEnrollments.filter((e) => e.enrollmentType === "Full Time");
 
     // Calculate family display name and guardian names
-    const calculatedName = family ? calculatedNameForFamily(family) : '';
-    const guardianNames = family ? guardianNamesForFamily(family) : '';
+    const calculatedName = family ? calculatedNameForFamily(family) : "";
+    const guardianNames = family ? guardianNamesForFamily(family) : "";
 
     // Return enriched contract
     return {
       ...contract,
-      familyName: calculatedName || contract.familyName || '',
+      familyName: calculatedName || contract.familyName || "",
       familyNameAndGuardians: `${calculatedName} (${guardianNames})`,
       family,
-      fullTimeNames: fullTimers.map((e) => e.studentName).join(', '),
-      partTimeNames: partTimers.map((e) => e.studentName).join(', '),
+      fullTimeNames: fullTimers.map((e) => e.studentName).join(", "),
+      partTimeNames: partTimers.map((e) => e.studentName).join(", "),
     };
   });
 }

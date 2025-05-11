@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
-  Container,
-  Typography,
   Box,
   Button,
   Card,
   CardContent,
+  Container,
   Divider,
   LinearProgress,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Toolbar,
+  Typography,
   useTheme,
-} from '@mui/material';
-import { Grid } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Family } from '../services/firebase/models/types';
-import { fetchFamily, deleteFamily, saveFamily } from '../services/firebase/families';
-import FamilyDialog from '../components/dialogs/FamilyDialog';
-import FamilyDeleteDialog from '../components/dialogs/FamilyDeleteDialog';
-import { useAuth } from '../contexts/useAuth';
-import LabeledData from '../components/LabeledData';
-import Guardian from '../components/Guardian';
-import Student from '../components/Student';
+} from "@mui/material";
+import { Grid } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Guardian from "../components/Guardian";
+import LabeledData from "../components/LabeledData";
+import Student from "../components/Student";
+import FamilyDeleteDialog from "../components/dialogs/FamilyDeleteDialog";
+import FamilyDialog from "../components/dialogs/FamilyDialog";
+import { useAuth } from "../contexts/useAuth";
+import { deleteFamily, fetchFamily, saveFamily } from "../services/firebase/families";
+import type { Family } from "../services/firebase/models/types";
 
 function FamilyShow() {
   const { id } = useParams<{ id: string }>();
@@ -63,11 +63,11 @@ function FamilyShow() {
       if (data) {
         setFamily(data);
       } else {
-        setError('Family not found');
+        setError("Family not found");
       }
     } catch (error) {
-      console.error('Error fetching family:', error);
-      setError('Error loading family data');
+      console.error("Error fetching family:", error);
+      setError("Error loading family data");
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ function FamilyShow() {
       await saveFamily(familyData);
       await loadFamily(familyData.id);
     } catch (error) {
-      console.error('Error updating family:', error);
+      console.error("Error updating family:", error);
       throw error;
     }
   };
@@ -88,9 +88,9 @@ function FamilyShow() {
   const handleDeleteFamily = async (familyData: Family) => {
     try {
       await deleteFamily(familyData);
-      navigate('/families');
+      navigate("/families");
     } catch (error) {
-      console.error('Error deleting family:', error);
+      console.error("Error deleting family:", error);
       throw error;
     }
   };
@@ -111,19 +111,19 @@ function FamilyShow() {
 
   // Emergency contact headers
   const emergencyContactHeaders = [
-    { text: '#', field: 'order' },
-    { text: 'Name', field: 'name' },
-    { text: 'Relationship', field: 'relationship' },
-    { text: 'Cell', field: 'cellPhone' },
-    { text: 'Work', field: 'workPhone' },
-    { text: 'Notes', field: 'notes' },
+    { text: "#", field: "order" },
+    { text: "Name", field: "name" },
+    { text: "Relationship", field: "relationship" },
+    { text: "Cell", field: "cellPhone" },
+    { text: "Work", field: "workPhone" },
+    { text: "Notes", field: "notes" },
   ];
 
   // Medical provider headers
   const medicalProviderHeaders = [
-    { text: 'Name', field: 'name' },
-    { text: 'Office', field: 'office' },
-    { text: 'Phone', field: 'phoneNumber' },
+    { text: "Name", field: "name" },
+    { text: "Office", field: "office" },
+    { text: "Phone", field: "phoneNumber" },
   ];
 
   // Render loading state
@@ -164,7 +164,7 @@ function FamilyShow() {
                 onClick={handleNewFamily}
                 sx={{
                   bgcolor: theme.palette.green[900],
-                  '&:hover': { bgcolor: theme.palette.green[800] },
+                  "&:hover": { bgcolor: theme.palette.green[800] },
                 }}
                 startIcon={<span className="fas fa-plus-square" />}
               >
@@ -187,7 +187,7 @@ function FamilyShow() {
     return (
       <Container>
         <Typography variant="h5" color="error">
-          {error || 'Family not found'}
+          {error || "Family not found"}
         </Typography>
       </Container>
     );
@@ -205,7 +205,7 @@ function FamilyShow() {
           <Toolbar
             sx={{
               bgcolor: theme.palette.green[900],
-              color: 'white',
+              color: "white",
             }}
           >
             <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
@@ -215,8 +215,8 @@ function FamilyShow() {
               size="small"
               sx={{
                 bgcolor: theme.palette.brown[500],
-                color: 'white',
-                '&:hover': { bgcolor: theme.palette.brown[700] },
+                color: "white",
+                "&:hover": { bgcolor: theme.palette.brown[700] },
               }}
               onClick={() => setEditDialogOpen(true)}
               startIcon={<EditIcon />}
@@ -309,7 +309,7 @@ function FamilyShow() {
                   <Grid size={{ xs: 12 }}>
                     <Card variant="outlined">
                       <CardContent>
-                        <Typography sx={{ whiteSpace: 'pre' }} variant="body-sm">
+                        <Typography sx={{ whiteSpace: "pre" }} variant="body-sm">
                           {family.pickupList}
                         </Typography>
                       </CardContent>

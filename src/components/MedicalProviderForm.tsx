@@ -1,8 +1,8 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Grid from '@mui/material/Grid';
-import { MedicalProvider } from '../services/firebase/models/types';
+import Grid from "@mui/material/Grid";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import type React from "react";
+import type { MedicalProvider } from "../services/firebase/models/types";
 
 interface MedicalProviderFormProps {
   provider: MedicalProvider;
@@ -15,7 +15,7 @@ interface MedicalProviderFormProps {
  */
 const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onChange }) => {
   // Provider types
-  const providerTypes = ['Pediatrician', 'Family Doctor', 'Dentist', 'Specialist', 'Other'];
+  const providerTypes = ["Pediatrician", "Family Doctor", "Dentist", "Specialist", "Other"];
 
   // Handle field changes
   const handleChange = (field: keyof MedicalProvider, value: string) => {
@@ -31,8 +31,8 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
         <TextField
           select
           label="Provider Type"
-          value={provider.type || ''}
-          onChange={(e) => handleChange('type', e.target.value)}
+          value={provider.type || ""}
+          onChange={(e) => handleChange("type", e.target.value)}
           fullWidth
           required
         >
@@ -46,8 +46,8 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
       <Grid size={{ xs: 12 }}>
         <TextField
           label="Provider Name"
-          value={provider.name || ''}
-          onChange={(e) => handleChange('name', e.target.value)}
+          value={provider.name || ""}
+          onChange={(e) => handleChange("name", e.target.value)}
           fullWidth
           required
         />
@@ -55,8 +55,8 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
       <Grid size={{ xs: 12 }}>
         <TextField
           label="Phone Number"
-          value={provider.phone || ''}
-          onChange={(e) => handleChange('phone', e.target.value)}
+          value={provider.phone || ""}
+          onChange={(e) => handleChange("phone", e.target.value)}
           fullWidth
         />
       </Grid>

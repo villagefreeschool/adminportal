@@ -1,15 +1,16 @@
-import React, { useEffect, useCallback } from 'react';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs from 'dayjs';
-import { Student } from '../services/firebase/models/types';
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import MenuItem from "@mui/material/MenuItem";
+import Switch from "@mui/material/Switch";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import type React from "react";
+import { useCallback, useEffect } from "react";
+import type { Student } from "../services/firebase/models/types";
 
 interface StudentFormProps {
   student: Student;
@@ -22,8 +23,8 @@ interface StudentFormProps {
  */
 const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
   // Gender and pronoun options
-  const genders = ['Female', 'Male', 'Rather Not Say', 'Custom'];
-  const pronouns = ['He', 'She', 'They', 'Rather Not Say'];
+  const genders = ["Female", "Male", "Rather Not Say", "Custom"];
+  const pronouns = ["He", "She", "They", "Rather Not Say"];
 
   // Handle field changes
   const handleChange = useCallback(
@@ -39,29 +40,29 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
   // Update preferred name if first name changes and preferred name is empty
   useEffect(() => {
     if (student.firstName && !student.preferredName) {
-      handleChange('preferredName', student.firstName);
+      handleChange("preferredName", student.firstName);
     }
   }, [student.firstName, student.preferredName, handleChange]);
 
   // Calculate reflexive pronoun for self-sign-out text
   const getReflexivePronoun = (): string => {
-    if (!student.pronoun) return 'themself';
+    if (!student.pronoun) return "themself";
 
     switch (student.pronoun.toLowerCase()) {
-      case 'he':
-      case 'his':
-        return 'himself';
-      case 'she':
-      case 'her':
-        return 'herself';
-      case 'they':
+      case "he":
+      case "his":
+        return "himself";
+      case "she":
+      case "her":
+        return "herself";
+      case "they":
       default:
-        return 'themself';
+        return "themself";
     }
   };
 
   // Get student's short name for labels
-  const shortName = student.preferredName || student.firstName || 'this student';
+  const shortName = student.preferredName || student.firstName || "this student";
   const reflexivePronoun = getReflexivePronoun();
 
   return (
@@ -71,8 +72,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 4 }}>
           <TextField
             label="First Name"
-            value={student.firstName || ''}
-            onChange={(e) => handleChange('firstName', e.target.value)}
+            value={student.firstName || ""}
+            onChange={(e) => handleChange("firstName", e.target.value)}
             fullWidth
             required
           />
@@ -80,16 +81,16 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 4 }}>
           <TextField
             label="Middle Name"
-            value={student.middleName || ''}
-            onChange={(e) => handleChange('middleName', e.target.value)}
+            value={student.middleName || ""}
+            onChange={(e) => handleChange("middleName", e.target.value)}
             fullWidth
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
           <TextField
             label="Last Name"
-            value={student.lastName || ''}
-            onChange={(e) => handleChange('lastName', e.target.value)}
+            value={student.lastName || ""}
+            onChange={(e) => handleChange("lastName", e.target.value)}
             fullWidth
             required
           />
@@ -99,8 +100,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Preferred Name"
-            value={student.preferredName || ''}
-            onChange={(e) => handleChange('preferredName', e.target.value)}
+            value={student.preferredName || ""}
+            onChange={(e) => handleChange("preferredName", e.target.value)}
             fullWidth
             required
           />
@@ -112,25 +113,25 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             onChange={(date: unknown) => {
               if (
                 date &&
-                typeof date === 'object' &&
-                'format' in date &&
-                typeof date.format === 'function'
+                typeof date === "object" &&
+                "format" in date &&
+                typeof date.format === "function"
               ) {
-                handleChange('birthdate', date.format('YYYY-MM-DD'));
+                handleChange("birthdate", date.format("YYYY-MM-DD"));
               } else {
-                handleChange('birthdate', null);
+                handleChange("birthdate", null);
               }
             }}
           />
         </Grid>
 
         {/* Gender and pronouns */}
-        <Grid size={{ xs: 12, sm: student.gender === 'Custom' ? 6 : 12, md: 6 }}>
+        <Grid size={{ xs: 12, sm: student.gender === "Custom" ? 6 : 12, md: 6 }}>
           <TextField
             select
             label="Gender"
-            value={student.gender || ''}
-            onChange={(e) => handleChange('gender', e.target.value)}
+            value={student.gender || ""}
+            onChange={(e) => handleChange("gender", e.target.value)}
             fullWidth
             required
           >
@@ -142,12 +143,12 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
           </TextField>
         </Grid>
 
-        {student.gender === 'Custom' && (
+        {student.gender === "Custom" && (
           <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               label="Custom Gender"
-              value={student.customGender || ''}
-              onChange={(e) => handleChange('customGender', e.target.value)}
+              value={student.customGender || ""}
+              onChange={(e) => handleChange("customGender", e.target.value)}
               fullWidth
               required
             />
@@ -158,8 +159,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
           <TextField
             select
             label="Pronoun"
-            value={student.pronoun || ''}
-            onChange={(e) => handleChange('pronoun', e.target.value)}
+            value={student.pronoun || ""}
+            onChange={(e) => handleChange("pronoun", e.target.value)}
             fullWidth
             required
           >
@@ -175,8 +176,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Email Address (Optional)"
-            value={student.email || ''}
-            onChange={(e) => handleChange('email', e.target.value)}
+            value={student.email || ""}
+            onChange={(e) => handleChange("email", e.target.value)}
             fullWidth
             helperText={`Enter only if ${shortName} uses email.`}
           />
@@ -184,8 +185,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Prior School"
-            value={student.priorSchool || ''}
-            onChange={(e) => handleChange('priorSchool', e.target.value)}
+            value={student.priorSchool || ""}
+            onChange={(e) => handleChange("priorSchool", e.target.value)}
             fullWidth
             helperText={`School ${shortName} most recently attended before VFS.`}
           />
@@ -195,8 +196,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Learning Disabilities"
-            value={student.learningDisabilities || ''}
-            onChange={(e) => handleChange('learningDisabilities', e.target.value)}
+            value={student.learningDisabilities || ""}
+            onChange={(e) => handleChange("learningDisabilities", e.target.value)}
             multiline
             rows={3}
             fullWidth
@@ -205,8 +206,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Additional Information"
-            value={student.additionalInfo || ''}
-            onChange={(e) => handleChange('additionalInfo', e.target.value)}
+            value={student.additionalInfo || ""}
+            onChange={(e) => handleChange("additionalInfo", e.target.value)}
             multiline
             rows={3}
             fullWidth
@@ -215,8 +216,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Severe Allergies"
-            value={student.severeAllergies || ''}
-            onChange={(e) => handleChange('severeAllergies', e.target.value)}
+            value={student.severeAllergies || ""}
+            onChange={(e) => handleChange("severeAllergies", e.target.value)}
             multiline
             rows={3}
             fullWidth
@@ -226,8 +227,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Non-Severe Allergies"
-            value={student.nonSevereAllergies || ''}
-            onChange={(e) => handleChange('nonSevereAllergies', e.target.value)}
+            value={student.nonSevereAllergies || ""}
+            onChange={(e) => handleChange("nonSevereAllergies", e.target.value)}
             multiline
             rows={3}
             fullWidth
@@ -237,8 +238,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             label="Other Medical Conditions"
-            value={student.otherMedicalConditions || ''}
-            onChange={(e) => handleChange('otherMedicalConditions', e.target.value)}
+            value={student.otherMedicalConditions || ""}
+            onChange={(e) => handleChange("otherMedicalConditions", e.target.value)}
             multiline
             rows={3}
             fullWidth
@@ -251,7 +252,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             control={
               <Switch
                 checked={student.mediaRelease || false}
-                onChange={(e) => handleChange('mediaRelease', e.target.checked)}
+                onChange={(e) => handleChange("mediaRelease", e.target.checked)}
                 color="primary"
               />
             }
@@ -267,7 +268,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
             control={
               <Switch
                 checked={student.signSelfOut || false}
-                onChange={(e) => handleChange('signSelfOut', e.target.checked)}
+                onChange={(e) => handleChange("signSelfOut", e.target.checked)}
                 color="primary"
               />
             }

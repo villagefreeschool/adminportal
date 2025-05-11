@@ -1,24 +1,24 @@
+import type { FirebaseError } from "firebase/app";
 import {
+  type User as FirebaseUser,
+  GoogleAuthProvider,
+  getRedirectResult,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
-  getRedirectResult,
-  GoogleAuthProvider,
   signOut,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  User as FirebaseUser,
-} from 'firebase/auth';
-import { FirebaseError } from 'firebase/app';
+} from "firebase/auth";
 
-import { doc, getDoc } from 'firebase/firestore';
-import { auth } from './core';
-import { userDB } from './collections';
+import { doc, getDoc } from "firebase/firestore";
+import { userDB } from "./collections";
+import { auth } from "./core";
 
 /**
  * Interface for a VFS Admin user, extending Firebase User with additional properties
  */
-export interface User extends Omit<FirebaseUser, 'displayName'> {
+export interface User extends Omit<FirebaseUser, "displayName"> {
   isAdmin?: boolean;
   displayName?: string | null;
   // Allow additional Firestore fields with unknown type
@@ -33,7 +33,7 @@ export async function signInWithEmail(email: string, password: string): Promise<
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user as User;
   } catch (error: unknown) {
-    console.error('Error signing in with email and password:', error);
+    console.error("Error signing in with email and password:", error);
     throw error;
   }
 }
@@ -47,7 +47,7 @@ export async function signInWithGooglePopup(): Promise<User> {
     const userCredential = await signInWithPopup(auth, provider);
     return userCredential.user as User;
   } catch (error: unknown) {
-    console.error('Error signing in with Google popup:', error);
+    console.error("Error signing in with Google popup:", error);
     throw error;
   }
 }
@@ -62,19 +62,19 @@ export async function signInWithGoogleRedirect(): Promise<void> {
     // Set custom parameters to specify the redirect correctly
     provider.setCustomParameters({
       // Force account selection even if one account is available
-      prompt: 'select_account',
+      prompt: "select_account",
     });
 
     // Configure auth to handle the login correctly
     auth.useDeviceLanguage();
 
-    console.info('Using redirect authentication flow');
+    console.info("Using redirect authentication flow");
     await signInWithRedirect(auth, provider);
 
     // No code past this point will execute in the current page load
-    console.log('This log should not appear - redirect happened');
+    console.log("This log should not appear - redirect happened");
   } catch (error: unknown) {
-    console.error('Error signing in with Google redirect:', error);
+    console.error("Error signing in with Google redirect:", error);
     throw error;
   }
 }
@@ -86,13 +86,13 @@ export async function signInWithGoogleRedirect(): Promise<void> {
  */
 export async function getAuthRedirectResult(): Promise<User | null> {
   try {
-    console.log('Getting redirect result...');
+    console.log("Getting redirect result...");
 
     // Get the redirect result from Firebase auth
     const result = await getRedirectResult(auth);
 
     if (result) {
-      console.log('Redirect auth successful for user:', result.user.email);
+      console.log("Redirect auth successful for user:", result.user.email);
       // Get extended user data from Firestore
       const extendedUser = await getUserData(result.user);
       return extendedUser;
@@ -101,24 +101,24 @@ export async function getAuthRedirectResult(): Promise<User | null> {
     // Check if we already have an authenticated user
     const currentUser = auth.currentUser;
     if (currentUser) {
-      console.log('No redirect result but user is already authenticated:', currentUser.email);
+      console.log("No redirect result but user is already authenticated:", currentUser.email);
       return currentUser as User;
     }
 
-    console.log('No redirect result and no current user');
+    console.log("No redirect result and no current user");
     return null;
   } catch (error: unknown) {
     // Handle specific Firebase auth errors
     const firebaseError = error as FirebaseError;
     console.error(
-      'Error getting redirect result:',
-      firebaseError.code || 'unknown',
+      "Error getting redirect result:",
+      firebaseError.code || "unknown",
       firebaseError.message,
     );
 
     // Let's not throw for certain error types that happen during normal flow
-    if (firebaseError.code === 'auth/no-auth-event') {
-      console.log('No auth event found - this is normal for initial page load');
+    if (firebaseError.code === "auth/no-auth-event") {
+      console.log("No auth event found - this is normal for initial page load");
       return null;
     }
 
@@ -132,10 +132,10 @@ export async function getAuthRedirectResult(): Promise<User | null> {
 export async function resetPassword(email: string): Promise<void> {
   try {
     await sendPasswordResetEmail(auth, email, {
-      url: 'https://admin.villagefreeschool.org/reset-password?email=' + email,
+      url: "https://admin.villagefreeschool.org/reset-password?email=" + email,
     });
   } catch (error: unknown) {
-    console.error('Error sending password reset email:', error);
+    console.error("Error sending password reset email:", error);
     throw error;
   }
 }
@@ -147,7 +147,7 @@ export async function logoutUser(): Promise<void> {
   try {
     await signOut(auth);
   } catch (error: unknown) {
-    console.error('Error signing out:', error);
+    console.error("Error signing out:", error);
     throw error;
   }
 }
@@ -172,7 +172,7 @@ export async function getUserData(user: FirebaseUser): Promise<User> {
 
     return userToReturn;
   } catch (error: unknown) {
-    console.error('Error fetching user data:', error);
+    console.error("Error fetching user data:", error);
     return user as User;
   }
 }

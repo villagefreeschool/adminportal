@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button, LinearProgress, Typography, Divider } from '@mui/material';
-import { Grid } from '@mui/material';
-import {
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import { Box, Button, Divider, LinearProgress, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/useAuth";
+import { fetchContract, saveContractSignatures } from "../services/firebase/contracts";
+import { fetchFamily } from "../services/firebase/families";
+import type {
   Contract as ContractType,
   Family,
   SignatureData,
   Year,
-} from '../services/firebase/models/types';
-import { fetchContract, saveContractSignatures } from '../services/firebase/contracts';
-import { fetchFamily } from '../services/firebase/families';
-import { fetchYear } from '../services/firebase/years';
-import LabeledData from './LabeledData';
-import ContractEditDialog from './dialogs/ContractEditDialog';
-import ContractSignDialog from './dialogs/ContractSignDialog';
-import ContractPDFGenerator from './ContractPDFGenerator';
-import { useAuth } from '../contexts/useAuth';
-import { formatCurrency } from '../services/tuitioncalc';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+} from "../services/firebase/models/types";
+import { fetchYear } from "../services/firebase/years";
+import { formatCurrency } from "../services/tuitioncalc";
+import ContractPDFGenerator from "./ContractPDFGenerator";
+import LabeledData from "./LabeledData";
+import ContractEditDialog from "./dialogs/ContractEditDialog";
+import ContractSignDialog from "./dialogs/ContractSignDialog";
 
 interface ContractProps {
   familyId: string;
@@ -52,7 +53,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
         setYear(yearData);
         setContract(contractData);
       } catch (error) {
-        console.error('Error loading contract data:', error);
+        console.error("Error loading contract data:", error);
       } finally {
         setLoading(false);
       }
@@ -132,7 +133,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
         isSigned: true,
       });
     } catch (error) {
-      console.error('Error saving signatures:', error);
+      console.error("Error saving signatures:", error);
       throw error;
     }
   };
@@ -184,7 +185,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
               key={student.id}
             >
               <LabeledData label={student.preferredName || student.firstName} textAlign="center">
-                {contract ? contract.studentDecisions[student.id] : 'Unknown'}
+                {contract ? contract.studentDecisions[student.id] : "Unknown"}
               </LabeledData>
             </Grid>
           ))}
@@ -211,14 +212,14 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
             onClick={handleOpenSignDialog}
             startIcon={<HowToRegIcon />}
             sx={{
-              fontWeight: 'bold',
-              fontSize: '1rem',
+              fontWeight: "bold",
+              fontSize: "1rem",
               py: 1,
               px: 3,
               boxShadow: 2,
             }}
           >
-            {hasSignatures ? 'Edit Signatures' : 'Sign Contract'}
+            {hasSignatures ? "Edit Signatures" : "Sign Contract"}
           </Button>
         )}
       </Box>
@@ -238,7 +239,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
             return (
               <Box key={guardianId} display="flex" alignItems="center" mb={2}>
                 <Box flexGrow={1} display="flex" alignItems="center">
-                  <Typography variant="body-sm" sx={{ width: '40%' }}>
+                  <Typography variant="body-sm" sx={{ width: "40%" }}>
                     {guardianNames[guardianId]}:
                   </Typography>
                   {signature ? (
@@ -260,7 +261,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
                         <img
                           src={signature.data}
                           alt={`${guardianNames[guardianId]}'s signature`}
-                          style={{ maxWidth: '100%', maxHeight: '100%' }}
+                          style={{ maxWidth: "100%", maxHeight: "100%" }}
                         />
                       </Box>
                     </>
@@ -279,7 +280,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
                     setSignDialogOpen(true);
                   }}
                 >
-                  {signature ? 'Edit' : 'Sign'}
+                  {signature ? "Edit" : "Sign"}
                 </Button>
               </Box>
             );

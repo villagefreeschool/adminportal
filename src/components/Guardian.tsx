@@ -1,8 +1,8 @@
-import React from 'react';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import LabeledData from './LabeledData';
-import { Guardian as GuardianType } from '../services/firebase/models/types';
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import type React from "react";
+import type { Guardian as GuardianType } from "../services/firebase/models/types";
+import LabeledData from "./LabeledData";
 
 interface GuardianProps {
   guardian: GuardianType;
@@ -17,7 +17,7 @@ const Guardian: React.FC<GuardianProps> = ({ guardian }) => {
 
   return (
     <Grid container spacing={2}>
-      <LabeledData label={guardian.relationship || 'Guardian'}>
+      <LabeledData label={guardian.relationship || "Guardian"}>
         {guardian.firstName} {guardian.lastName}
       </LabeledData>
 

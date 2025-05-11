@@ -1,20 +1,20 @@
-import { useState, useEffect, ReactNode } from 'react';
+import type { FirebaseError } from "firebase/app";
+import { doc, getDoc } from "firebase/firestore";
+import { type ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  User,
+  type User,
+  getAuthRedirectResult,
+  logoutUser,
+  resetPassword,
   signInWithEmail,
   signInWithGooglePopup,
   signInWithGoogleRedirect,
-  getAuthRedirectResult,
-  resetPassword,
-  logoutUser,
   subscribeToAuthChanges,
-} from '../services/firebase/auth';
-import { userFamilyDB, familyDB } from '../services/firebase/collections';
-import { useNavigate } from 'react-router-dom';
-import { Family, UserFamily } from '../services/firebase/models/types';
-import { FirebaseError } from 'firebase/app';
-import { doc, getDoc } from 'firebase/firestore';
-import { AuthContext } from './AuthContextTypes';
+} from "../services/firebase/auth";
+import { familyDB, userFamilyDB } from "../services/firebase/collections";
+import type { Family, UserFamily } from "../services/firebase/models/types";
+import { AuthContext } from "./AuthContextTypes";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -34,7 +34,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Set up the auth state listener
     const unsubscribe = subscribeToAuthChanges(async (user) => {
-      console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+      console.log("Auth state changed:", user ? "User logged in" : "No user");
       setCurrentUser(user);
 
       if (user && user.email) {
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             }
           }
         } catch (err) {
-          console.error('Error fetching user family data:', err);
+          console.error("Error fetching user family data:", err);
         }
       } else {
         setUserFamily(null);
@@ -128,7 +128,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     try {
       await logoutUser();
-      navigate('/login');
+      navigate("/login");
     } catch (err) {
       const firebaseError = err as FirebaseError;
       setError(firebaseError.message);

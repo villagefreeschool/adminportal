@@ -1,52 +1,53 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Box,
   Button,
-  TextField,
-  FormControlLabel,
   Checkbox,
   CircularProgress,
-  Typography,
-  useTheme,
-  Slider,
-  Paper,
-  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
-  Box,
+  FormControlLabel,
+  IconButton,
   List,
   ListItem,
   ListItemText,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { Contract, Family, Year, Enrollment } from '../../services/firebase/models/types';
+  Paper,
+  Slider,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import EnrollmentTypeSelector from "../../components/EnrollmentTypeSelector";
+import { useAuth } from "../../contexts/useAuth";
 import {
-  fetchContract,
-  saveContract,
   deleteContract,
+  fetchContract,
   fetchPreviousYearContract,
-} from '../../services/firebase/contracts';
-import { fetchFamily } from '../../services/firebase/families';
+  saveContract,
+} from "../../services/firebase/contracts";
+import { fetchFamily } from "../../services/firebase/families";
+import type { Contract, Enrollment, Family, Year } from "../../services/firebase/models/types";
 import {
-  fetchYear,
-  fetchEnrollments,
-  saveEnrollment,
   deleteEnrollment,
-} from '../../services/firebase/years';
-import EnrollmentTypeSelector from '../../components/EnrollmentTypeSelector';
-import { useAuth } from '../../contexts/useAuth';
+  fetchEnrollments,
+  fetchYear,
+  saveEnrollment,
+} from "../../services/firebase/years";
 import {
-  tuitionForIncome,
+  FullTime,
+  MaxYearOverYearChange,
+  NotAttending,
+  PartTime,
   calculateTuitionOptions,
   formatCurrency,
-  FullTime,
-  PartTime,
-  NotAttending,
-  MaxYearOverYearChange,
-} from '../../services/tuitioncalc';
+  tuitionForIncome,
+} from "../../services/tuitioncalc";
 
 interface ContractEditDialogProps {
   open: boolean;
@@ -137,7 +138,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       if (yearData) {
         setYear(yearData);
       } else {
-        setError('Year not found');
+        setError("Year not found");
         setLoading(false);
         return;
       }
@@ -146,7 +147,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       if (familyData) {
         setFamily(familyData);
       } else {
-        setError('Family not found');
+        setError("Family not found");
         setLoading(false);
         return;
       }
@@ -192,8 +193,8 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       // Fetch previous year contract for historical comparison
       setPrevYearContract(await fetchPreviousYearContract(yearId, familyId));
     } catch (err) {
-      console.error('Error loading contract data:', err);
-      setError('Error loading data');
+      console.error("Error loading contract data:", err);
+      setError("Error loading data");
     } finally {
       setLoading(false);
     }
@@ -226,20 +227,20 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
   // Handle checkbox change
   const handleCheckboxChange = (
-    field: 'tuitionAssistanceRequested' | 'tuitionAssistanceGranted' | 'isSigned',
+    field: "tuitionAssistanceRequested" | "tuitionAssistanceGranted" | "isSigned",
     checked: boolean,
   ) => {
     switch (field) {
-      case 'tuitionAssistanceRequested':
+      case "tuitionAssistanceRequested":
         setTuitionAssistanceRequested(checked);
         if (!checked) {
           setTuitionAssistanceGranted(false);
         }
         break;
-      case 'tuitionAssistanceGranted':
+      case "tuitionAssistanceGranted":
         setTuitionAssistanceGranted(checked);
         break;
-      case 'isSigned':
+      case "isSigned":
         setIsSigned(checked);
         break;
     }
@@ -265,7 +266,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
         familyName: family.name,
         suggestedTuition: suggestedTuition,
         minTuition: minTuition,
-        lastSavedBy: currentUser?.email || 'unknown',
+        lastSavedBy: currentUser?.email || "unknown",
         lastSavedAt: new Date().toISOString(),
       };
 
@@ -278,8 +279,8 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       onSave(savedContract);
       onClose();
     } catch (err) {
-      console.error('Error saving contract:', err);
-      setError('Error saving contract');
+      console.error("Error saving contract:", err);
+      setError("Error saving contract");
     } finally {
       setSaving(false);
     }
@@ -305,8 +306,8 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       // Close dialog
       onClose();
     } catch (err) {
-      console.error('Error clearing registration:', err);
-      setError('Error clearing registration');
+      console.error("Error clearing registration:", err);
+      setError("Error clearing registration");
     } finally {
       setSaving(false);
     }
@@ -538,7 +539,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
         <DialogTitle>Error</DialogTitle>
         <DialogContent dividers>
-          <Typography color="error">{error || 'Missing required data'}</Typography>
+          <Typography color="error">{error || "Missing required data"}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Close</Button>
@@ -549,7 +550,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ bgcolor: theme.palette.green[900], color: 'white' }}>
+      <DialogTitle sx={{ bgcolor: theme.palette.green[900], color: "white" }}>
         {`${family.name} ${year.name} Enrollment`}
       </DialogTitle>
 
@@ -561,7 +562,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             p: 2,
             mb: 3,
             bgcolor: theme.palette.grey[100],
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
@@ -573,22 +574,22 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
           <Box
             sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
               mt: 1,
               gap: 2,
             }}
           >
-            <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
+            <Box sx={{ flex: "1 1 30%", minWidth: "120px", textAlign: "center" }}>
               <Typography variant="body-sm">Full Time</Typography>
               <Typography variant="body-md">{formatCurrency(fullTimeTuition)}</Typography>
             </Box>
-            <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
+            <Box sx={{ flex: "1 1 30%", minWidth: "120px", textAlign: "center" }}>
               <Typography variant="body-sm">Full Time Sibling</Typography>
               <Typography variant="body-md">{formatCurrency(siblingTuition)}</Typography>
             </Box>
-            <Box sx={{ flex: '1 1 30%', minWidth: '120px', textAlign: 'center' }}>
+            <Box sx={{ flex: "1 1 30%", minWidth: "120px", textAlign: "center" }}>
               <Typography variant="body-sm">Part Time</Typography>
               <Typography variant="body-md">{formatCurrency(partTimeTuition)}</Typography>
             </Box>
@@ -601,23 +602,23 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             Who&apos;s Attending This Year?
           </Typography>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
             {family.students?.map((student) => (
               <Box
                 sx={{
                   flex:
-                    family.students.length > 1 ? `1 1 ${90 / family.students.length}%` : '1 1 100%',
-                  minWidth: '200px',
+                    family.students.length > 1 ? `1 1 ${90 / family.students.length}%` : "1 1 100%",
+                  minWidth: "200px",
                 }}
                 key={student.id}
               >
                 <EnrollmentTypeSelector
-                  value={studentDecisions[student.id] || ''}
+                  value={studentDecisions[student.id] || ""}
                   onChange={(value) => handleStudentDecisionChange(student.id, value)}
                   label={student.preferredName || student.firstName}
                   required
                   error={!studentDecisions[student.id]}
-                  helperText={!studentDecisions[student.id] ? 'Required' : ''}
+                  helperText={!studentDecisions[student.id] ? "Required" : ""}
                 />
               </Box>
             ))}
@@ -639,15 +640,15 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
               <Box
                 sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-around',
-                  textAlign: 'center',
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "flex-end",
+                  justifyContent: "space-around",
+                  textAlign: "center",
                   gap: 2,
                 }}
               >
-                <Box sx={{ flex: '1 1 20%', minWidth: '100px' }}>
+                <Box sx={{ flex: "1 1 20%", minWidth: "100px" }}>
                   <Typography variant="caption" color="text.secondary">
                     Over 10 Months
                   </Typography>
@@ -656,7 +657,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   </Typography>
                 </Box>
 
-                <Box sx={{ flex: '2 1 50%', minWidth: '200px' }}>
+                <Box sx={{ flex: "2 1 50%", minWidth: "200px" }}>
                   <Typography variant="overline" color="text.secondary">
                     Total {year.name} Tuition
                   </Typography>
@@ -665,10 +666,10 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                     align="center"
                     color={
                       tuition < minTuition && !tuitionAssistanceRequested
-                        ? 'error.main'
+                        ? "error.main"
                         : tuition > slidingScaleTuition && tuition > minTuition
-                          ? 'success.main'
-                          : 'inherit'
+                          ? "success.main"
+                          : "inherit"
                     }
                   >
                     {formatCurrency(tuition)}
@@ -685,7 +686,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   )}
                 </Box>
 
-                <Box sx={{ flex: '1 1 20%', minWidth: '100px' }}>
+                <Box sx={{ flex: "1 1 20%", minWidth: "100px" }}>
                   <Typography variant="caption" color="text.secondary">
                     Over 12 Months
                   </Typography>
@@ -697,8 +698,8 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
             </Box>
 
             {/* Slider Interface */}
-            <Box sx={{ width: '100%', mt: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: "100%", mt: 2 }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <IconButton
                   color="primary"
                   onClick={decrementTuition}
@@ -715,10 +716,10 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   aria-labelledby="tuition-slider"
                   sx={{
                     mx: 2,
-                    '& .MuiSlider-thumb': {
+                    "& .MuiSlider-thumb": {
                       color: theme.palette.green[800],
                     },
-                    '& .MuiSlider-track': {
+                    "& .MuiSlider-track": {
                       color: theme.palette.green[700],
                     },
                   }}
@@ -746,14 +747,14 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
             {/* Tuition Assistance Options */}
             {(isAdmin || tuition < minTuition) && (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
+                <Box sx={{ flex: "1 1 45%", minWidth: "200px" }}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={tuitionAssistanceRequested}
                         onChange={(e) =>
-                          handleCheckboxChange('tuitionAssistanceRequested', e.target.checked)
+                          handleCheckboxChange("tuitionAssistanceRequested", e.target.checked)
                         }
                       />
                     }
@@ -761,7 +762,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+                <Box sx={{ flex: "1 1 45%", minWidth: "200px" }}>
                   <TextField
                     label="Tuition Assistance Amount"
                     type="number"
@@ -778,26 +779,26 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
             {/* Admin-only options */}
             {allAttendanceDecisionsMade && isAdmin && (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                <Box sx={{ flex: "1 1 45%", minWidth: "200px" }}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={isSigned}
-                        onChange={(e) => handleCheckboxChange('isSigned', e.target.checked)}
+                        onChange={(e) => handleCheckboxChange("isSigned", e.target.checked)}
                       />
                     }
                     label="Signed Contract Received"
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
+                <Box sx={{ flex: "1 1 45%", minWidth: "200px" }}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={tuitionAssistanceGranted}
                         onChange={(e) =>
-                          handleCheckboxChange('tuitionAssistanceGranted', e.target.checked)
+                          handleCheckboxChange("tuitionAssistanceGranted", e.target.checked)
                         }
                         disabled={!tuitionAssistanceRequested}
                       />
@@ -810,7 +811,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
 
             {/* Metadata for admins */}
             {isAdmin && contract.lastSavedAt && (
-              <Box sx={{ width: '100%' }}>
+              <Box sx={{ width: "100%" }}>
                 <Divider sx={{ my: 2 }} />
                 <List dense>
                   {contract.lastSavedBy && (
@@ -850,10 +851,10 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
           disabled={saving || !allAttendanceDecisionsMade}
           sx={{
             bgcolor: theme.palette.brown[500],
-            '&:hover': { bgcolor: theme.palette.brown[700] },
+            "&:hover": { bgcolor: theme.palette.brown[700] },
           }}
         >
-          {saving ? <CircularProgress size={24} /> : 'Save'}
+          {saving ? <CircularProgress size={24} /> : "Save"}
         </Button>
       </DialogActions>
     </Dialog>

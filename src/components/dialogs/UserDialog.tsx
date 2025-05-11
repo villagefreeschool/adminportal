@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
 import {
-  Dialog,
-  DialogContent,
-  DialogActions,
+  AppBar,
+  Box,
   Button,
   CircularProgress,
-  AppBar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
   Toolbar,
   Typography,
-  Box,
-  IconButton,
   useTheme,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import SaveIcon from '@mui/icons-material/Save';
-import { VFSAdminUser } from '../../services/firebase/models/types';
-import UserForm from '../UserForm';
-import { fetchUser, saveUser } from '../../services/firebase/users';
+} from "@mui/material";
+import type React from "react";
+import { useEffect, useState } from "react";
+import type { VFSAdminUser } from "../../services/firebase/models/types";
+import { fetchUser, saveUser } from "../../services/firebase/users";
+import UserForm from "../UserForm";
 
 interface UserDialogProps {
   open: boolean;
@@ -36,7 +37,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
   const [error, setError] = useState<string | null>(null);
 
   const isEditMode = Boolean(email);
-  const title = isEditMode ? `Edit User ${email}` : 'New User';
+  const title = isEditMode ? `Edit User ${email}` : "New User";
 
   // Load user data when in edit mode
   useEffect(() => {
@@ -48,12 +49,12 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
           if (userData) {
             setUser(userData);
           } else {
-            setError('User not found');
+            setError("User not found");
             onClose();
           }
         } catch (err) {
-          console.error('Error loading user:', err);
-          setError('Failed to load user data');
+          console.error("Error loading user:", err);
+          setError("Failed to load user data");
         } finally {
           setLoading(false);
         }
@@ -63,9 +64,9 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
     } else if (open && !isEditMode) {
       // Initialize a new user object for create mode
       setUser({
-        email: '',
-        firstName: '',
-        lastName: '',
+        email: "",
+        firstName: "",
+        lastName: "",
         isAdmin: false,
         isStaff: false,
       });
@@ -83,7 +84,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
 
     // Simple validation
     if (!user.email || !user.firstName || !user.lastName) {
-      setError('Please fill in all required fields');
+      setError("Please fill in all required fields");
       return;
     }
 
@@ -95,8 +96,8 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
       onSave(savedUser);
       onClose();
     } catch (err) {
-      console.error('Error saving user:', err);
-      setError('Failed to save user');
+      console.error("Error saving user:", err);
+      setError("Failed to save user");
     } finally {
       setSaving(false);
     }
@@ -160,7 +161,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
             startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
             sx={{
               bgcolor: theme.palette.brown[500],
-              '&:hover': { bgcolor: theme.palette.brown[700] },
+              "&:hover": { bgcolor: theme.palette.brown[700] },
             }}
           >
             Save

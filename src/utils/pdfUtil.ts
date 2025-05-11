@@ -2,8 +2,8 @@
  * PDF utility functions for generating PDF files
  */
 
-import { Style, StyleDictionary } from 'pdfmake/interfaces';
-import { SignatureData } from '../services/firebase/models/types';
+import type { Style, StyleDictionary } from "pdfmake/interfaces";
+import type { SignatureData } from "../services/firebase/models/types";
 
 /**
  * Default style for PDF documents
@@ -43,16 +43,16 @@ export const PDF_STYLES: StyleDictionary = {
   },
   caption: {
     fontSize: 7,
-    color: '#8a8a8a',
+    color: "#8a8a8a",
   },
   signature: {
     italics: true,
     fontSize: 16,
-    color: '#000066',
+    color: "#000066",
   },
   signatureCaption: {
     fontSize: 8,
-    color: '#666666',
+    color: "#666666",
   },
 };
 
@@ -68,26 +68,26 @@ export const PDF_STYLES: StyleDictionary = {
  */
 export function dataURLFromImagePath(imagePath: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     const img = new window.Image();
 
     img.onload = () => {
       if (!ctx) {
-        reject('Could not get canvas context');
+        reject("Could not get canvas context");
         return;
       }
 
       canvas.width = img.width;
       canvas.height = img.height;
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
-      resolve(canvas.toDataURL('image/png'));
+      resolve(canvas.toDataURL("image/png"));
     };
 
     img.onerror = () => {
-      reject('');
+      reject("");
     };
 
     img.src = imagePath;
@@ -108,24 +108,24 @@ export function normalizeSignatureForPdf(signature: SignatureData): string | nul
   let imageData = signature.data;
 
   // Remove any query parameters
-  if (imageData.includes('?')) {
-    imageData = imageData.split('?')[0];
+  if (imageData.includes("?")) {
+    imageData = imageData.split("?")[0];
   }
 
   try {
     // Ensure proper formatting for PDFMake
-    if (imageData.startsWith('data:image/png;base64,')) {
+    if (imageData.startsWith("data:image/png;base64,")) {
       // Already formatted correctly
       return imageData;
-    } else if (imageData.startsWith('data:image/jpeg;base64,')) {
+    } else if (imageData.startsWith("data:image/jpeg;base64,")) {
       // JPEG format is also acceptable
       return imageData;
-    } else if (imageData.startsWith('data:image/svg+xml;base64,')) {
+    } else if (imageData.startsWith("data:image/svg+xml;base64,")) {
       // SVG format is also acceptable
       return imageData;
-    } else if (imageData.includes('base64,')) {
+    } else if (imageData.includes("base64,")) {
       // Extract base64 part and recreate proper data URL
-      const base64Data = imageData.split('base64,')[1];
+      const base64Data = imageData.split("base64,")[1];
       return `data:image/png;base64,${base64Data}`;
     } else if (imageData.match(/^[A-Za-z0-9+/=]+$/)) {
       // Just raw base64 data without prefix
@@ -133,7 +133,7 @@ export function normalizeSignatureForPdf(signature: SignatureData): string | nul
     }
 
     // Try to determine if it's a DOM data URI (canvas.toDataURL() style)
-    if (typeof imageData === 'string' && imageData.startsWith('<')) {
+    if (typeof imageData === "string" && imageData.startsWith("<")) {
       // Might be raw SVG content
       try {
         // Encode as SVG
@@ -163,26 +163,26 @@ export function normalizeSignatureForPdf(signature: SignatureData): string | nul
 export function createFallbackSignature(name?: string): string {
   try {
     // Create a canvas for the empty signature box
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = 300;
     canvas.height = 100;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     if (!ctx) {
-      throw new Error('Could not get canvas context');
+      throw new Error("Could not get canvas context");
     }
 
     // Draw white background
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw border
-    ctx.strokeStyle = '#ccc';
+    ctx.strokeStyle = "#ccc";
     ctx.lineWidth = 1;
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
     // Draw guidelines to indicate where to sign (paper form style)
-    ctx.strokeStyle = '#eee';
+    ctx.strokeStyle = "#eee";
     ctx.beginPath();
     ctx.moveTo(20, 70);
     ctx.lineTo(280, 70);
@@ -190,24 +190,24 @@ export function createFallbackSignature(name?: string): string {
 
     // Only add text if specified (for debugging)
     if (name) {
-      ctx.font = 'normal 10px sans-serif';
-      ctx.fillStyle = '#ccc';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
+      ctx.font = "normal 10px sans-serif";
+      ctx.fillStyle = "#ccc";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
       ctx.fillText(`Signature box for: ${name}`, canvas.width / 2, 95);
     }
 
     // Convert to data URL
-    return canvas.toDataURL('image/png');
+    return canvas.toDataURL("image/png");
   } catch (error) {
-    console.error('Error creating fallback signature box:', error);
+    console.error("Error creating fallback signature box:", error);
 
     // Return a basic SVG as last resort if canvas fails
     return `data:image/svg+xml;base64,${window.btoa(
       '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="100" viewBox="0 0 300 100">' +
         '<rect width="300" height="100" fill="white" stroke="#ccc" stroke-width="1"/>' +
         '<line x1="20" y1="70" x2="280" y2="70" stroke="#eee" stroke-width="1"/>' +
-        '</svg>',
+        "</svg>",
     )}`;
   }
 }
@@ -228,13 +228,13 @@ export function preprocessSignatureImage(imageData: string): Promise<string | nu
 
     try {
       // Create a canvas
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       canvas.width = 300;
       canvas.height = 150;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        reject(new Error('Could not get canvas context'));
+        reject(new Error("Could not get canvas context"));
         return;
       }
 
@@ -247,7 +247,7 @@ export function preprocessSignatureImage(imageData: string): Promise<string | nu
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Fill with white background
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw the image
@@ -255,7 +255,7 @@ export function preprocessSignatureImage(imageData: string): Promise<string | nu
 
         try {
           // Convert to data URL and resolve promise
-          const dataUrl = canvas.toDataURL('image/png');
+          const dataUrl = canvas.toDataURL("image/png");
           resolve(dataUrl);
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (_) {
@@ -268,7 +268,7 @@ export function preprocessSignatureImage(imageData: string): Promise<string | nu
       };
 
       // Set cross-origin to anonymous to avoid CORS issues
-      img.crossOrigin = 'Anonymous';
+      img.crossOrigin = "Anonymous";
 
       // Set the source to the image data
       img.src = imageData;
@@ -278,7 +278,7 @@ export function preprocessSignatureImage(imageData: string): Promise<string | nu
         // Call the onload handler directly if image is already loaded
         if (img.onload) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          img.onload(new window.Event('load') as any);
+          img.onload(new window.Event("load") as any);
         }
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

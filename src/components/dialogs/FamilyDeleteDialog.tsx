@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
+  Box,
   Button,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Typography,
-  Box,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Family } from '../../services/firebase/models/types';
-import { calculatedNameForFamily } from '../../services/firebase/families';
+} from "@mui/material";
+import type React from "react";
+import { useState } from "react";
+import { calculatedNameForFamily } from "../../services/firebase/families";
+import type { Family } from "../../services/firebase/models/types";
 
 interface FamilyDeleteDialogProps {
   open: boolean;
@@ -44,18 +45,18 @@ const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
       await onDelete(family);
       onClose();
     } catch (err) {
-      console.error('Error deleting family:', err);
-      setError('An error occurred while deleting. Please try again.');
+      console.error("Error deleting family:", err);
+      setError("An error occurred while deleting. Please try again.");
     } finally {
       setDeleting(false);
     }
   };
 
   // Generate family name for display
-  const familyName = family ? calculatedNameForFamily(family) : '';
+  const familyName = family ? calculatedNameForFamily(family) : "";
 
   // List students for confirmation
-  const studentNames = family?.students.map((s) => `${s.firstName} ${s.lastName}`).join(', ');
+  const studentNames = family?.students.map((s) => `${s.firstName} ${s.lastName}`).join(", ");
 
   return (
     <Dialog open={open} onClose={!deleting ? onClose : undefined} maxWidth="sm" fullWidth>
@@ -75,7 +76,7 @@ const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
             <li>All contracts for this family</li>
           </ul>
 
-          <Typography color="error" variant="body-sm" sx={{ mt: 2, fontWeight: 'bold' }}>
+          <Typography color="error" variant="body-sm" sx={{ mt: 2, fontWeight: "bold" }}>
             This action cannot be undone.
           </Typography>
         </Box>

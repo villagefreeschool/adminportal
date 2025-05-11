@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import type { SxProps, Theme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import type { SxProps, Theme } from "@mui/material/styles";
+import type React from "react";
+import type { ReactNode } from "react";
 
 interface LabeledDataProps {
   label: string;
@@ -13,7 +14,7 @@ interface LabeledDataProps {
   lg?: number;
   error?: boolean;
   sx?: SxProps<Theme>;
-  textAlign?: 'left' | 'center' | 'right';
+  textAlign?: "left" | "center" | "right";
 }
 
 /**
@@ -37,13 +38,13 @@ const LabeledData: React.FC<LabeledDataProps> = ({
         <Typography
           variant="subtitle2"
           component="div"
-          color={error ? 'error' : 'text.secondary'}
+          color={error ? "error" : "text.secondary"}
           gutterBottom
         >
           {label}
         </Typography>
         <Typography variant="body-md" component="div">
-          {children || '-'}
+          {children || "-"}
         </Typography>
       </Box>
     </Grid>

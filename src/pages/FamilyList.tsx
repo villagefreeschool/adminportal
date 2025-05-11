@@ -1,52 +1,52 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import AddIcon from "@mui/icons-material/Add";
+import DescriptionIcon from "@mui/icons-material/Description";
+import EditIcon from "@mui/icons-material/Edit";
+import SearchIcon from "@mui/icons-material/Search";
 // Remove useNavigate since we're not using it
 import {
-  useTheme,
-  Paper,
-  Typography,
+  AppBar,
   Box,
+  Button,
+  CircularProgress,
+  Fab,
+  IconButton,
+  InputAdornment,
+  Link,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
-  Link,
-  TextField,
-  InputAdornment,
-  CircularProgress,
-  Fab,
-  Tooltip,
-  AppBar,
-  Toolbar,
   TableSortLabel,
-  Button,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DescriptionIcon from '@mui/icons-material/Description';
-import FamilyDialog from '../components/dialogs/FamilyDialog';
-import { Family } from '../services/firebase/models/types';
+  TextField,
+  Toolbar,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { doc } from "firebase/firestore";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import FamilyDialog from "../components/dialogs/FamilyDialog";
+import { useAuth } from "../contexts/useAuth";
+import { familyDB } from "../services/firebase/collections";
 import {
+  calculatedNameForFamily,
+  deleteFamily,
   fetchFamilies,
   fetchFamily,
-  saveFamily,
-  deleteFamily,
-  calculatedNameForFamily,
   guardianNamesForFamily,
-} from '../services/firebase/families';
-import { useAuth } from '../contexts/useAuth';
-import { doc } from 'firebase/firestore';
-import { familyDB } from '../services/firebase/collections';
+  saveFamily,
+} from "../services/firebase/families";
+import type { Family } from "../services/firebase/models/types";
 
 // Sort order type
-type Order = 'asc' | 'desc';
+type Order = "asc" | "desc";
 
 // Columns that can be sorted
-type OrderBy = 'familyName' | 'studentNames' | 'guardianNames' | 'authorizedEmails';
+type OrderBy = "familyName" | "studentNames" | "guardianNames" | "authorizedEmails";
 
 // Extended family type with calculated fields for display and sorting
 interface ExtendedFamily extends Family {
@@ -66,11 +66,11 @@ interface HeadCell {
 
 // Table columns
 const headCells: HeadCell[] = [
-  { id: 'familyName', label: 'Family Name', numeric: false, sortable: true },
-  { id: 'studentNames', label: 'Students', numeric: false, sortable: true },
-  { id: 'authorizedEmails', label: 'Authorized Emails', numeric: false, sortable: true },
-  { id: 'registrations', label: 'Registrations', numeric: false, sortable: false },
-  { id: 'actions', label: 'Actions', numeric: false, sortable: false },
+  { id: "familyName", label: "Family Name", numeric: false, sortable: true },
+  { id: "studentNames", label: "Students", numeric: false, sortable: true },
+  { id: "authorizedEmails", label: "Authorized Emails", numeric: false, sortable: true },
+  { id: "registrations", label: "Registrations", numeric: false, sortable: false },
+  { id: "actions", label: "Actions", numeric: false, sortable: false },
 ];
 
 function FamilyList() {
@@ -80,9 +80,9 @@ function FamilyList() {
   // State variables
   const [families, setFamilies] = useState<Family[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<OrderBy>('familyName');
+  const [search, setSearch] = useState("");
+  const [order, setOrder] = useState<Order>("asc");
+  const [orderBy, setOrderBy] = useState<OrderBy>("familyName");
 
   // Dialog states
   const [newDialogOpen, setNewDialogOpen] = useState(false);
@@ -102,7 +102,7 @@ function FamilyList() {
       const data = await fetchFamilies();
       setFamilies(data);
     } catch (error) {
-      console.error('Error fetching families:', error);
+      console.error("Error fetching families:", error);
     } finally {
       setLoading(false);
     }
@@ -111,8 +111,8 @@ function FamilyList() {
   // Create a new family
   const handleNewFamily = () => {
     const newFamily: Family = {
-      id: '',
-      name: '',
+      id: "",
+      name: "",
       guardians: [],
       students: [],
       emergencyContacts: [],
@@ -133,7 +133,7 @@ function FamilyList() {
         setSelectedFamily(family);
       }
     } catch (error) {
-      console.error('Error fetching family:', error);
+      console.error("Error fetching family:", error);
     } finally {
       setFetchingFamily(false);
     }
@@ -148,7 +148,7 @@ function FamilyList() {
       await saveFamily(familyData);
       await loadFamilies();
     } catch (error) {
-      console.error('Error creating family:', error);
+      console.error("Error creating family:", error);
       throw error;
     }
   };
@@ -159,7 +159,7 @@ function FamilyList() {
       await saveFamily(familyData);
       await loadFamilies();
     } catch (error) {
-      console.error('Error updating family:', error);
+      console.error("Error updating family:", error);
       throw error;
     }
   };
@@ -170,15 +170,15 @@ function FamilyList() {
       await deleteFamily(familyData);
       await loadFamilies();
     } catch (error) {
-      console.error('Error deleting family:', error);
+      console.error("Error deleting family:", error);
       throw error;
     }
   };
 
   // Handle column sort
   const handleRequestSort = (property: OrderBy) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -189,7 +189,7 @@ function FamilyList() {
       const guardianNames = guardianNamesForFamily(family);
       const studentNames = family.students
         .map((student) => student.preferredName || student.firstName)
-        .join(', ');
+        .join(", ");
 
       // Get authorized emails from guardians and otherEmails
       let authorizedEmails: string[] = [];
@@ -200,7 +200,7 @@ function FamilyList() {
       // Add other emails from guardians
       family.guardians.forEach((guardian) => {
         if (guardian.otherEmails) {
-          const otherEmails = guardian.otherEmails.split(',').map((e) => e.trim());
+          const otherEmails = guardian.otherEmails.split(",").map((e) => e.trim());
           authorizedEmails.push(...otherEmails);
         }
       });
@@ -242,27 +242,27 @@ function FamilyList() {
 
     // Sort filtered results
     return [...filtered].sort((a, b) => {
-      let aValue: string = '';
-      let bValue: string = '';
+      let aValue = "";
+      let bValue = "";
 
       // Handle email array for authorizedEmails
-      if (orderBy === 'authorizedEmails') {
-        aValue = a.authorizedEmails.join(', ');
-        bValue = b.authorizedEmails.join(', ');
+      if (orderBy === "authorizedEmails") {
+        aValue = a.authorizedEmails.join(", ");
+        bValue = b.authorizedEmails.join(", ");
       } else {
-        aValue = String(a[orderBy] || '');
-        bValue = String(b[orderBy] || '');
+        aValue = String(a[orderBy] || "");
+        bValue = String(b[orderBy] || "");
       }
 
       // Compare values based on sort direction
       const result = aValue.localeCompare(bValue);
-      return order === 'asc' ? result : -result;
+      return order === "asc" ? result : -result;
     });
   }, [extendedFamilies, search, order, orderBy]);
 
   return (
     <>
-      <Paper elevation={2} sx={{ overflow: 'hidden' }}>
+      <Paper elevation={2} sx={{ overflow: "hidden" }}>
         <AppBar position="relative" sx={{ bgcolor: theme.palette.green[900] }}>
           <Toolbar>
             <Typography variant="h6" component="h1">
@@ -276,24 +276,24 @@ function FamilyList() {
               size="small"
               sx={{
                 ml: 2,
-                width: { xs: '120px', sm: '200px' },
-                '& .MuiOutlinedInput-root': {
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.15)',
+                width: { xs: "120px", sm: "200px" },
+                "& .MuiOutlinedInput-root": {
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.15)",
                   },
                 },
-                '& .MuiInputBase-input': {
-                  color: 'white',
+                "& .MuiInputBase-input": {
+                  color: "white",
                 },
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "rgba(255, 255, 255, 0.3)",
                 },
               }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon sx={{ color: 'white' }} />
+                    <SearchIcon sx={{ color: "white" }} />
                   </InputAdornment>
                 ),
               }}
@@ -302,7 +302,7 @@ function FamilyList() {
 
           {/* Toolbar extension with the FAB */}
           {isAdmin && (
-            <Box sx={{ position: 'relative', height: '28px' }}>
+            <Box sx={{ position: "relative", height: "28px" }}>
               <Tooltip title="Add new family">
                 <Fab
                   color="primary"
@@ -310,7 +310,7 @@ function FamilyList() {
                   onClick={handleNewFamily}
                   size="large"
                   sx={{
-                    position: 'absolute',
+                    position: "absolute",
                     bottom: -21,
                     left: 24,
                     zIndex: 1,
@@ -337,12 +337,12 @@ function FamilyList() {
                       <TableCell
                         key={headCell.id}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
+                        sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
                       >
                         {headCell.sortable ? (
                           <TableSortLabel
                             active={orderBy === (headCell.id as OrderBy)}
-                            direction={orderBy === (headCell.id as OrderBy) ? order : 'asc'}
+                            direction={orderBy === (headCell.id as OrderBy) ? order : "asc"}
                             onClick={() => handleRequestSort(headCell.id as OrderBy)}
                           >
                             {headCell.label}
@@ -361,13 +361,13 @@ function FamilyList() {
                         <Link
                           component={RouterLink}
                           to={`/families/${family.id}`}
-                          sx={{ textDecoration: 'none' }}
+                          sx={{ textDecoration: "none" }}
                         >
                           {family.familyName}
                         </Link>
                       </TableCell>
                       <TableCell>{family.studentNames}</TableCell>
-                      <TableCell>{family.authorizedEmails.join(', ')}</TableCell>
+                      <TableCell>{family.authorizedEmails.join(", ")}</TableCell>
                       <TableCell>
                         <Button
                           size="small"
@@ -378,8 +378,8 @@ function FamilyList() {
                           startIcon={<DescriptionIcon />}
                           sx={{
                             bgcolor: theme.palette.brown[500],
-                            '&:hover': { bgcolor: theme.palette.brown[700] },
-                            fontSize: '0.75rem',
+                            "&:hover": { bgcolor: theme.palette.brown[700] },
+                            fontSize: "0.75rem",
                           }}
                         >
                           Registrations
@@ -413,8 +413,8 @@ function FamilyList() {
         title="New Family"
         family={
           selectedFamily || {
-            id: '',
-            name: '',
+            id: "",
+            name: "",
             guardians: [],
             students: [],
             emergencyContacts: [],
@@ -429,11 +429,11 @@ function FamilyList() {
       {/* Edit Family Dialog */}
       <FamilyDialog
         open={editDialogOpen}
-        title={`Edit Family ${selectedFamily?.name || ''}`}
+        title={`Edit Family ${selectedFamily?.name || ""}`}
         family={
           selectedFamily || {
-            id: '',
-            name: '',
+            id: "",
+            name: "",
             guardians: [],
             students: [],
             emergencyContacts: [],

@@ -1,6 +1,6 @@
-import '@mui/material/styles';
+import "@mui/material/styles";
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface PaletteColorOptions {
     dark?: string;
     light?: string;
@@ -18,20 +18,20 @@ declare module '@mui/material/styles' {
   }
 
   interface Palette {
-    green: Palette['primary'];
-    brown: Palette['primary'];
+    green: Palette["primary"];
+    brown: Palette["primary"];
   }
 
   interface PaletteOptions {
-    green?: PaletteOptions['primary'];
-    brown?: PaletteOptions['primary'];
+    green?: PaletteOptions["primary"];
+    brown?: PaletteOptions["primary"];
   }
 }
 
-declare module '@mui/material/Typography' {
+declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
-    'body-md': true;
-    'body-sm': true;
+    "body-md": true;
+    "body-sm": true;
     body1: false;
     body2: false;
   }

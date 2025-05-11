@@ -1,26 +1,26 @@
-import { useState, FormEvent, useEffect } from 'react';
-import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
+import GoogleIcon from "@mui/icons-material/Google";
 import {
-  Container,
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  TextField,
-  Button,
-  Divider,
-  CardHeader,
   Alert,
   Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Container,
+  Divider,
   Link,
-} from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
-import { FirebaseError } from 'firebase/app';
-import { useAuth } from '../contexts/useAuth';
+  TextField,
+  Typography,
+} from "@mui/material";
+import type { FirebaseError } from "firebase/app";
+import { type FormEvent, useEffect, useState } from "react";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/useAuth";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -32,30 +32,30 @@ export default function Login() {
   // If the user is already authenticated, redirect to the family page
   useEffect(() => {
     if (isAuthenticated && !authLoading) {
-      navigate('/my-family');
+      navigate("/my-family");
     }
   }, [isAuthenticated, authLoading, navigate]);
 
   // Get the redirect path from location state or default to home
   const from =
-    location.state && 'from' in location.state
+    location.state && "from" in location.state
       ? (location.state.from as { pathname: string }).pathname
-      : '/my-family';
+      : "/my-family";
 
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {};
     let isValid = true;
 
     if (!email) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
       isValid = false;
     }
 
     if (!password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
       isValid = false;
     } else if (password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
+      errors.password = "Password must be at least 6 characters";
       isValid = false;
     }
 
@@ -74,16 +74,16 @@ export default function Login() {
       await login(email, password);
       navigate(from);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       // Map Firebase error codes to user-friendly messages
       const firebaseError = error as FirebaseError;
       if (
-        firebaseError.code === 'auth/user-not-found' ||
-        firebaseError.code === 'auth/wrong-password'
+        firebaseError.code === "auth/user-not-found" ||
+        firebaseError.code === "auth/wrong-password"
       ) {
-        setErrorMessage('Invalid email or password');
-      } else if (firebaseError.code === 'auth/invalid-email') {
-        setErrorMessage('Invalid email format');
+        setErrorMessage("Invalid email or password");
+      } else if (firebaseError.code === "auth/invalid-email") {
+        setErrorMessage("Invalid email format");
       } else {
         setErrorMessage(firebaseError.message);
       }
@@ -97,12 +97,12 @@ export default function Login() {
     setErrorMessage(null);
 
     try {
-      console.log('Starting Google login from Login component');
+      console.log("Starting Google login from Login component");
       await loginWithGooglePopup();
-      console.log('Google login completed');
+      console.log("Google login completed");
       setIsLoading(false);
     } catch (error) {
-      console.error('Google login error:', error);
+      console.error("Google login error:", error);
       const firebaseError = error as FirebaseError;
       setErrorMessage(firebaseError.message);
       setIsLoading(false);
@@ -114,7 +114,7 @@ export default function Login() {
       <Card>
         <CardHeader
           title="VFS Portal Login"
-          sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}
+          sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}
         />
 
         <CardContent>
@@ -128,33 +128,33 @@ export default function Login() {
             Sign in with Google:
           </Typography>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
             <Button
               variant="contained"
               onClick={handleGoogleLogin}
               disabled={isLoading}
               sx={{
-                bgcolor: '#4285F4',
-                color: 'white',
-                fontWeight: 'medium',
-                '&:hover': { bgcolor: '#3367D6' },
+                bgcolor: "#4285F4",
+                color: "white",
+                fontWeight: "medium",
+                "&:hover": { bgcolor: "#3367D6" },
                 px: 3,
                 py: 1.5,
-                fontSize: '1rem',
+                fontSize: "1rem",
                 boxShadow: 3,
               }}
               startIcon={
                 isLoading ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box
                       sx={{
-                        display: 'inline-block',
+                        display: "inline-block",
                         width: 20,
                         height: 20,
-                        border: '2px solid currentColor',
-                        borderRadius: '50%',
-                        borderTopColor: 'transparent',
-                        animation: 'spin 1s linear infinite',
+                        border: "2px solid currentColor",
+                        borderRadius: "50%",
+                        borderTopColor: "transparent",
+                        animation: "spin 1s linear infinite",
                       }}
                     />
                   </Box>
@@ -163,11 +163,11 @@ export default function Login() {
                 )
               }
             >
-              {isLoading ? 'Signing in...' : 'Sign in with Google'}
+              {isLoading ? "Signing in..." : "Sign in with Google"}
             </Button>
           </Box>
 
-          <Box sx={{ textAlign: 'center', my: 1 }}>
+          <Box sx={{ textAlign: "center", my: 1 }}>
             <Typography variant="body-sm" color="text.secondary">
               You&apos;ll be redirected to Google to sign in securely
             </Typography>
@@ -209,7 +209,7 @@ export default function Login() {
           </Box>
         </CardContent>
 
-        <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+        <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
           <Link component={RouterLink} to="/forgot-password" variant="body-sm" color="error">
             Forgot Password?
           </Link>
@@ -225,7 +225,7 @@ export default function Login() {
         </CardActions>
       </Card>
 
-      <Box sx={{ mt: 3, textAlign: 'center' }}>
+      <Box sx={{ mt: 3, textAlign: "center" }}>
         <Typography variant="body-sm" sx={{ mb: 1 }}>
           If you haven&apos;t created an account on the VFS Portal yet, and you don&apos;t have a
           Google Account, then you&apos;ll need to create one:

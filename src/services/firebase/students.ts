@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import { getDocs, where, query, documentId } from 'firebase/firestore';
-import { CHUNK_SIZE } from './core';
-import { Student } from './models/types';
+import { documentId, getDocs, query, where } from "firebase/firestore";
+import _ from "lodash";
+import { CHUNK_SIZE } from "./core";
+import type { Student } from "./models/types";
 
 // Import collection references
-import { studentDB } from './collections';
+import { studentDB } from "./collections";
 
 /**
  * fetchStudentsWithIDs is a utility function to get multiple *read-only*
@@ -23,7 +23,7 @@ export async function fetchStudentsWithIDs(ids: string[]): Promise<Student[]> {
   const chunks = _.chain([ids]).flatten().uniq().chunk(CHUNK_SIZE).value();
 
   for (const chunk of chunks) {
-    const q = query(studentDB, where(documentId(), 'in', chunk));
+    const q = query(studentDB, where(documentId(), "in", chunk));
     const snap = await getDocs(q);
     snap.forEach((doc) => {
       students.push({ id: doc.id, ...doc.data() } as Student);

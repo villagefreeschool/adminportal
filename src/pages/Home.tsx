@@ -1,19 +1,19 @@
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import { useAuth } from '../contexts/useAuth';
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import { useAuth } from "../contexts/useAuth";
 
 function Home() {
   const { currentUser, myFamily, isAdmin } = useAuth();
 
   return (
     <>
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
+      <Box sx={{ textAlign: "center", mb: 4 }}>
         <Box
           component="img"
           src="/VFSLogo.png"
           alt="Village Free School Logo"
-          sx={{ maxWidth: '100%', maxHeight: '200px' }}
+          sx={{ maxWidth: "100%", maxHeight: "200px" }}
         />
       </Box>
 
@@ -29,8 +29,8 @@ function Home() {
         </Typography>
 
         <Typography variant="body-md" paragraph>
-          {currentUser?.displayName ? `Hello, ${currentUser.displayName}!` : 'Welcome!'}
-          {isAdmin && ' You have administrator privileges.'}
+          {currentUser?.displayName ? `Hello, ${currentUser.displayName}!` : "Welcome!"}
+          {isAdmin && " You have administrator privileges."}
         </Typography>
 
         {myFamily ? (

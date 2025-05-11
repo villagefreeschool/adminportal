@@ -15,9 +15,9 @@ export const DefaultMaximumIncome = 120000;
 export const DefaultMinimumTuition = 1000;
 export const DefaultMaximumTuition = 12500;
 
-export const FullTime = 'Full Time';
-export const PartTime = 'Part Time';
-export const NotAttending = 'Not Attending';
+export const FullTime = "Full Time";
+export const PartTime = "Part Time";
+export const NotAttending = "Not Attending";
 
 interface Year {
   minimumTuition?: number;
@@ -46,14 +46,14 @@ export function tuitionForIncome(
 ): number {
   // Collect most basic algorithmic options
   const year = opts.year || {};
-  const inflationPeriods = parseInt(String(opts.inflationPeriods || 0));
-  const minTuition = parseFloat(String(year.minimumTuition || DefaultMinimumTuition));
-  const maxTuition = parseFloat(String(year.maximumTuition || DefaultMaximumTuition));
-  const minIncome = parseFloat(String(year.minimumIncome || DefaultMinimumIncome));
-  const maxIncome = parseFloat(String(year.maximumIncome || DefaultMaximumIncome));
-  const fullTimeCount = parseInt(String(opts.fullTime || 0));
-  const partTimeCount = parseInt(String(opts.partTime || 0));
-  const siblingCount = parseInt(String(opts.siblings || 0));
+  const inflationPeriods = Number.parseInt(String(opts.inflationPeriods || 0));
+  const minTuition = Number.parseFloat(String(year.minimumTuition || DefaultMinimumTuition));
+  const maxTuition = Number.parseFloat(String(year.maximumTuition || DefaultMaximumTuition));
+  const minIncome = Number.parseFloat(String(year.minimumIncome || DefaultMinimumIncome));
+  const maxIncome = Number.parseFloat(String(year.maximumIncome || DefaultMaximumIncome));
+  const fullTimeCount = Number.parseInt(String(opts.fullTime || 0));
+  const partTimeCount = Number.parseInt(String(opts.partTime || 0));
+  const siblingCount = Number.parseInt(String(opts.siblings || 0));
 
   // If income wasn't entered, assume the maximum
   if (income === null || income === undefined) {
@@ -93,7 +93,7 @@ export function tuitionForIncome(
  */
 export function minimumTuitionForIncome(income: number, opts: TuitionOptions = {}): number {
   const year = opts.year || {};
-  const maxIncome = parseFloat(String(year.maximumIncome || DefaultMaximumIncome));
+  const maxIncome = Number.parseFloat(String(year.maximumIncome || DefaultMaximumIncome));
   if (income <= maxIncome) {
     return tuitionForIncome(income, opts);
   } else {
@@ -155,10 +155,10 @@ export function calculateTuitionOptions(studentDecisions: Record<string, string>
  * @returns Formatted currency string
  */
 export function formatCurrency(value: number | undefined): string {
-  if (value === undefined) return '$0.00';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  if (value === undefined) return "$0.00";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(value);

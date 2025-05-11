@@ -1,8 +1,8 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import { EmergencyContact } from '../services/firebase/models/types';
-import RelationshipDropdown from './RelationshipDropdown';
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import type React from "react";
+import type { EmergencyContact } from "../services/firebase/models/types";
+import RelationshipDropdown from "./RelationshipDropdown";
 
 interface EmergencyContactFormProps {
   contact: EmergencyContact;
@@ -27,8 +27,8 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="First Name"
-          value={contact.firstName || ''}
-          onChange={(e) => handleChange('firstName', e.target.value)}
+          value={contact.firstName || ""}
+          onChange={(e) => handleChange("firstName", e.target.value)}
           fullWidth
           required
         />
@@ -36,16 +36,16 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Last Name"
-          value={contact.lastName || ''}
-          onChange={(e) => handleChange('lastName', e.target.value)}
+          value={contact.lastName || ""}
+          onChange={(e) => handleChange("lastName", e.target.value)}
           fullWidth
         />
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Cell Phone"
-          value={contact.cellPhone || ''}
-          onChange={(e) => handleChange('cellPhone', e.target.value)}
+          value={contact.cellPhone || ""}
+          onChange={(e) => handleChange("cellPhone", e.target.value)}
           fullWidth
           required
         />
@@ -53,23 +53,23 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
           label="Work Phone"
-          value={contact.workPhone || ''}
-          onChange={(e) => handleChange('workPhone', e.target.value)}
+          value={contact.workPhone || ""}
+          onChange={(e) => handleChange("workPhone", e.target.value)}
           fullWidth
         />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <RelationshipDropdown
-          value={contact.relationship || ''}
-          onChange={(value) => handleChange('relationship', value)}
+          value={contact.relationship || ""}
+          onChange={(value) => handleChange("relationship", value)}
           required
         />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
           label="Notes"
-          value={contact.notes || ''}
-          onChange={(e) => handleChange('notes', e.target.value)}
+          value={contact.notes || ""}
+          onChange={(e) => handleChange("notes", e.target.value)}
           multiline
           rows={2}
           fullWidth
