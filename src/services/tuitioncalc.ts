@@ -56,22 +56,23 @@ export function tuitionForIncome(
   const siblingCount = Number.parseInt(String(opts.siblings || 0));
 
   // If income wasn't entered, assume the maximum
-  if (income === null || income === undefined) {
-    income = maxIncome;
+  let incomeValue = income;
+  if (incomeValue === null || incomeValue === undefined) {
+    incomeValue = maxIncome;
   }
 
   // Calculate the base tuition
   let baseTuition: number;
-  if (income <= minIncome) {
+  if (incomeValue <= minIncome) {
     baseTuition = minTuition;
     // Don't apply an inflation increase to minimum income
-  } else if (income >= maxIncome) {
-    baseTuition = (maxTuition / maxIncome) * income;
+  } else if (incomeValue >= maxIncome) {
+    baseTuition = (maxTuition / maxIncome) * incomeValue;
     baseTuition += inflationPeriods * InflationIncrease;
   } else {
     const incomeRange = maxIncome - minIncome;
     const tuitionRange = maxTuition - minTuition;
-    const x = (income - minIncome) / incomeRange;
+    const x = (incomeValue - minIncome) / incomeRange;
     const y = exponentTransform(x, Steepness);
     baseTuition = minTuition + tuitionRange * y;
     baseTuition += inflationPeriods * InflationIncrease;
