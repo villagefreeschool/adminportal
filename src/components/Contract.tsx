@@ -73,8 +73,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
   const canSignContract = contract && (isAdmin || year?.isAcceptingRegistrations);
 
   // Check if contract has signatures
-  const hasSignatures =
-    contract && contract.signatures && Object.keys(contract.signatures || {}).length > 0;
+  const hasSignatures = contract?.signatures && Object.keys(contract.signatures || {}).length > 0;
 
   // Create a map of guardian names for display
   const guardianNames: Record<string, string> = {};
@@ -177,7 +176,7 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
   // Show contract details
   return (
     <Box>
-      {family && family.students && (
+      {family?.students && (
         <Grid container spacing={2} justifyContent="space-around">
           {family.students.map((student) => (
             <Grid

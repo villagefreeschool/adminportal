@@ -140,7 +140,9 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
         x: e.clientX - rect.left,
         y: e.clientY - rect.top,
       };
-    } else if (e.touches && e.touches[0]) {
+    }
+
+    if (e.touches?.[0]) {
       // Touch event
       return {
         x: e.touches[0].clientX - rect.left,

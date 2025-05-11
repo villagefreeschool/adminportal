@@ -64,25 +64,25 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
 
   // Computed values
   const allKids = family.students
-    .map((s) => s.firstName + " " + s.middleName + " " + s.lastName)
+    .map((s) => `${s.firstName} ${s.middleName} ${s.lastName}`)
     .join("\n");
 
   const allKidsOneLine = family.students
-    .map((s) => s.firstName + " " + s.middleName + " " + s.lastName)
+    .map((s) => `${s.firstName} ${s.middleName} ${s.lastName}`)
     .join(" and ");
 
   const needMediaReleasePage = family.students.filter((s) => s.mediaRelease).length > 0;
 
   const mediaReleaseKids = family.students
     .filter((s) => s.mediaRelease)
-    .map((s) => s.firstName + " " + s.middleName + " " + s.lastName)
+    .map((s) => `${s.firstName} ${s.middleName} ${s.lastName}`)
     .join("\n");
 
   const needSelfSignoutPage = family.students.filter((s) => s.signSelfOut).length > 0;
 
   const selfSignoutKids = family.students
     .filter((s) => s.signSelfOut)
-    .map((s) => s.firstName + " " + s.middleName + " " + s.lastName)
+    .map((s) => `${s.firstName} ${s.middleName} ${s.lastName}`)
     .join("\n");
 
   // PDF generation functions
@@ -98,7 +98,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
 
     // Title
     parts.push({
-      text: year.name + " Enrollment Contract",
+      text: `${year.name} Enrollment Contract`,
       style: "title",
       margin: [100, 20, 0, 0] as [number, number, number, number],
     });
@@ -116,7 +116,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
   const terms = (): Content[] => {
     return [
       {
-        text: "Village Free School Enrollment Contract\n" + year.name,
+        text: `Village Free School Enrollment Contract\n${year.name}`,
         style: "header",
         alignment: "center",
         pageBreak: "before",
@@ -126,16 +126,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
         text: [
           'I/We are the parent(s) and/or legal guardian(s) (the "Family") of ',
           { text: allKidsOneLine, bold: true },
-          ' (the "Student" or "Students") intending to enroll at The Village Free School ' +
-            "for the " +
-            year.name +
-            " school year. By signing this agreement to enroll Student at " +
-            'The Village Free School (the "School") for the ' +
-            year.name +
-            ' school year (the "Enrollment Contract"), Family acknowledges that Family is financially ' +
-            "responsible for Student and agrees to pay the rate of, and meet all obligations " +
-            "associated with Tuition, as defined below, and agrees to pay any fees or fines. " +
-            'The term "School" shall include all employees and/or staff of School.',
+          ` (the "Student" or "Students") intending to enroll at The Village Free School for the ${year.name} school year. By signing this agreement to enroll Student at The Village Free School (the "School") for the ${year.name} school year (the "Enrollment Contract"), Family acknowledges that Family is financially responsible for Student and agrees to pay the rate of, and meet all obligations associated with Tuition, as defined below, and agrees to pay any fees or fines. The term "School" shall include all employees and/or staff of School.`,
         ],
       },
       {
@@ -172,7 +163,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
           body: [
             [
               {
-                text: "Total Tuition for " + year.name,
+                text: `Total Tuition for ${year.name}`,
                 bold: true,
                 fontSize: 12,
                 alignment: "center",
@@ -537,7 +528,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
       heights.push("auto");
       lines.push([
         {
-          text: "\n" + (kids || allKids) + "\n\n",
+          text: `\n${kids || allKids}\n\n`,
           colSpan: 2,
           alignment: "center",
         },
@@ -571,14 +562,14 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
           if (altId === guardianId) continue; // Skip the one we already tried
 
           const altSignature = contract.signatures?.[altId];
-          if (altSignature && altSignature.data) {
+          if (altSignature?.data) {
             matchedSignature = altSignature;
             break;
           }
         }
       }
 
-      if (matchedSignature && matchedSignature.data) {
+      if (matchedSignature?.data) {
         try {
           // Try to normalize the signature data
           const normalizedSignature = normalizeSignatureForPdf(matchedSignature);
@@ -632,7 +623,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
       // Add name and date line (show actual date if signed digitally)
       const dateText = matchedSignature ? new Date(matchedSignature.date).toLocaleDateString() : "";
 
-      lines.push([g.firstName + " " + g.lastName, { text: dateText, bold: true }]);
+      lines.push([`${g.firstName} ${g.lastName}`, { text: dateText, bold: true }]);
       heights.push("auto");
     });
 
@@ -655,7 +646,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
       margin: [15, 0, 15, 0] as [number, number, number, number],
       columns: [
         {
-          text: "\nGenerated " + new Date().toString(),
+          text: `\nGenerated ${new Date().toString()}`,
           style: {
             fontSize: 7,
             color: "#8a8a8a",

@@ -132,7 +132,7 @@ export async function getAuthRedirectResult(): Promise<User | null> {
 export async function resetPassword(email: string): Promise<void> {
   try {
     await sendPasswordResetEmail(auth, email, {
-      url: "https://admin.villagefreeschool.org/reset-password?email=" + email,
+      url: `https://admin.villagefreeschool.org/reset-password?email=${email}`,
     });
   } catch (error: unknown) {
     console.error("Error sending password reset email:", error);

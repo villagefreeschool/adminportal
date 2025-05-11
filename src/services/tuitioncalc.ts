@@ -96,9 +96,8 @@ export function minimumTuitionForIncome(income: number, opts: TuitionOptions = {
   const maxIncome = Number.parseFloat(String(year.maximumIncome || DefaultMaximumIncome));
   if (income <= maxIncome) {
     return tuitionForIncome(income, opts);
-  } else {
-    return tuitionForIncome(maxIncome, opts);
   }
+  return tuitionForIncome(maxIncome, opts);
 }
 
 /**
@@ -111,7 +110,7 @@ export function minimumTuitionForIncome(income: number, opts: TuitionOptions = {
  */
 function exponentTransform(x: number, steepness: number): number {
   const adjustedSteepness = steepness + 0.01; // Needed to avoid exactly equalling 1.
-  const numerator = Math.pow(adjustedSteepness, x) - 1;
+  const numerator = adjustedSteepness ** x - 1;
   const denominator = adjustedSteepness - 1;
   return numerator / denominator;
 }

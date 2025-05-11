@@ -67,8 +67,7 @@ export function getFirebaseConfig(): FirebaseConfig {
 
   if (!config) {
     console.error(
-      `No Firebase DB config for project '${projectName}'. ` +
-        `Please check your environment variables or define a config in config.ts`,
+      `No Firebase DB config for project '${projectName}'. Please check your environment variables or define a config in config.ts`,
     );
     // Return the production config as a last resort
     return firebaseProjectConfigs.vfsadmin;

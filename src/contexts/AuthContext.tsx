@@ -37,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log("Auth state changed:", user ? "User logged in" : "No user");
       setCurrentUser(user);
 
-      if (user && user.email) {
+      if (user?.email) {
         try {
           // Fetch user family
           const userFamilyDocRef = doc(userFamilyDB, user.email.toLowerCase());

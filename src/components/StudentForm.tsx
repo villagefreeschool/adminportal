@@ -55,7 +55,6 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
       case "she":
       case "her":
         return "herself";
-      case "they":
       default:
         return "themself";
     }

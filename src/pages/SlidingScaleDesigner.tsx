@@ -118,7 +118,7 @@ function SlidingScaleDesigner() {
   // Custom exponential transform function for the calculator
   const calculatorExponentTransform = useCallback((x: number, steepnessValue: number): number => {
     const adjustedSteepness = steepnessValue + 0.01; // Needed to avoid exactly equalling 1
-    const numerator = Math.pow(adjustedSteepness, x) - 1;
+    const numerator = adjustedSteepness ** x - 1;
     const denominator = adjustedSteepness - 1;
     return numerator / denominator;
   }, []);
@@ -310,7 +310,7 @@ function SlidingScaleDesigner() {
     }
 
     const value = Number(event.target.value);
-    if (!isNaN(value) && value >= 0) {
+    if (!Number.isNaN(value) && value >= 0) {
       setMinIncome(value);
     }
   };
@@ -324,7 +324,7 @@ function SlidingScaleDesigner() {
 
     const value = Number(event.target.value);
     // Don't constrain during typing - only enforce on blur
-    if (!isNaN(value) && value >= 0) {
+    if (!Number.isNaN(value) && value >= 0) {
       setMaxIncome(value);
     }
   };
@@ -337,7 +337,7 @@ function SlidingScaleDesigner() {
     }
 
     const value = Number(event.target.value);
-    if (!isNaN(value) && value >= 0) {
+    if (!Number.isNaN(value) && value >= 0) {
       setMinTuition(value);
     }
   };
@@ -351,7 +351,7 @@ function SlidingScaleDesigner() {
 
     const value = Number(event.target.value);
     // Don't constrain during typing - only enforce on blur
-    if (!isNaN(value) && value >= 0) {
+    if (!Number.isNaN(value) && value >= 0) {
       setMaxTuition(value);
     }
   };
@@ -363,18 +363,16 @@ function SlidingScaleDesigner() {
       return 1 + (sliderValue / 30) * 4;
     }
     // Map 30-100 on slider to 5-50 steepness (faster change in higher range)
-    else {
-      return 5 + ((sliderValue - 30) / 70) * 45;
-    }
+
+    return 5 + ((sliderValue - 30) / 70) * 45;
   };
 
   // Inverse function: Transform steepness (1-50) to slider value (0-100)
   const steepnessToSlider = (steepnessValue: number): number => {
     if (steepnessValue <= 5) {
       return ((steepnessValue - 1) / 4) * 30;
-    } else {
-      return 30 + ((steepnessValue - 5) / 45) * 70;
     }
+    return 30 + ((steepnessValue - 5) / 45) * 70;
   };
 
   // The current position of the slider (0-100)

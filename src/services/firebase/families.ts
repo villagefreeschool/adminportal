@@ -45,10 +45,9 @@ export async function fetchFamily(id: string): Promise<Family | null> {
 
     if (docSnapshot.exists()) {
       return { id: docSnapshot.id, ...docSnapshot.data() } as Family;
-    } else {
-      console.log(`No family found with ID: ${id}`);
-      return null;
     }
+    console.log(`No family found with ID: ${id}`);
+    return null;
   } catch (error) {
     console.error("Error fetching family:", error);
     throw error;
@@ -153,23 +152,23 @@ export async function deleteFamily(family: Family): Promise<void> {
   // Delete student records
   const studentIDs = _.map(family.students || [], "id");
   for (let i = 0; i < studentIDs.length; i++) {
-    console.log("Deleting students/" + studentIDs[i]);
+    console.log(`Deleting students/${studentIDs[i]}`);
     await deleteDoc(doc(studentDB, studentIDs[i]));
   }
 
   const yearSnap = await getDocs(yearDB);
   yearSnap.forEach((yearDoc) => {
     const yearID = yearDoc.id;
-    console.log("Deleting years/" + yearID + "/contracts/" + familyID);
+    console.log(`Deleting years/${yearID}/contracts/${familyID}`);
     deleteDoc(doc(collection(doc(yearDB, yearID), "contracts"), familyID));
     for (let i = 0; i < studentIDs.length; i++) {
-      console.log("Deleting years/" + yearID + "/enrollments/" + studentIDs[i]);
+      console.log(`Deleting years/${yearID}/enrollments/${studentIDs[i]}`);
       deleteDoc(doc(collection(doc(yearDB, yearID), "enrollments"), studentIDs[i]));
     }
   });
 
   // Finally delete the actual family
-  console.log("Deleting families/" + familyID);
+  console.log(`Deleting families/${familyID}`);
   await deleteDoc(doc(familyDB, familyID));
 }
 
@@ -266,14 +265,12 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
  * Generates a family name based on the last names of guardians and students
  */
 export function calculatedNameForFamily(family: Family): string {
-  return (
-    _.chain([...family.students, ...family.guardians])
-      .map((s) => (s.lastName ? s.lastName : "").trim())
-      .sort()
-      .uniq()
-      .value()
-      .join(" / ") + " Family"
-  );
+  return `${_.chain([...family.students, ...family.guardians])
+    .map((s) => (s.lastName ? s.lastName : "").trim())
+    .sort()
+    .uniq()
+    .value()
+    .join(" / ")} Family`;
 }
 
 /**

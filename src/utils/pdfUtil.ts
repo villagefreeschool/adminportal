@@ -117,17 +117,21 @@ export function normalizeSignatureForPdf(signature: SignatureData): string | nul
     if (imageData.startsWith("data:image/png;base64,")) {
       // Already formatted correctly
       return imageData;
-    } else if (imageData.startsWith("data:image/jpeg;base64,")) {
+    }
+    if (imageData.startsWith("data:image/jpeg;base64,")) {
       // JPEG format is also acceptable
       return imageData;
-    } else if (imageData.startsWith("data:image/svg+xml;base64,")) {
+    }
+    if (imageData.startsWith("data:image/svg+xml;base64,")) {
       // SVG format is also acceptable
       return imageData;
-    } else if (imageData.includes("base64,")) {
+    }
+    if (imageData.includes("base64,")) {
       // Extract base64 part and recreate proper data URL
       const base64Data = imageData.split("base64,")[1];
       return `data:image/png;base64,${base64Data}`;
-    } else if (imageData.match(/^[A-Za-z0-9+/=]+$/)) {
+    }
+    if (imageData.match(/^[A-Za-z0-9+/=]+$/)) {
       // Just raw base64 data without prefix
       return `data:image/png;base64,${imageData}`;
     }

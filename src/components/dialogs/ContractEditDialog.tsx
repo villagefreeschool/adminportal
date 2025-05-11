@@ -101,7 +101,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       // If decisions have changed from the saved contract, use suggested tuition
       if (decisionsChangedFromContract) {
         setTuition(suggestedTuition);
-      } else if (contract && contract.tuition) {
+      } else if (contract?.tuition) {
         // Otherwise use the existing contract tuition
         setTuition(contract.tuition);
       }
@@ -298,7 +298,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       await deleteContract(yearId, familyId);
 
       // Delete any enrollments
-      if (family && family.students) {
+      if (family?.students) {
         const promises = family.students.map((student) => deleteEnrollment(yearId, student.id));
         await Promise.all(promises);
       }
@@ -441,13 +441,14 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
     }
 
     // Apply year-over-year limits if there's a previous year contract
-    if (prevYearContract && prevYearContract.tuition && !decisionsChangedFromPreviousYear) {
+    if (prevYearContract?.tuition && !decisionsChangedFromPreviousYear) {
       const maxUp = prevYearContract.tuition * (1 + MaxYearOverYearChange);
       const maxDown = prevYearContract.tuition * (1 - MaxYearOverYearChange);
 
       if (t > maxUp) {
         return Math.round(maxUp);
-      } else if (t < maxDown) {
+      }
+      if (t < maxDown) {
         return Math.round(maxDown);
       }
     }
@@ -466,9 +467,8 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
   const suggestedTuition = useMemo(() => {
     if (slidingScaleTuition < minTuition) {
       return minTuition;
-    } else {
-      return slidingScaleTuition;
     }
+    return slidingScaleTuition;
   }, [slidingScaleTuition, minTuition]);
 
   // Calculate maximum tuition for slider
