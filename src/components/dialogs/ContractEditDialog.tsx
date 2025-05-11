@@ -95,7 +95,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, yearId, familyId]);
 
-  // Update tuition when student decisions change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We're intentionally only reacting to studentDecisions changes
   useEffect(() => {
     if (allAttendanceDecisionsMade) {
       // If decisions have changed from the saved contract, use suggested tuition
@@ -107,7 +107,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allAttendanceDecisionsMade, decisionsChangedFromContract, suggestedTuition, contract?.tuition]);
+  }, [studentDecisions]);
 
   // Update assistance amount when tuition changes
   useEffect(() => {
