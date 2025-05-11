@@ -19,8 +19,8 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: true,
-    minify: "terser",
-    chunkSizeWarningLimit: 1000, // Increase warning limit to 1MB
+    minify: "esbuild", // esbuild is faster than terser
+    chunkSizeWarningLimit: 1500, // Increase warning limit to 1.5MB
     rollupOptions: {
       output: {
         manualChunks: {

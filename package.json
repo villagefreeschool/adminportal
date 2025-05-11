@@ -6,6 +6,7 @@
 
   "scripts": {
     "build": "tsc && vite build",
+    "build:analyze": "tsc && vite build --mode analyze",
     "check": "tsc --noEmit && npm run lint && npm run format",
     "dev": "npm run start",
     "format": "biome format --write .",
@@ -46,8 +47,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-plotly.js": "^2.6.0",
-    "react-router-dom": "^7.4.0",
-    "terser": "^5.39.0"
+    "react-router-dom": "^7.4.0"
   },
 
   "devDependencies": {
