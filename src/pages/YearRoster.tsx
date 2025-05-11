@@ -1,9 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
+import DownloadIcon from "@mui/icons-material/Download";
+// import CheckIcon from '@mui/icons-material/Check'; // Unused import
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
+import SearchIcon from "@mui/icons-material/Search";
 import {
-  Paper,
-  Typography,
+  AppBar,
   Box,
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  InputAdornment,
+  Link,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -11,44 +21,34 @@ import {
   TableHead,
   TableRow,
   TextField,
-  InputAdornment,
-  CircularProgress,
-  Button,
-  Card,
-  CardContent,
-  Link,
-  AppBar,
   Toolbar,
+  Typography,
   useTheme,
-} from '@mui/material';
-import { Grid } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/Download';
-// import CheckIcon from '@mui/icons-material/Check'; // Unused import
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
-import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
-import { Enrollment, Year } from '../services/firebase/models/types';
-import { fetchYear, enrolledStudentsInYear } from '../services/firebase/years';
-import { contactToString } from '../services/firebase/families';
-import { useAuth } from '../contexts/useAuth';
-import ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
-import moment from 'moment';
+} from "@mui/material";
+import { Grid } from "@mui/material";
+import dayjs from "dayjs";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import { useAuth } from "../contexts/useAuth";
+import { contactToString } from "../services/firebase/families";
+import type { Enrollment, Year } from "../services/firebase/models/types";
+import { enrolledStudentsInYear, fetchYear } from "../services/firebase/years";
 
 interface Column {
   id: string;
   label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
+  align?: "inherit" | "left" | "center" | "right" | "justify";
 }
 
 const columns: Column[] = [
-  { id: 'studentName', label: 'Name' },
-  { id: 'familyName', label: 'Family' },
-  { id: 'enrollmentType', label: 'Enrollment' },
-  { id: 'birthdaySort', label: 'Birthday', align: 'right' },
-  { id: 'signSelfOut', label: 'Self Sign Out', align: 'center' },
-  { id: 'mediaRelease', label: 'Media Release', align: 'center' },
+  { id: "studentName", label: "Name" },
+  { id: "familyName", label: "Family" },
+  { id: "enrollmentType", label: "Enrollment" },
+  { id: "birthdaySort", label: "Birthday", align: "right" },
+  { id: "signSelfOut", label: "Self Sign Out", align: "center" },
+  { id: "mediaRelease", label: "Media Release", align: "center" },
 ];
 
 /**
@@ -65,7 +65,7 @@ function YearRoster() {
   const [enrolledStudents, setEnrolledStudents] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   // Load year and enrolled students data
   useEffect(() => {
@@ -90,11 +90,11 @@ function YearRoster() {
         setYear(yearData);
         setEnrolledStudents(enrolledStudentsData);
       } else {
-        setError('Year not found');
+        setError("Year not found");
       }
     } catch (err) {
-      console.error('Error loading year data:', err);
-      setError('Error loading data');
+      console.error("Error loading year data:", err);
+      setError("Error loading data");
     } finally {
       setLoading(false);
     }
@@ -102,11 +102,11 @@ function YearRoster() {
 
   // Computed values for enrollment counts
   const partTimeCount = useMemo(() => {
-    return enrolledStudents.filter((e) => e.enrollmentType === 'Part Time').length;
+    return enrolledStudents.filter((e) => e.enrollmentType === "Part Time").length;
   }, [enrolledStudents]);
 
   const fullTimeCount = useMemo(() => {
-    return enrolledStudents.filter((e) => e.enrollmentType === 'Full Time').length;
+    return enrolledStudents.filter((e) => e.enrollmentType === "Full Time").length;
   }, [enrolledStudents]);
 
   // Filter students based on search
@@ -115,9 +115,9 @@ function YearRoster() {
 
     const searchLower = search.toLowerCase();
     return enrolledStudents.filter((enrollment) => {
-      const studentName = enrollment.studentName?.toLowerCase() || '';
-      const familyName = enrollment.familyName?.toLowerCase() || '';
-      const enrollmentType = enrollment.enrollmentType?.toLowerCase() || '';
+      const studentName = enrollment.studentName?.toLowerCase() || "";
+      const familyName = enrollment.familyName?.toLowerCase() || "";
+      const enrollmentType = enrollment.enrollmentType?.toLowerCase() || "";
 
       return (
         studentName.includes(searchLower) ||
@@ -133,46 +133,46 @@ function YearRoster() {
 
     // Create a new workbook and worksheet
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'admin.villagefreeschool.org';
+    workbook.creator = "admin.villagefreeschool.org";
     workbook.created = new Date();
 
     const worksheet = workbook.addWorksheet(year.name);
 
     // Define columns
     worksheet.columns = [
-      { header: 'Name', key: 'name', width: 20 },
-      { header: 'Family', key: 'family', width: 20 },
-      { header: 'Enrollment', key: 'enrollment', width: 12 },
-      { header: 'Birthdate', key: 'birthdate', width: 12 },
-      { header: 'Pronoun', key: 'pronoun', width: 10 },
-      { header: 'Severe Allergies', key: 'severeAllergies', width: 20 },
-      { header: 'Non-Severe Allergies', key: 'nonSevereAllergies', width: 20 },
-      { header: 'Other Medical Conditions', key: 'otherMedical', width: 20 },
-      { header: 'Self Sign Out', key: 'selfSignOut', width: 12 },
-      { header: 'Media Release', key: 'mediaRelease', width: 12 },
-      { header: 'Emergency Contact #1', key: 'contact1', width: 25 },
-      { header: 'Emergency Contact #2', key: 'contact2', width: 25 },
-      { header: 'Emergency Contact #3', key: 'contact3', width: 25 },
+      { header: "Name", key: "name", width: 20 },
+      { header: "Family", key: "family", width: 20 },
+      { header: "Enrollment", key: "enrollment", width: 12 },
+      { header: "Birthdate", key: "birthdate", width: 12 },
+      { header: "Pronoun", key: "pronoun", width: 10 },
+      { header: "Severe Allergies", key: "severeAllergies", width: 20 },
+      { header: "Non-Severe Allergies", key: "nonSevereAllergies", width: 20 },
+      { header: "Other Medical Conditions", key: "otherMedical", width: 20 },
+      { header: "Self Sign Out", key: "selfSignOut", width: 12 },
+      { header: "Media Release", key: "mediaRelease", width: 12 },
+      { header: "Emergency Contact #1", key: "contact1", width: 25 },
+      { header: "Emergency Contact #2", key: "contact2", width: 25 },
+      { header: "Emergency Contact #3", key: "contact3", width: 25 },
     ];
 
     // Add data rows
-    enrolledStudents.forEach((enrollment) => {
+    for (const enrollment of enrolledStudents) {
       worksheet.addRow({
-        name: enrollment.student?.preferredName || '',
+        name: enrollment.student?.preferredName || "",
         family: enrollment.familyName,
         enrollment: enrollment.enrollmentType,
-        birthdate: enrollment.student?.birthdate || '',
-        pronoun: enrollment.student?.pronoun || '',
-        severeAllergies: enrollment.student?.severeAllergies || '',
-        nonSevereAllergies: enrollment.student?.nonSevereAllergies || '',
-        otherMedical: enrollment.student?.otherMedicalConditions || '',
-        selfSignOut: enrollment.student?.signSelfOut ? 'YES' : '',
-        mediaRelease: enrollment.student?.mediaRelease ? 'YES' : '',
+        birthdate: enrollment.student?.birthdate || "",
+        pronoun: enrollment.student?.pronoun || "",
+        severeAllergies: enrollment.student?.severeAllergies || "",
+        nonSevereAllergies: enrollment.student?.nonSevereAllergies || "",
+        otherMedical: enrollment.student?.otherMedicalConditions || "",
+        selfSignOut: enrollment.student?.signSelfOut ? "YES" : "",
+        mediaRelease: enrollment.student?.mediaRelease ? "YES" : "",
         contact1: contactToString(enrollment.family?.emergencyContacts?.[0] || null),
         contact2: contactToString(enrollment.family?.emergencyContacts?.[1] || null),
         contact3: contactToString(enrollment.family?.emergencyContacts?.[2] || null),
       });
-    });
+    }
 
     // Make the header row bold
     worksheet.getRow(1).font = { bold: true };
@@ -180,9 +180,9 @@ function YearRoster() {
     // Generate the Excel file
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new window.Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    const filename = `${year.name} - Roster - ${moment().format()}.xlsx`;
+    const filename = `${year.name} - Roster - ${dayjs().format()}.xlsx`;
     saveAs(blob, filename);
   };
 
@@ -211,14 +211,14 @@ function YearRoster() {
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h5" color="error">
-          {error || 'Year not found'}
+          {error || "Year not found"}
         </Typography>
       </Paper>
     );
   }
 
   return (
-    <Paper elevation={2} sx={{ overflow: 'hidden' }}>
+    <Paper elevation={2} sx={{ overflow: "hidden" }}>
       <AppBar position="relative" sx={{ bgcolor: theme.palette.green[900] }}>
         <Toolbar>
           <Typography variant="h6" component="h1">
@@ -232,24 +232,24 @@ function YearRoster() {
             size="small"
             sx={{
               ml: 2,
-              width: { xs: '120px', sm: '200px' },
-              '& .MuiOutlinedInput-root': {
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-                '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.15)',
+              width: { xs: "120px", sm: "200px" },
+              "& .MuiOutlinedInput-root": {
+                bgcolor: "rgba(255, 255, 255, 0.1)",
+                "&:hover": {
+                  bgcolor: "rgba(255, 255, 255, 0.15)",
                 },
               },
-              '& .MuiInputBase-input': {
-                color: 'white',
+              "& .MuiInputBase-input": {
+                color: "white",
               },
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'rgba(255, 255, 255, 0.3)',
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255, 255, 255, 0.3)",
               },
             }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ color: 'white' }} />
+                  <SearchIcon sx={{ color: "white" }} />
                 </InputAdornment>
               ),
             }}
@@ -297,7 +297,7 @@ function YearRoster() {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
+                    sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
                   >
                     {column.label}
                   </TableCell>
@@ -329,7 +329,7 @@ function YearRoster() {
                   </TableCell>
                   <TableCell>{enrollment.enrollmentType}</TableCell>
                   <TableCell align="right">
-                    {enrollment.birthdaySort ? enrollment.birthdayDisplay : ''}
+                    {enrollment.birthdaySort ? enrollment.birthdayDisplay : ""}
                   </TableCell>
                   <TableCell align="center">
                     {enrollment.student?.signSelfOut && (

@@ -1,25 +1,26 @@
-import _ from 'lodash';
+import dayjs from "dayjs";
 import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  setDoc,
+  type DocumentData,
+  type Query,
+  type QueryDocumentSnapshot,
   addDoc,
+  collection,
   deleteDoc,
-  query,
-  where,
+  doc,
+  getDoc,
+  getDocs,
   orderBy,
-  DocumentData,
-  QueryDocumentSnapshot,
-} from 'firebase/firestore';
-import moment from 'moment';
-import { Enrollment, Family } from './models/types';
-import { fetchFamiliesWithIDs } from './families';
-import { fetchStudentsWithIDs } from './students';
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import _ from "lodash";
+import { fetchFamiliesWithIDs } from "./families";
+import type { Enrollment, Family } from "./models/types";
+import { fetchStudentsWithIDs } from "./students";
 
 // Import collection references
-import { yearDB } from './collections';
+import { yearDB } from "./collections";
 
 // Default values for year properties
 export const DefaultMinimumIncome = 28000;
@@ -44,7 +45,7 @@ export interface Year {
  * @returns Promise resolving to an array of Year objects
  */
 export async function fetchYears(): Promise<Year[]> {
-  const yearsQuery = query(yearDB, orderBy('name', 'desc'));
+  const yearsQuery = query(yearDB, orderBy("name", "desc"));
   const snapshot = await getDocs(yearsQuery);
 
   return snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
@@ -72,7 +73,7 @@ export async function findPreviousYearId(yearId: string): Promise<string | null>
 
     return years[currentYearIndex + 1].id;
   } catch (error) {
-    console.error('Error finding previous year:', error);
+    console.error("Error finding previous year:", error);
     return null;
   }
 }
@@ -101,7 +102,7 @@ export async function fetchYear(id: string): Promise<Year | null> {
  * @param year Year data to save (without ID)
  * @returns Promise resolving to the created Year with ID
  */
-export async function createYear(year: Omit<Year, 'id'>): Promise<Year> {
+export async function createYear(year: Omit<Year, "id">): Promise<Year> {
   const docRef = await addDoc(yearDB, year);
   return {
     ...year,
@@ -129,32 +130,32 @@ export async function enrolledStudentsInYear(yearID: string): Promise<Enrollment
   const enrolledStudents: Enrollment[] = [];
   const familyIDs: string[] = [];
   const studentIDs: string[] = [];
-  const enrollmentCollection = collection(doc(yearDB, yearID), 'enrollments');
+  const enrollmentCollection = collection(doc(yearDB, yearID), "enrollments");
   const docs = await getDocs(enrollmentCollection);
 
   // First pass, we just collect the IDs of families and students we need
-  docs.forEach((enrollment) => {
+  for (const enrollment of docs.docs) {
     const data = enrollment.data() as Enrollment;
     familyIDs.push(data.familyID);
     studentIDs.push(data.studentID);
-  });
+  }
 
-  let results = await Promise.all([
+  const results = await Promise.all([
     fetchFamiliesWithIDs(familyIDs),
     fetchStudentsWithIDs(studentIDs),
   ]);
 
-  const families = _.keyBy(results[0], 'id');
-  const students = _.keyBy(results[1], 'id');
+  const families = _.keyBy(results[0], "id");
+  const students = _.keyBy(results[1], "id");
 
   // Second pass, we add a .student and .family property
-  docs.forEach((docSnapshot) => {
+  for (const docSnapshot of docs.docs) {
     const id = docSnapshot.id;
     const data = docSnapshot.data() as Enrollment;
     const student = students[data.studentID];
     const birthday = student?.birthdate ? student.birthdate : null;
-    const birthdaySort = birthday ? moment(student.birthdate).format('MM DD MMMM') : '';
-    const birthdayDisplay = birthday ? moment(student.birthdate).format('MMM Do') : '';
+    const birthdaySort = birthday ? dayjs(student.birthdate).format("MM DD MMMM") : "";
+    const birthdayDisplay = birthday ? dayjs(student.birthdate).format("MMM D") : "";
 
     enrolledStudents.push({
       ...data,
@@ -165,7 +166,7 @@ export async function enrolledStudentsInYear(yearID: string): Promise<Enrollment
       birthdaySort,
       birthdayDisplay,
     });
-  });
+  }
 
   return enrolledStudents;
 }
@@ -181,18 +182,18 @@ export async function enrolledStudentsInYear(yearID: string): Promise<Enrollment
  */
 export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> {
   const familyIDs: string[] = [];
-  const validDecisions = ['Full Time', 'Part Time'];
-  const contractsCollection = collection(doc(yearDB, yearID), 'contracts');
+  const validDecisions = ["Full Time", "Part Time"];
+  const contractsCollection = collection(doc(yearDB, yearID), "contracts");
   const docs = await getDocs(contractsCollection);
 
   // First pass, we just collect the IDs of families attending
-  docs.forEach((contract) => {
+  for (const contract of docs.docs) {
     const data = contract.data();
     const decisions = _.values(data.studentDecisions);
     if (_.intersection(decisions, validDecisions).length > 0) {
       familyIDs.push(contract.id); // Contract IDs are the ID of the family
     }
-  });
+  }
 
   const results = await fetchFamiliesWithIDs(familyIDs);
   return results;
@@ -206,12 +207,12 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
  */
 export async function fetchEnrollments(yearId: string, familyId?: string): Promise<Enrollment[]> {
   try {
-    let enrollmentsCollection = collection(doc(yearDB, yearId), 'enrollments');
-    let enrollmentsQuery;
+    const enrollmentsCollection = collection(doc(yearDB, yearId), "enrollments");
+    let enrollmentsQuery: Query;
 
     // If familyId is provided, filter by family
     if (familyId) {
-      enrollmentsQuery = query(enrollmentsCollection, where('familyID', '==', familyId));
+      enrollmentsQuery = query(enrollmentsCollection, where("familyID", "==", familyId));
     } else {
       enrollmentsQuery = enrollmentsCollection;
     }
@@ -219,16 +220,16 @@ export async function fetchEnrollments(yearId: string, familyId?: string): Promi
     const querySnapshot = await getDocs(enrollmentsQuery);
     const enrollments: Enrollment[] = [];
 
-    querySnapshot.forEach((doc) => {
+    for (const doc of querySnapshot.docs) {
       enrollments.push({
         id: doc.id,
         ...doc.data(),
       } as Enrollment);
-    });
+    }
 
     return enrollments;
   } catch (error) {
-    console.error('Error fetching enrollments:', error);
+    console.error("Error fetching enrollments:", error);
     throw error;
   }
 }
@@ -242,13 +243,13 @@ export async function saveEnrollment(enrollment: Enrollment): Promise<Enrollment
   try {
     const { id, yearID, ...enrollmentData } = enrollment;
 
-    const enrollmentRef = doc(collection(doc(yearDB, yearID), 'enrollments'), id);
+    const enrollmentRef = doc(collection(doc(yearDB, yearID), "enrollments"), id);
 
     await setDoc(enrollmentRef, enrollmentData);
 
     return enrollment;
   } catch (error) {
-    console.error('Error saving enrollment:', error);
+    console.error("Error saving enrollment:", error);
     throw error;
   }
 }
@@ -261,11 +262,11 @@ export async function saveEnrollment(enrollment: Enrollment): Promise<Enrollment
  */
 export async function deleteEnrollment(yearId: string, enrollmentId: string): Promise<void> {
   try {
-    const enrollmentRef = doc(collection(doc(yearDB, yearId), 'enrollments'), enrollmentId);
+    const enrollmentRef = doc(collection(doc(yearDB, yearId), "enrollments"), enrollmentId);
 
     await deleteDoc(enrollmentRef);
   } catch (error) {
-    console.error('Error deleting enrollment:', error);
+    console.error("Error deleting enrollment:", error);
     throw error;
   }
 }
