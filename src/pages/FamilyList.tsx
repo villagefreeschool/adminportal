@@ -198,19 +198,19 @@ function FamilyList() {
       authorizedEmails.push(...family.guardians.map((g) => g.email));
 
       // Add other emails from guardians
-      family.guardians.forEach((guardian) => {
+      for (const guardian of family.guardians) {
         if (guardian.otherEmails) {
           const otherEmails = guardian.otherEmails.split(",").map((e) => e.trim());
           authorizedEmails.push(...otherEmails);
         }
-      });
+      }
 
       // Add student emails
-      family.students.forEach((student) => {
+      for (const student of family.students) {
         if (student.email) {
           authorizedEmails.push(student.email);
         }
-      });
+      }
 
       // Clean up emails - remove duplicates and empty values
       authorizedEmails = [...new Set(authorizedEmails.filter(Boolean))];
