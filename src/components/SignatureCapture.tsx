@@ -23,8 +23,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
   label = "Sign here",
   initialSignature,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const canvasRef = useRef<any>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEmpty, setIsEmpty] = useState(!initialSignature);
 
