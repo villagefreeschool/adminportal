@@ -281,8 +281,10 @@ export function preprocessSignatureImage(imageData: string): Promise<string | nu
       if (img.complete && img.naturalHeight !== 0) {
         // Call the onload handler directly if image is already loaded
         if (img.onload) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          img.onload(new window.Event("load") as any);
+          // Create a custom event that mimics the load event
+          const loadEvent = new window.Event("load");
+          // Cast to EventListener to satisfy TypeScript
+          (img.onload as EventListener)(loadEvent);
         }
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
