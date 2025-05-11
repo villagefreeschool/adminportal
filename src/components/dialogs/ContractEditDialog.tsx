@@ -107,7 +107,7 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentDecisions]);
+  }, [allAttendanceDecisionsMade, decisionsChangedFromContract, suggestedTuition, contract?.tuition]);
 
   // Update assistance amount when tuition changes
   useEffect(() => {
@@ -182,10 +182,10 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
         // Initialize student decisions with existing enrollments or Not Attending
         const initialDecisions: Record<string, string> = {};
         if (familyData.students) {
-          familyData.students.forEach((student) => {
+          for (const student of familyData.students) {
             const enrollment = enrollmentsData.find((e) => e.studentID === student.id);
             initialDecisions[student.id] = enrollment ? enrollment.enrollmentType : NotAttending;
-          });
+          }
         }
         setStudentDecisions(initialDecisions);
       }
