@@ -540,7 +540,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
     lines.push([{ text: "Signature", bold: true, colSpan: 2 }, {}]);
     heights.push("auto");
 
-    family.guardians.forEach((g) => {
+    for (const g of family.guardians) {
       // Check if this guardian has a digital signature
       const guardianId = g.id || "";
       const signature = contract.signatures?.[guardianId];
@@ -625,7 +625,7 @@ const ContractPDFGenerator: React.FC<ContractPDFGeneratorProps> = ({
 
       lines.push([`${g.firstName} ${g.lastName}`, { text: dateText, bold: true }]);
       heights.push("auto");
-    });
+    }
 
     return {
       margin: [10, 5, 15, 5] as [number, number, number, number],
