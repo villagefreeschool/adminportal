@@ -165,7 +165,7 @@ function SlidingScaleDesigner() {
     const binCounts = new Array(bins.length).fill(0);
 
     // Count families in each income bin
-    families.forEach((family) => {
+    for (const family of families) {
       let income = family.grossFamilyIncome;
 
       // Handle families that opted out or didn't provide income
@@ -181,7 +181,7 @@ function SlidingScaleDesigner() {
       if (binIndex >= 0 && binIndex < binCounts.length) {
         binCounts[binIndex]++;
       }
-    });
+    }
 
     // Filter out empty bins to make the visualization cleaner
     const filteredBins = [];
