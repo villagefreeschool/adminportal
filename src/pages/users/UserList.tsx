@@ -1,4 +1,4 @@
-import UserDialog from "@components/dialogs/UserDialog";
+import UserDialog from "@components/users/UserDialog";
 import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
