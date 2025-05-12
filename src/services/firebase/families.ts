@@ -24,9 +24,9 @@ export async function fetchFamilies(): Promise<Family[]> {
 
   try {
     const snapshot = await getDocs(familyDB);
-    snapshot.forEach((doc) => {
+    for (const doc of snapshot.docs) {
       families.push({ id: doc.id, ...doc.data() } as Family);
-    });
+    }
   } catch (error) {
     console.error("Error fetching families:", error);
     throw error;
@@ -157,7 +157,7 @@ export async function deleteFamily(family: Family): Promise<void> {
   }
 
   const yearSnap = await getDocs(yearDB);
-  yearSnap.forEach((yearDoc) => {
+  for (const yearDoc of yearSnap.docs) {
     const yearID = yearDoc.id;
     console.log(`Deleting years/${yearID}/contracts/${familyID}`);
     deleteDoc(doc(collection(doc(yearDB, yearID), "contracts"), familyID));
@@ -165,7 +165,7 @@ export async function deleteFamily(family: Family): Promise<void> {
       console.log(`Deleting years/${yearID}/enrollments/${studentIDs[i]}`);
       deleteDoc(doc(collection(doc(yearDB, yearID), "enrollments"), studentIDs[i]));
     }
-  });
+  }
 
   // Finally delete the actual family
   console.log(`Deleting families/${familyID}`);
@@ -191,9 +191,9 @@ export async function fetchFamiliesWithIDs(ids: string[]): Promise<Family[]> {
   for (const chunk of chunks) {
     const q = query(familyDB, where(documentId(), "in", chunk));
     const snap = await getDocs(q);
-    snap.forEach((doc) => {
+    for (const doc of snap.docs) {
       families.push({ id: doc.id, ...doc.data() } as Family);
-    });
+    }
   }
   return families;
 }
@@ -229,13 +229,13 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
       console.log(`Found ${contractsDocs.size} contracts`);
 
       // First pass, we just collect the IDs of families attending
-      contractsDocs.forEach((contract) => {
+      for (const contract of contractsDocs.docs) {
         const data = contract.data();
         const decisions = _.values(data.studentDecisions || {});
         if (_.intersection(decisions, validDecisions).length > 0) {
           familyIDs.push(contract.id); // Contract IDs are the ID of the family
         }
-      });
+      }
 
       console.log(`Found ${familyIDs.length} families with enrolled students`);
     } catch (error) {
