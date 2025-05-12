@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { calculatedNameForFamily } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
-import type React from "react";
 import { useState } from "react";
 
 interface FamilyDeleteDialogProps {
@@ -25,12 +24,12 @@ interface FamilyDeleteDialogProps {
 /**
  * Dialog component for confirming family deletion
  */
-const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
+function FamilyDeleteDialog({
   open,
   family,
   onClose,
   onDelete,
-}) => {
+}: FamilyDeleteDialogProps) {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -104,6 +103,6 @@ const FamilyDeleteDialog: React.FC<FamilyDeleteDialogProps> = ({
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 export default FamilyDeleteDialog;

@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 import type { Family } from "@services/firebase/models/types";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import FamilyForm from "../FamilyForm";
 
 interface FamilyDialogProps {
@@ -35,7 +35,7 @@ interface FamilyDialogProps {
  * Dialog component for creating or editing a family
  * Used for both new and edit operations
  */
-const FamilyDialog: React.FC<FamilyDialogProps> = ({
+function FamilyDialog({
   open,
   title,
   family,
@@ -45,7 +45,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   onDelete,
   fullScreen: forcedFullScreen,
   isEditing = false,
-}) => {
+}: FamilyDialogProps) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const fullScreen = forcedFullScreen !== undefined ? forcedFullScreen : isSmallScreen;
@@ -54,7 +54,7 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // Update local family when prop changes
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalFamily(family);
   }, [family]);
 
@@ -176,6 +176,6 @@ const FamilyDialog: React.FC<FamilyDialogProps> = ({
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 export default FamilyDialog;
