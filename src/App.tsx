@@ -2,24 +2,24 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 // Components
-import Layout from "./components/Layout";
-import LoadingSpinner from "./components/LoadingSpinner";
-import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "@components/Layout";
+import LoadingSpinner from "@components/LoadingSpinner";
+import ProtectedRoute from "@components/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 
 // Lazy-loaded Pages
-const Home = lazy(() => import("./pages/Home"));
-const Login = lazy(() => import("./pages/Login"));
-const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
-const MyFamily = lazy(() => import("./pages/MyFamily"));
-const FamilyList = lazy(() => import("./pages/FamilyList"));
-const FamilyShow = lazy(() => import("./pages/FamilyShow"));
-const Registration = lazy(() => import("./pages/Registration"));
-const YearList = lazy(() => import("./pages/YearList"));
-const YearRoster = lazy(() => import("./pages/YearRoster"));
-const Users = lazy(() => import("./pages/Users"));
-const YearContracts = lazy(() => import("./pages/YearContracts"));
-const SlidingScaleDesigner = lazy(() => import("./pages/SlidingScaleDesigner"));
+const Home = lazy(() => import("@pages/Home"));
+const Login = lazy(() => import("@pages/Login"));
+const ForgotPassword = lazy(() => import("@pages/ForgotPassword"));
+const MyFamily = lazy(() => import("@pages/MyFamily"));
+const FamilyList = lazy(() => import("@pages/FamilyList"));
+const FamilyShow = lazy(() => import("@pages/FamilyShow"));
+const Registration = lazy(() => import("@pages/Registration"));
+const YearList = lazy(() => import("@pages/YearList"));
+const YearRoster = lazy(() => import("@pages/YearRoster"));
+const Users = lazy(() => import("@pages/Users"));
+const YearContracts = lazy(() => import("@pages/YearContracts"));
+const SlidingScaleDesigner = lazy(() => import("@pages/SlidingScaleDesigner"));
 
 function App() {
   return (
