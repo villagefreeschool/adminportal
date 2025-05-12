@@ -20,7 +20,6 @@ import type {
   MedicalProvider,
   Student,
 } from "@services/firebase/models/types";
-import type React from "react";
 import EmergencyContactForm from "./EmergencyContactForm";
 import GuardianForm from "./GuardianForm";
 import IncomeField from "./IncomeField";
@@ -36,7 +35,7 @@ interface FamilyFormProps {
  * Main family form component
  * Migrated from Vue FamilyForm
  */
-const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
+function FamilyForm({ family, onChange }: FamilyFormProps) {
   const theme = useTheme();
   // Minimums for collections
   const MIN_STUDENTS = 1;
@@ -612,6 +611,6 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
     </Grid>
   );
-};
+}
 
 export default FamilyForm;
