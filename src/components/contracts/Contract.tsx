@@ -1,7 +1,7 @@
+import ContractEditDialog from "@/components/contracts/ContractEditDialog";
+import ContractSignDialog from "@/components/contracts/ContractSignDialog";
 import LabeledData from "@components/LabeledData";
 import ContractPDFGenerator from "@components/contracts/ContractPDFGenerator";
-import ContractEditDialog from "@components/dialogs/ContractEditDialog";
-import ContractSignDialog from "@components/dialogs/ContractSignDialog";
 import { useAuth } from "@contexts/useAuth";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { Box, Button, Divider, LinearProgress, Typography } from "@mui/material";

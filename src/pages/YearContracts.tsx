@@ -1,6 +1,6 @@
+import ContractEditDialog from "@/components/contracts/ContractEditDialog";
 import ContractPDFGenerator from "@/components/contracts/ContractPDFGenerator";
 import LabeledData from "@components/LabeledData";
-import ContractEditDialog from "@components/dialogs/ContractEditDialog";
 import { useAuth } from "@contexts/useAuth";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import DownloadIcon from "@mui/icons-material/Download";
