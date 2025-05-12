@@ -1,24 +1,38 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "baseUrl": "./",
+    "outDir": "dist",
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": false,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
-    "strict": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "scripthost"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
+    "preserveSymlinks": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": ["node", "vite/client", "vitest/globals", "@testing-library/jest-dom"],
+    "useDefineForClassFields": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@services/*": ["./src/services/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*", "*"]
 }

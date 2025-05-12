@@ -1,10 +1,12 @@
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [
     react(),
+    tsconfigPaths(),
     visualizer({
       open: false,
       gzipSize: true,
@@ -12,16 +14,16 @@ export default defineConfig({
       filename: "dist/bundle-size-stats.html",
     }),
   ],
-  server: {
-    port: 3000,
-    host: true,
-  },
   build: {
     outDir: "dist",
+    emptyOutDir: true,
     sourcemap: true,
     minify: "esbuild", // esbuild is faster than terser
     chunkSizeWarningLimit: 1500, // Increase warning limit to 1.5MB
     rollupOptions: {
+      input: {
+        main: "index.html",
+      },
       output: {
         manualChunks: {
           "vendor-mui": [
@@ -38,10 +40,18 @@ export default defineConfig({
             "firebase/storage",
           ],
           "vendor-charts": ["plotly.js-basic-dist"],
-          "vendor-utils": ["lodash", "moment", "dayjs", "exceljs", "file-saver"],
+          "vendor-utils": ["lodash", "dayjs", "exceljs", "file-saver"],
           "vendor-react": ["react", "react-dom", "react-router-dom"],
         },
       },
     },
+    target: "esnext",
+  },
+  server: {
+    hmr: {
+      overlay: true,
+    },
+    port: 3000,
+    open: true,
   },
 });
