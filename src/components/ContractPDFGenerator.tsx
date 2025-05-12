@@ -11,6 +11,7 @@ import {
   normalizeSignatureForPdf,
 } from "@utils/pdfUtil";
 import type { Content, TDocumentDefinitions } from "pdfmake/interfaces";
+import React from "react";
 import { useEffect, useState } from "react";
 
 // Currency formatter
