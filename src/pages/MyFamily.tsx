@@ -135,6 +135,7 @@ function MyFamily() {
               <CardContent>
                 <Grid container spacing={2}>
                   {family.students.map((student, index) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: Student objects are read-only in this view
                     <Grid size={{ xs: 12, md: 6 }} key={index}>
                       <Card variant="outlined">
                         <CardContent>
@@ -154,6 +155,7 @@ function MyFamily() {
               <CardContent>
                 <Grid container spacing={2}>
                   {family.guardians.map((guardian, index) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: Guardian objects are read-only in this view
                     <Grid size={{ xs: 12, md: 6 }} key={index}>
                       <Card variant="outlined">
                         <CardContent>
@@ -174,6 +176,7 @@ function MyFamily() {
                 <CardContent>
                   <Grid container spacing={2}>
                     {family.emergencyContacts.map((contact, index) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: Contact objects are read-only in this view
                       <Grid size={{ xs: 12, md: 6 }} key={index}>
                         <LabeledData label={`Contact ${index + 1}`}>
                           {contact.firstName} {contact.lastName}
@@ -208,6 +211,7 @@ function MyFamily() {
                 <CardContent>
                   <Grid container spacing={2}>
                     {family.medicalProviders.map((provider, index) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: Provider objects are read-only in this view
                       <Grid size={{ xs: 12, md: 6 }} key={index}>
                         <LabeledData
                           label={
