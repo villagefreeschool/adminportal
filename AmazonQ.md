@@ -25,7 +25,7 @@ function Student({ student }: StudentProps) {
 - [x] EnrollmentTypeSelector.tsx
 - [x] IncomeField.tsx
 - [x] SignatureCapture.tsx
-- [ ] EmergencyContactForm.tsx
+- [x] EmergencyContactForm.tsx
 - [ ] StudentForm.tsx
 - [ ] GuardianForm.tsx
 - [ ] FamilyForm.tsx

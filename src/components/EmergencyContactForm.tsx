@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import type { EmergencyContact } from "@services/firebase/models/types";
-import type React from "react";
 import RelationshipDropdown from "./RelationshipDropdown";
 
 interface EmergencyContactFormProps {
@@ -13,7 +12,7 @@ interface EmergencyContactFormProps {
  * Form for entering emergency contact information
  * Migrated from Vue EmergencyContactForm
  */
-const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, onChange }) => {
+function EmergencyContactForm({ contact, onChange }: EmergencyContactFormProps) {
   // Handle field changes
   const handleChange = (field: keyof EmergencyContact, value: string) => {
     onChange({
@@ -77,6 +76,6 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contact, on
       </Grid>
     </Grid>
   );
-};
+}
 
 export default EmergencyContactForm;
