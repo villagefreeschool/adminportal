@@ -3,10 +3,9 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "22"
   NPM_FLAGS = "--no-audit --no-fund"
 
-# Increase build timeout to 30 minutes (default is 10)
 [build.processing]
   skip_processing = false
 
