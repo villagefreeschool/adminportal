@@ -1,7 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface SignatureCaptureProps {
   onSave: (signatureData: string) => void;

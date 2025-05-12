@@ -1,3 +1,4 @@
+import SignatureCapture from "@components/contracts/SignatureCapture";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -14,7 +15,6 @@ import {
 } from "@mui/material";
 import type { Contract as ContractType, SignatureData } from "@services/firebase/models/types";
 import { useEffect, useMemo, useState } from "react";
-import SignatureCapture from "../SignatureCapture";
 
 interface ContractSignDialogProps {
   open: boolean;
