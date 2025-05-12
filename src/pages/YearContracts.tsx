@@ -1,4 +1,4 @@
-import ContractPDFGenerator from "@components/ContractPDFGenerator";
+import ContractPDFGenerator from "@/components/contracts/ContractPDFGenerator";
 import LabeledData from "@components/LabeledData";
 import ContractEditDialog from "@components/dialogs/ContractEditDialog";
 import { useAuth } from "@contexts/useAuth";

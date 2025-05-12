@@ -24,12 +24,7 @@ interface FamilyDeleteDialogProps {
 /**
  * Dialog component for confirming family deletion
  */
-function FamilyDeleteDialog({
-  open,
-  family,
-  onClose,
-  onDelete,
-}: FamilyDeleteDialogProps) {
+function FamilyDeleteDialog({ open, family, onClose, onDelete }: FamilyDeleteDialogProps) {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

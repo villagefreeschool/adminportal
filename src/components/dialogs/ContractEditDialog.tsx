@@ -60,13 +60,7 @@ interface ContractEditDialogProps {
  * Dialog for editing contract details
  * Includes enrollment selections, sliding scale tuition calculation, and saves related enrollments
  */
-function ContractEditDialog({
-  open,
-  yearId,
-  familyId,
-  onClose,
-  onSave,
-}: ContractEditDialogProps) {
+function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: ContractEditDialogProps) {
   const theme = useTheme();
   const { currentUser, isAdmin } = useAuth();
 

@@ -17,12 +17,7 @@ interface UserFormProps {
  * Form for entering user information
  * Migrated from Vue UserForm
  */
-function UserForm({
-  user,
-  onChange,
-  allowChangingEmail = true,
-  onEnterKeyPressed,
-}: UserFormProps) {
+function UserForm({ user, onChange, allowChangingEmail = true, onEnterKeyPressed }: UserFormProps) {
   // Handle field changes
   const handleChange = useCallback(
     (field: keyof VFSAdminUser, value: unknown) => {
