@@ -37,4 +37,4 @@ function Student({ student }: StudentProps) {
 - [ ] ContractEditDialog.tsx
 - [ ] ContractSignDialog.tsx
 - [x] UserDialog.tsx
-- [ ] Registration.tsx
+- [x] Registration.tsx

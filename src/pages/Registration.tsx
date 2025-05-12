@@ -13,14 +13,13 @@ import { Grid } from "@mui/material";
 import { fetchFamily } from "@services/firebase/families";
 import type { Family, Year } from "@services/firebase/models/types";
 import { fetchYears } from "@services/firebase/years";
-import type React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 /**
  * Registration page shows contract information for family registration
  */
-const Registration: React.FC = () => {
+function Registration() {
   const { id } = useParams<{ id?: string }>();
   const { isAdmin, myFamily } = useAuth();
 
@@ -111,6 +110,6 @@ const Registration: React.FC = () => {
       </Grid>
     </Container>
   );
-};
+}
 
 export default Registration;
