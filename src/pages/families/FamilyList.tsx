@@ -1,4 +1,4 @@
-import FamilyDialog from "@components/dialogs/FamilyDialog";
+import FamilyDialog from "@/components/families/FamilyDialog";
 import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import DescriptionIcon from "@mui/icons-material/Description";
