@@ -1,3 +1,5 @@
+import YearForm from "@components/years/YearForm";
+import YearTuitionChart from "@components/years/YearTuitionChart";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import {
@@ -14,8 +16,6 @@ import {
 } from "@mui/material";
 import type { Year } from "@services/firebase/years";
 import { useEffect, useState } from "react";
-import YearForm from "../YearForm";
-import YearTuitionChart from "../YearTuitionChart";
 
 interface YearDialogProps {
   open: boolean;

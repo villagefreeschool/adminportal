@@ -1,4 +1,4 @@
-import YearDialog from "@components/dialogs/YearDialog";
+import YearDialog from "@components/years/YearDialog";
 import AddIcon from "@mui/icons-material/Add";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DescriptionIcon from "@mui/icons-material/Description";

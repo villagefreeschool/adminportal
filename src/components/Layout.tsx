@@ -1,3 +1,4 @@
+import DirectoryPDFGenerator from "@components/families/DirectoryPDFGenerator";
 import { useAuth } from "@contexts/useAuth";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
@@ -28,7 +29,6 @@ import { fetchYears } from "@services/firebase/years";
 import _ from "lodash";
 import { type ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import DirectoryPDFGenerator from "./DirectoryPDFGenerator";
 
 const drawerWidth = 240;
 
