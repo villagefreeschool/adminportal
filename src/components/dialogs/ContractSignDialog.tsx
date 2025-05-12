@@ -13,7 +13,6 @@ import {
   useTheme,
 } from "@mui/material";
 import type { Contract as ContractType, SignatureData } from "@services/firebase/models/types";
-import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import SignatureCapture from "../SignatureCapture";
 
@@ -33,7 +32,7 @@ interface ContractSignDialogProps {
 /**
  * Dialog component for signing contracts
  */
-const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
+function ContractSignDialog({
   open,
   onClose,
   onSave,
@@ -42,7 +41,7 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
   guardianNames,
   existingSignatures = {},
   initialGuardian = null,
-}) => {
+}: ContractSignDialogProps) {
   const theme = useTheme();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -457,6 +456,6 @@ const ContractSignDialog: React.FC<ContractSignDialogProps> = ({
       )}
     </Dialog>
   );
-};
+}
 
 export default ContractSignDialog;
