@@ -1,4 +1,4 @@
-import EnrollmentTypeSelector from "@components/EnrollmentTypeSelector";
+import EnrollmentTypeSelector from "@components/contracts/EnrollmentTypeSelector";
 import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
