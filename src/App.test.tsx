@@ -4,8 +4,8 @@ import { describe, expect, it, vi } from "vitest";
 // Create a simple mock
 const MockApp = () => (
   <div>
-    <span 
-      role="progressbar" 
+    <span
+      role="progressbar"
       tabIndex={0}
       aria-valuenow={50}
       aria-valuemin={0}
