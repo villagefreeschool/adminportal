@@ -46,7 +46,6 @@ import {
   formatCurrency,
   tuitionForIncome,
 } from "@services/tuitioncalc";
-import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 
 interface ContractEditDialogProps {
@@ -61,13 +60,13 @@ interface ContractEditDialogProps {
  * Dialog for editing contract details
  * Includes enrollment selections, sliding scale tuition calculation, and saves related enrollments
  */
-const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
+function ContractEditDialog({
   open,
   yearId,
   familyId,
   onClose,
   onSave,
-}) => {
+}: ContractEditDialogProps) {
   const theme = useTheme();
   const { currentUser, isAdmin } = useAuth();
 
@@ -312,11 +311,6 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       setSaving(false);
     }
   };
-
-  // IMPLEMENTATION NOTES:
-  // 1. "Clear Registration" button is now functional - it deletes the contract and enrollments
-  // 2. Previous year contract fetching is implemented to support year-over-year tuition limits
-  // 3. Year-over-year tuition limits (±10%) are applied when attendance decisions match prior year
 
   // Save enrollments for students
   const saveEnrollments = async () => {
@@ -859,6 +853,6 @@ const ContractEditDialog: React.FC<ContractEditDialogProps> = ({
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 export default ContractEditDialog;
