@@ -9,7 +9,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import type { Student } from "@services/firebase/models/types";
 import dayjs from "dayjs";
-import type React from "react";
 import { useCallback, useEffect } from "react";
 
 interface StudentFormProps {
@@ -21,7 +20,7 @@ interface StudentFormProps {
  * Form for entering student information
  * Migrated from Vue StudentForm
  */
-const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
+function StudentForm({ student, onChange }: StudentFormProps) {
   // Gender and pronoun options
   const genders = ["Female", "Male", "Rather Not Say", "Custom"];
   const pronouns = ["He", "She", "They", "Rather Not Say"];
@@ -281,6 +280,6 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onChange }) => {
       </Grid>
     </LocalizationProvider>
   );
-};
+}
 
 export default StudentForm;

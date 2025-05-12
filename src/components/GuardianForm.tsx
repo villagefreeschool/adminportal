@@ -3,7 +3,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import type { Guardian } from "@services/firebase/models/types";
-import type React from "react";
 import RelationshipDropdown from "./RelationshipDropdown";
 
 interface GuardianFormProps {
@@ -16,7 +15,7 @@ interface GuardianFormProps {
  * Form for entering guardian information
  * Migrated from Vue GuardianForm
  */
-const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }) => {
+function GuardianForm({ guardian, onChange, index }: GuardianFormProps) {
   // Handle field changes
   const handleChange = (field: keyof Guardian, value: unknown) => {
     onChange({
@@ -181,6 +180,6 @@ const GuardianForm: React.FC<GuardianFormProps> = ({ guardian, onChange, index }
       </Grid>
     </Grid>
   );
-};
+}
 
 export default GuardianForm;

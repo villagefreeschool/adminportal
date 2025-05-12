@@ -26,8 +26,8 @@ function Student({ student }: StudentProps) {
 - [x] IncomeField.tsx
 - [x] SignatureCapture.tsx
 - [x] EmergencyContactForm.tsx
-- [ ] StudentForm.tsx
-- [ ] GuardianForm.tsx
+- [x] StudentForm.tsx
+- [x] GuardianForm.tsx
 - [ ] FamilyForm.tsx
 - [ ] UserForm.tsx
 - [ ] MedicalProviderForm.tsx
