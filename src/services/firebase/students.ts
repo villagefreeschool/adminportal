@@ -25,9 +25,9 @@ export async function fetchStudentsWithIDs(ids: string[]): Promise<Student[]> {
   for (const chunk of chunks) {
     const q = query(studentDB, where(documentId(), "in", chunk));
     const snap = await getDocs(q);
-    snap.forEach((doc) => {
+    for (const doc of snap.docs) {
       students.push({ id: doc.id, ...doc.data() } as Student);
-    });
+    }
   }
   return students;
 }
