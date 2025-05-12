@@ -6,8 +6,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
-import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 
 interface IncomeFieldProps {
   value: number | null | undefined;
@@ -23,14 +22,14 @@ interface IncomeFieldProps {
  * Migrated from Vue IncomeField component
  * Includes privacy features to obscure income values
  */
-const IncomeField: React.FC<IncomeFieldProps> = ({
+function IncomeField({
   value,
   onChange,
   label = "Income",
   required = false,
   error = false,
   helperText,
-}) => {
+}: IncomeFieldProps) {
   const [isLocked, setIsLocked] = useState(false);
   const [initialValue, setInitialValue] = useState<number | null | undefined>(null);
   const [displayedValue, setDisplayedValue] = useState<number | null | undefined>(null);
@@ -72,7 +71,7 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
   };
 
   // Handle change and convert to number
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const numbers = input.replace(/[^0-9]/g, "");
 
@@ -166,6 +165,6 @@ const IncomeField: React.FC<IncomeFieldProps> = ({
       )}
     </Grid>
   );
-};
+}
 
 export default IncomeField;

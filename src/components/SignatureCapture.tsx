@@ -1,7 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import React, { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 interface SignatureCaptureProps {
   onSave: (signatureData: string) => void;
@@ -15,14 +15,14 @@ interface SignatureCaptureProps {
 /**
  * Component for capturing digital signatures using canvas
  */
-const SignatureCapture: React.FC<SignatureCaptureProps> = ({
+function SignatureCapture({
   onSave,
   onCancel,
   width = 500,
   height = 200,
   label = "Sign here",
   initialSignature,
-}) => {
+}: SignatureCaptureProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEmpty, setIsEmpty] = useState(!initialSignature);
@@ -41,7 +41,7 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
   }, []);
 
   // Initialize canvas context and load initial signature if provided
-  React.useEffect(() => {
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -77,6 +77,33 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
       clearCanvas();
     }
   }, [initialSignature, clearCanvas]);
+
+  // Helper to get coordinates from mouse or touch event
+  const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!canvasRef.current) return null;
+
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+
+    // Get coordinates based on event type
+    if ("clientX" in e) {
+      // Mouse event
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    }
+
+    if (e.touches?.[0]) {
+      // Touch event
+      return {
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top,
+      };
+    }
+
+    return null;
+  };
 
   // Handle mouse/touch events
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
@@ -123,33 +150,6 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
 
     setIsDrawing(false);
     ctx.closePath();
-  };
-
-  // Helper to get coordinates from mouse or touch event
-  const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!canvasRef.current) return null;
-
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-
-    // Get coordinates based on event type
-    if ("clientX" in e) {
-      // Mouse event
-      return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
-    }
-
-    if (e.touches?.[0]) {
-      // Touch event
-      return {
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      };
-    }
-
-    return null;
   };
 
   // Save the signature as data URL
@@ -281,6 +281,6 @@ const SignatureCapture: React.FC<SignatureCaptureProps> = ({
       </Box>
     </Box>
   );
-};
+}
 
 export default SignatureCapture;
