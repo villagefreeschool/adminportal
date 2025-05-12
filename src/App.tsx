@@ -14,12 +14,12 @@ const ForgotPassword = lazy(() => import("@pages/ForgotPassword"));
 const MyFamily = lazy(() => import("@pages/MyFamily"));
 const FamilyList = lazy(() => import("@pages/FamilyList"));
 const FamilyShow = lazy(() => import("@pages/FamilyShow"));
-const Registration = lazy(() => import("@pages/Registration"));
+const Registration = lazy(() => import("@/pages/contracts/Registration"));
 const YearList = lazy(() => import("@pages/YearList"));
 const YearRoster = lazy(() => import("@pages/YearRoster"));
 const Users = lazy(() => import("@pages/Users"));
-const YearContracts = lazy(() => import("@pages/YearContracts"));
-const SlidingScaleDesigner = lazy(() => import("@pages/SlidingScaleDesigner"));
+const YearContracts = lazy(() => import("@/pages/contracts/YearContracts"));
+const SlidingScaleDesigner = lazy(() => import("@/pages/contracts/SlidingScaleDesigner"));
 
 function App() {
   return (
