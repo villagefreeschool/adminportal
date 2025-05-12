@@ -17,7 +17,7 @@ export async function fetchContracts(yearID: string): Promise<Contract[]> {
     const querySnapshot = await getDocs(contractsCollection);
     const contracts: Contract[] = [];
 
-    querySnapshot.forEach((doc) => {
+    for (const doc of querySnapshot.docs) {
       const data = doc.data();
       contracts.push({
         id: doc.id, // This is also the familyID
@@ -25,7 +25,7 @@ export async function fetchContracts(yearID: string): Promise<Contract[]> {
         yearID,
         ...data,
       } as Contract);
-    });
+    }
 
     return contracts;
   } catch (error) {
