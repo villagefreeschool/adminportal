@@ -1,4 +1,4 @@
-import Contract from "@components/Contract";
+import Contract from "@/components/contracts/Contract";
 import { useAuth } from "@contexts/useAuth";
 import {
   Alert,
