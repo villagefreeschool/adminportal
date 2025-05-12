@@ -209,12 +209,12 @@ function SlidingScaleDesigner() {
 
     let totalRevenue = 0;
 
-    contractsData.forEach((contract) => {
-      if (!contract.studentDecisions) return;
+    for (const contract of contractsData) {
+      if (!contract.studentDecisions) continue;
 
       // Get the family that corresponds to this contract
       const family = families.find((f) => f.id === contract.familyID);
-      if (!family) return;
+      if (!family) continue;
 
       let income = family.grossFamilyIncome;
 
@@ -254,7 +254,7 @@ function SlidingScaleDesigner() {
         baseTuition * (fullTimeFactor + partTimeFactor + siblingFactor),
       );
       totalRevenue += familyTuition;
-    });
+    }
 
     return totalRevenue;
   }, [contractsData, families, maxIncome, customTuitionForIncome]);
