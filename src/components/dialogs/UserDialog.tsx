@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import type { VFSAdminUser } from "@services/firebase/models/types";
 import { fetchUser, saveUser } from "@services/firebase/users";
-import type React from "react";
 import { useEffect, useState } from "react";
 import UserForm from "../UserForm";
 
@@ -29,7 +28,7 @@ interface UserDialogProps {
 /**
  * Dialog component for creating or editing a user
  */
-const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave }) => {
+function UserDialog({ open, email, onClose, onSave }: UserDialogProps) {
   const theme = useTheme();
   const [user, setUser] = useState<VFSAdminUser | null>(null);
   const [loading, setLoading] = useState(false);
@@ -170,6 +169,6 @@ const UserDialog: React.FC<UserDialogProps> = ({ open, email, onClose, onSave })
       </form>
     </Dialog>
   );
-};
+}
 
 export default UserDialog;
