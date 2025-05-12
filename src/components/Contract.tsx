@@ -12,7 +12,6 @@ import type {
 } from "@services/firebase/models/types";
 import { fetchYear } from "@services/firebase/years";
 import { formatCurrency } from "@services/tuitioncalc";
-import type React from "react";
 import { useEffect, useState } from "react";
 import ContractPDFGenerator from "./ContractPDFGenerator";
 import LabeledData from "./LabeledData";
@@ -27,7 +26,7 @@ interface ContractProps {
 /**
  * Contract component displays student enrollment status and contract details
  */
-const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
+function Contract({ familyId, yearId }: ContractProps) {
   const [loading, setLoading] = useState(false);
   const [family, setFamily] = useState<Family | null>(null);
   const [year, setYear] = useState<Year | null>(null);
@@ -316,6 +315,6 @@ const Contract: React.FC<ContractProps> = ({ familyId, yearId }) => {
       )}
     </Box>
   );
-};
+}
 
 export default Contract;

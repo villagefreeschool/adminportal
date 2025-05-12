@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import type { Guardian as GuardianType } from "@services/firebase/models/types";
-import type React from "react";
 import LabeledData from "./LabeledData";
 
 interface GuardianProps {
@@ -12,7 +11,7 @@ interface GuardianProps {
  * A component for displaying guardian information
  * Migrated from Vue Guardian component
  */
-const Guardian: React.FC<GuardianProps> = ({ guardian }) => {
+function Guardian({ guardian }: GuardianProps) {
   const hasAddress = guardian.address1 || guardian.city;
 
   return (
@@ -62,6 +61,6 @@ const Guardian: React.FC<GuardianProps> = ({ guardian }) => {
       )}
     </Grid>
   );
-};
+}
 
 export default Guardian;

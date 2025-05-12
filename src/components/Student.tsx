@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import type { Student as StudentType } from "@services/firebase/models/types";
-import type React from "react";
 import LabeledData from "./LabeledData";
 
 interface StudentProps {
@@ -13,7 +12,7 @@ interface StudentProps {
  * A component for displaying student information
  * Migrated from Vue Student component
  */
-const Student: React.FC<StudentProps> = ({ student }) => {
+function Student({ student }: StudentProps) {
   return (
     <Box sx={{ width: "100%" }}>
       {/* Student Name Header */}
@@ -99,6 +98,6 @@ const Student: React.FC<StudentProps> = ({ student }) => {
       </Grid>
     </Box>
   );
-};
+}
 
 export default Student;

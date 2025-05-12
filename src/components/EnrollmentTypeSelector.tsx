@@ -1,5 +1,4 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material";
-import type React from "react";
 
 /**
  * Enrollment type selector for student attendance options
@@ -13,14 +12,14 @@ interface EnrollmentTypeSelectorProps {
   helperText?: string;
 }
 
-const EnrollmentTypeSelector: React.FC<EnrollmentTypeSelectorProps> = ({
+function EnrollmentTypeSelector({
   value,
   onChange,
   label,
   required = false,
   error = false,
   helperText,
-}) => {
+}: EnrollmentTypeSelectorProps) {
   const choices = ["Not Attending", "Part Time", "Full Time"];
 
   return (
@@ -40,6 +39,6 @@ const EnrollmentTypeSelector: React.FC<EnrollmentTypeSelectorProps> = ({
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
-};
+}
 
 export default EnrollmentTypeSelector;

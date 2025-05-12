@@ -1,6 +1,5 @@
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import type React from "react";
 
 interface RelationshipDropdownProps {
   value: string;
@@ -14,13 +13,13 @@ interface RelationshipDropdownProps {
  * A dropdown component for selecting family relationships
  * Migrated from Vue RelationshipDropdown component
  */
-const RelationshipDropdown: React.FC<RelationshipDropdownProps> = ({
+function RelationshipDropdown({
   value,
   onChange,
   required = false,
   error = false,
   helperText,
-}) => {
+}: RelationshipDropdownProps) {
   const relationships = [
     "Father",
     "Mother",
@@ -58,6 +57,6 @@ const RelationshipDropdown: React.FC<RelationshipDropdownProps> = ({
       ))}
     </TextField>
   );
-};
+}
 
 export default RelationshipDropdown;
