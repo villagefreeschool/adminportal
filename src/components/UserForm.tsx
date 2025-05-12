@@ -4,7 +4,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import type { VFSAdminUser } from "@services/firebase/models/types";
-import type React from "react";
 import { useCallback, useEffect } from "react";
 
 interface UserFormProps {
@@ -18,12 +17,12 @@ interface UserFormProps {
  * Form for entering user information
  * Migrated from Vue UserForm
  */
-const UserForm: React.FC<UserFormProps> = ({
+function UserForm({
   user,
   onChange,
   allowChangingEmail = true,
   onEnterKeyPressed,
-}) => {
+}: UserFormProps) {
   // Handle field changes
   const handleChange = useCallback(
     (field: keyof VFSAdminUser, value: unknown) => {
@@ -127,6 +126,6 @@ const UserForm: React.FC<UserFormProps> = ({
       </Box>
     </Box>
   );
-};
+}
 
 export default UserForm;

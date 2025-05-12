@@ -2,7 +2,6 @@ import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import type { MedicalProvider } from "@services/firebase/models/types";
-import type React from "react";
 
 interface MedicalProviderFormProps {
   provider: MedicalProvider;
@@ -13,7 +12,7 @@ interface MedicalProviderFormProps {
  * Form for entering medical provider information
  * Migrated from Vue MedicalProviderForm
  */
-const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onChange }) => {
+function MedicalProviderForm({ provider, onChange }: MedicalProviderFormProps) {
   // Provider types
   const providerTypes = ["Pediatrician", "Family Doctor", "Dentist", "Specialist", "Other"];
 
@@ -62,6 +61,6 @@ const MedicalProviderForm: React.FC<MedicalProviderFormProps> = ({ provider, onC
       </Grid>
     </Grid>
   );
-};
+}
 
 export default MedicalProviderForm;
