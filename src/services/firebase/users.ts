@@ -17,7 +17,7 @@ export async function fetchUsers(): Promise<VFSAdminUser[]> {
       return [];
     }
 
-    querySnapshot.forEach((docSnapshot) => {
+    for (const docSnapshot of querySnapshot.docs) {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data() as Omit<VFSAdminUser, "email">;
         users.push({
@@ -29,7 +29,7 @@ export async function fetchUsers(): Promise<VFSAdminUser[]> {
           lastName: data.lastName || "",
         });
       }
-    });
+    }
 
     return users;
   } catch (error) {
