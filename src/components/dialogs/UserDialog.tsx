@@ -1,3 +1,4 @@
+import UserForm from "@components/users/UserForm";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import {
@@ -16,7 +17,6 @@ import {
 import type { VFSAdminUser } from "@services/firebase/models/types";
 import { fetchUser, saveUser } from "@services/firebase/users";
 import { useEffect, useState } from "react";
-import UserForm from "../UserForm";
 
 interface UserDialogProps {
   open: boolean;

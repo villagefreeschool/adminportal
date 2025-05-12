@@ -1,8 +1,8 @@
 import FamilyDeleteDialog from "@/components/families/FamilyDeleteDialog";
 import FamilyDialog from "@/components/families/FamilyDialog";
 import LabeledData from "@components/LabeledData";
-import Student from "@components/Student";
 import Guardian from "@components/families/Guardian";
+import Student from "@components/families/Student";
 import { useAuth } from "@contexts/useAuth";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";

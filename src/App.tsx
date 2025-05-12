@@ -15,10 +15,10 @@ const MyFamily = lazy(() => import("@/pages/families/MyFamily"));
 const FamilyList = lazy(() => import("@/pages/families/FamilyList"));
 const FamilyShow = lazy(() => import("@/pages/families/FamilyShow"));
 const Registration = lazy(() => import("@/pages/contracts/Registration"));
-const YearList = lazy(() => import("@pages/YearList"));
-const YearRoster = lazy(() => import("@pages/YearRoster"));
-const Users = lazy(() => import("@pages/Users"));
-const YearContracts = lazy(() => import("@/pages/contracts/YearContracts"));
+const YearList = lazy(() => import("@/pages/years/YearList"));
+const YearRoster = lazy(() => import("@/pages/years/YearRoster"));
+const Users = lazy(() => import("@/pages/users/Users"));
+const YearContracts = lazy(() => import("@/pages/years/YearContracts"));
 const SlidingScaleDesigner = lazy(() => import("@/pages/contracts/SlidingScaleDesigner"));
 
 function App() {
