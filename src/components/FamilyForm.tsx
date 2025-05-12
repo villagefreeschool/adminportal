@@ -244,6 +244,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {family.students.map((student, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Student objects don't have stable IDs until saved
         <Grid size={{ xs: 12 }} key={`student-${index}`}>
           <Card>
             <CardHeader
@@ -299,6 +300,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {family.guardians.map((guardian, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Guardian objects don't have stable IDs until saved
         <Grid size={{ xs: 12, md: 6 }} key={`guardian-${index}`}>
           <Card>
             <CardHeader
@@ -389,6 +391,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {family.emergencyContacts.map((contact, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Contact objects don't have stable IDs until saved
         <Grid size={{ xs: 12, md: 6 }} key={`emergency-contact-${index}`}>
           <Card>
             <CardHeader
@@ -504,6 +507,7 @@ const FamilyForm: React.FC<FamilyFormProps> = ({ family, onChange }) => {
       </Grid>
 
       {family.medicalProviders.map((provider, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Provider objects don't have stable IDs until saved
         <Grid size={{ xs: 12, md: 6 }} key={`medical-provider-${index}`}>
           <Card>
             <CardHeader
