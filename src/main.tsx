@@ -5,7 +5,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-// Create a theme instance with colors from the original Vuetify theme
 const theme = createTheme({
   palette: {
     primary: {

@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import type { Student as StudentType } from "@services/firebase/models/types";
 import type React from "react";
-import type { Student as StudentType } from "../services/firebase/models/types";
 import LabeledData from "./LabeledData";
 
 interface StudentProps {

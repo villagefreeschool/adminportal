@@ -13,10 +13,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import type { VFSAdminUser } from "@services/firebase/models/types";
+import { fetchUser, saveUser } from "@services/firebase/users";
 import type React from "react";
 import { useEffect, useState } from "react";
-import type { VFSAdminUser } from "../../services/firebase/models/types";
-import { fetchUser, saveUser } from "../../services/firebase/users";
 import UserForm from "../UserForm";
 
 interface UserDialogProps {

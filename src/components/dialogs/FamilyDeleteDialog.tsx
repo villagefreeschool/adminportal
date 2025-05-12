@@ -10,10 +10,10 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
+import { calculatedNameForFamily } from "@services/firebase/families";
+import type { Family } from "@services/firebase/models/types";
 import type React from "react";
 import { useState } from "react";
-import { calculatedNameForFamily } from "../../services/firebase/families";
-import type { Family } from "../../services/firebase/models/types";
 
 interface FamilyDeleteDialogProps {
   open: boolean;

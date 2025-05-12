@@ -1,7 +1,3 @@
-import type { FirebaseError } from "firebase/app";
-import { doc, getDoc } from "firebase/firestore";
-import { type ReactNode, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   type User,
   getAuthRedirectResult,
@@ -11,9 +7,13 @@ import {
   signInWithGooglePopup,
   signInWithGoogleRedirect,
   subscribeToAuthChanges,
-} from "../services/firebase/auth";
-import { familyDB, userFamilyDB } from "../services/firebase/collections";
-import type { Family, UserFamily } from "../services/firebase/models/types";
+} from "@services/firebase/auth";
+import { familyDB, userFamilyDB } from "@services/firebase/collections";
+import type { Family, UserFamily } from "@services/firebase/models/types";
+import type { FirebaseError } from "firebase/app";
+import { doc, getDoc } from "firebase/firestore";
+import { type ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContextTypes";
 
 interface AuthProviderProps {

@@ -15,8 +15,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import type { Family } from "@services/firebase/models/types";
 import React, { useState } from "react";
-import type { Family } from "../../services/firebase/models/types";
 import FamilyForm from "../FamilyForm";
 
 interface FamilyDialogProps {

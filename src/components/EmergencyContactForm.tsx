@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import type { EmergencyContact } from "@services/firebase/models/types";
 import type React from "react";
-import type { EmergencyContact } from "../services/firebase/models/types";
 import RelationshipDropdown from "./RelationshipDropdown";
 
 interface EmergencyContactFormProps {

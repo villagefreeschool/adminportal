@@ -1,3 +1,5 @@
+import UserDialog from "@components/dialogs/UserDialog";
+import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,11 +22,9 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import type { VFSAdminUser } from "@services/firebase/models/types";
+import { fetchUsers } from "@services/firebase/users";
 import React, { useState, useEffect } from "react";
-import UserDialog from "../components/dialogs/UserDialog";
-import { useAuth } from "../contexts/useAuth";
-import type { VFSAdminUser } from "../services/firebase/models/types";
-import { fetchUsers } from "../services/firebase/users";
 
 // Sort direction type
 type Order = "asc" | "desc";

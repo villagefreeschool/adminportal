@@ -1,3 +1,4 @@
+import YearDialog from "@components/dialogs/YearDialog";
 import AddIcon from "@mui/icons-material/Add";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -22,9 +23,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import YearDialog from "../components/dialogs/YearDialog";
 import {
   DefaultMaximumIncome,
   DefaultMaximumTuition,
@@ -35,7 +33,9 @@ import {
   fetchYear,
   fetchYears,
   updateYear,
-} from "../services/firebase/years";
+} from "@services/firebase/years";
+import { useEffect, useMemo, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 type Order = "asc" | "desc";
 type OrderBy = keyof Year;

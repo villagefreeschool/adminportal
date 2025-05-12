@@ -2,8 +2,8 @@
  * PDF utility functions for generating PDF files
  */
 
+import type { SignatureData } from "@services/firebase/models/types";
 import type { Style, StyleDictionary } from "pdfmake/interfaces";
-import type { SignatureData } from "../services/firebase/models/types";
 
 /**
  * Default style for PDF documents

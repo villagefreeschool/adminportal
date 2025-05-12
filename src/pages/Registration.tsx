@@ -1,3 +1,5 @@
+import Contract from "@components/Contract";
+import { useAuth } from "@contexts/useAuth";
 import {
   Alert,
   Card,
@@ -8,14 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import { Grid } from "@mui/material";
+import { fetchFamily } from "@services/firebase/families";
+import type { Family, Year } from "@services/firebase/models/types";
+import { fetchYears } from "@services/firebase/years";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Contract from "../components/Contract";
-import { useAuth } from "../contexts/useAuth";
-import { fetchFamily } from "../services/firebase/families";
-import type { Family, Year } from "../services/firebase/models/types";
-import { fetchYears } from "../services/firebase/years";
 
 /**
  * Registration page shows contract information for family registration

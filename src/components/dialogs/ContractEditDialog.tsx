@@ -1,3 +1,5 @@
+import EnrollmentTypeSelector from "@components/EnrollmentTypeSelector";
+import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import {
@@ -21,24 +23,20 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import type React from "react";
-import { useEffect, useMemo, useState } from "react";
-import EnrollmentTypeSelector from "../../components/EnrollmentTypeSelector";
-import { useAuth } from "../../contexts/useAuth";
 import {
   deleteContract,
   fetchContract,
   fetchPreviousYearContract,
   saveContract,
-} from "../../services/firebase/contracts";
-import { fetchFamily } from "../../services/firebase/families";
-import type { Contract, Enrollment, Family, Year } from "../../services/firebase/models/types";
+} from "@services/firebase/contracts";
+import { fetchFamily } from "@services/firebase/families";
+import type { Contract, Enrollment, Family, Year } from "@services/firebase/models/types";
 import {
   deleteEnrollment,
   fetchEnrollments,
   fetchYear,
   saveEnrollment,
-} from "../../services/firebase/years";
+} from "@services/firebase/years";
 import {
   FullTime,
   MaxYearOverYearChange,
@@ -47,7 +45,9 @@ import {
   calculateTuitionOptions,
   formatCurrency,
   tuitionForIncome,
-} from "../../services/tuitioncalc";
+} from "@services/tuitioncalc";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface ContractEditDialogProps {
   open: boolean;

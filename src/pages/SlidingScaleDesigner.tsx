@@ -20,10 +20,10 @@ import Typography from "@mui/material/Typography";
 import { type ChangeEvent, Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
 
 // Lazy load the Plot component to reduce initial bundle size
-const Plot = lazy(() => import("../components/PlotlySetup"));
-import { fetchContracts } from "../services/firebase/contracts";
-import type { Contract, Family, Year } from "../services/firebase/models/types";
-import { enrolledFamiliesInYear, fetchYears } from "../services/firebase/years";
+const Plot = lazy(() => import("@components/PlotlySetup"));
+import { fetchContracts } from "@services/firebase/contracts";
+import type { Contract, Family, Year } from "@services/firebase/models/types";
+import { enrolledFamiliesInYear, fetchYears } from "@services/firebase/years";
 import {
   DefaultMaximumIncome,
   DefaultMaximumTuition,
@@ -31,7 +31,7 @@ import {
   DefaultMinimumTuition,
   Steepness,
   formatCurrency,
-} from "../services/tuitioncalc";
+} from "@services/tuitioncalc";
 
 // Income steps for the table display
 const INCOME_STEPS = [

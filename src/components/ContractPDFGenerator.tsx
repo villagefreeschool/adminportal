@@ -2,16 +2,16 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
-import type { Content, TDocumentDefinitions } from "pdfmake/interfaces";
-import React, { useEffect, useState } from "react";
-import type { Contract, Family, Year } from "../services/firebase/models/types";
-import { loadPdfMake } from "../utils/pdfMakeLoader";
+import type { Contract, Family, Year } from "@services/firebase/models/types";
+import { loadPdfMake } from "@utils/pdfMakeLoader";
 import {
   PDF_DEFAULT_STYLE,
   PDF_STYLES,
   dataURLFromImagePath,
   normalizeSignatureForPdf,
-} from "../utils/pdfUtil";
+} from "@utils/pdfUtil";
+import type { Content, TDocumentDefinitions } from "pdfmake/interfaces";
+import React, { useEffect, useState } from "react";
 
 // Currency formatter
 const formatter = new Intl.NumberFormat("en-US", {

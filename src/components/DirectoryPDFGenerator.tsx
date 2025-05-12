@@ -14,11 +14,11 @@ import { useEffect, useState } from "react";
 dayjs.extend(localizedFormat);
 
 // Import the centralized PDFMake loader
-import { loadPdfMake } from "../utils/pdfMakeLoader";
+import { loadPdfMake } from "@utils/pdfMakeLoader";
 
-import { enrolledFamiliesInYear } from "../services/firebase/families";
-import type { Family, Year } from "../services/firebase/models/types";
-import { PDF_DEFAULT_STYLE, PDF_STYLES, dataURLFromImagePath } from "../utils/pdfUtil";
+import { enrolledFamiliesInYear } from "@services/firebase/families";
+import type { Family, Year } from "@services/firebase/models/types";
+import { PDF_DEFAULT_STYLE, PDF_STYLES, dataURLFromImagePath } from "@utils/pdfUtil";
 
 interface DirectoryPDFGeneratorProps {
   year: Year;

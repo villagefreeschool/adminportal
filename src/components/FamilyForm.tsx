@@ -13,14 +13,14 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
-import type React from "react";
 import type {
   EmergencyContact,
   Family,
   Guardian,
   MedicalProvider,
   Student,
-} from "../services/firebase/models/types";
+} from "@services/firebase/models/types";
+import type React from "react";
 import EmergencyContactForm from "./EmergencyContactForm";
 import GuardianForm from "./GuardianForm";
 import IncomeField from "./IncomeField";

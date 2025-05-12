@@ -12,9 +12,9 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import type { Contract as ContractType, SignatureData } from "@services/firebase/models/types";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-import type { Contract as ContractType, SignatureData } from "../../services/firebase/models/types";
 import SignatureCapture from "../SignatureCapture";
 
 interface ContractSignDialogProps {

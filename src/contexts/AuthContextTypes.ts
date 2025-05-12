@@ -1,6 +1,6 @@
+import type { User } from "@services/firebase/auth";
+import type { Family, UserFamily } from "@services/firebase/models/types";
 import { createContext } from "react";
-import type { User } from "../services/firebase/auth";
-import type { Family, UserFamily } from "../services/firebase/models/types";
 
 export interface AuthContextType {
   currentUser: User | null;

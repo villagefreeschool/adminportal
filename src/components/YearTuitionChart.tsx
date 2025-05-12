@@ -6,9 +6,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import type { Year } from "@services/firebase/years";
+import { formatCurrency, tuitionForIncome } from "@services/tuitioncalc";
 import { useMemo } from "react";
-import type { Year } from "../services/firebase/years";
-import { formatCurrency, tuitionForIncome } from "../services/tuitioncalc";
 
 interface YearTuitionChartProps {
   year: Year;

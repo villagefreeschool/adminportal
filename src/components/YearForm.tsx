@@ -1,12 +1,12 @@
 import { Box, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import {
   DefaultMaximumIncome,
   DefaultMaximumTuition,
   DefaultMinimumIncome,
   DefaultMinimumTuition,
   type Year,
-} from "../services/firebase/years";
+} from "@services/firebase/years";
+import { useEffect, useState } from "react";
 
 // Input formatter for currency fields
 const formatCurrency = (value: string): string => {

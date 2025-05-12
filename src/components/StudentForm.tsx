@@ -7,10 +7,10 @@ import Typography from "@mui/material/Typography";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import type { Student } from "@services/firebase/models/types";
 import dayjs from "dayjs";
 import type React from "react";
 import { useCallback, useEffect } from "react";
-import type { Student } from "../services/firebase/models/types";
 
 interface StudentFormProps {
   student: Student;

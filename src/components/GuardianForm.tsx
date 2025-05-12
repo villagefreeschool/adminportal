@@ -2,8 +2,8 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import type { Guardian } from "@services/firebase/models/types";
 import type React from "react";
-import type { Guardian } from "../services/firebase/models/types";
 import RelationshipDropdown from "./RelationshipDropdown";
 
 interface GuardianFormProps {

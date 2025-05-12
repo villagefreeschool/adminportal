@@ -1,19 +1,19 @@
+import { useAuth } from "@contexts/useAuth";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { Box, Button, Divider, LinearProgress, Typography } from "@mui/material";
 import { Grid } from "@mui/material";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/useAuth";
-import { fetchContract, saveContractSignatures } from "../services/firebase/contracts";
-import { fetchFamily } from "../services/firebase/families";
+import { fetchContract, saveContractSignatures } from "@services/firebase/contracts";
+import { fetchFamily } from "@services/firebase/families";
 import type {
   Contract as ContractType,
   Family,
   SignatureData,
   Year,
-} from "../services/firebase/models/types";
-import { fetchYear } from "../services/firebase/years";
-import { formatCurrency } from "../services/tuitioncalc";
+} from "@services/firebase/models/types";
+import { fetchYear } from "@services/firebase/years";
+import { formatCurrency } from "@services/tuitioncalc";
+import type React from "react";
+import { useEffect, useState } from "react";
 import ContractPDFGenerator from "./ContractPDFGenerator";
 import LabeledData from "./LabeledData";
 import ContractEditDialog from "./dialogs/ContractEditDialog";

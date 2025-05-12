@@ -1,3 +1,8 @@
+import Guardian from "@components/Guardian";
+import LabeledData from "@components/LabeledData";
+import Student from "@components/Student";
+import FamilyDialog from "@components/dialogs/FamilyDialog";
+import { useAuth } from "@contexts/useAuth";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
@@ -13,14 +18,9 @@ import {
   Typography,
 } from "@mui/material";
 import { Grid } from "@mui/material";
+import { calculatedNameForFamily, fetchFamily, saveFamily } from "@services/firebase/families";
+import type { Family } from "@services/firebase/models/types";
 import React, { useState, useEffect } from "react";
-import Guardian from "../components/Guardian";
-import LabeledData from "../components/LabeledData";
-import Student from "../components/Student";
-import FamilyDialog from "../components/dialogs/FamilyDialog";
-import { useAuth } from "../contexts/useAuth";
-import { calculatedNameForFamily, fetchFamily, saveFamily } from "../services/firebase/families";
-import type { Family } from "../services/firebase/models/types";
 
 function MyFamily() {
   const { myFamily: contextFamily, isLoading: authLoading } = useAuth();

@@ -1,3 +1,4 @@
+import { useAuth } from "@contexts/useAuth";
 import {
   Alert,
   Box,
@@ -14,7 +15,6 @@ import {
 import type { FirebaseError } from "firebase/app";
 import { type FormEvent, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useAuth } from "../contexts/useAuth";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");

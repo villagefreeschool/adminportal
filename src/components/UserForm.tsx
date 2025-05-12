@@ -3,9 +3,9 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import type { VFSAdminUser } from "@services/firebase/models/types";
 import type React from "react";
 import { useCallback, useEffect } from "react";
-import type { VFSAdminUser } from "../services/firebase/models/types";
 
 interface UserFormProps {
   user: VFSAdminUser;

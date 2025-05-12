@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import type { MedicalProvider } from "@services/firebase/models/types";
 import type React from "react";
-import type { MedicalProvider } from "../services/firebase/models/types";
 
 interface MedicalProviderFormProps {
   provider: MedicalProvider;

@@ -1,7 +1,7 @@
+import { useAuth } from "@contexts/useAuth";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useAuth } from "../contexts/useAuth";
 
 function Home() {
   const { currentUser, myFamily, isAdmin } = useAuth();

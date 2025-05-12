@@ -1,3 +1,5 @@
+import FamilyDialog from "@components/dialogs/FamilyDialog";
+import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import DescriptionIcon from "@mui/icons-material/Description";
 import EditIcon from "@mui/icons-material/Edit";
@@ -26,12 +28,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { doc } from "firebase/firestore";
-import React, { useState, useEffect, useMemo } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import FamilyDialog from "../components/dialogs/FamilyDialog";
-import { useAuth } from "../contexts/useAuth";
-import { familyDB } from "../services/firebase/collections";
+import { familyDB } from "@services/firebase/collections";
 import {
   calculatedNameForFamily,
   deleteFamily,
@@ -39,8 +36,11 @@ import {
   fetchFamily,
   guardianNamesForFamily,
   saveFamily,
-} from "../services/firebase/families";
-import type { Family } from "../services/firebase/models/types";
+} from "@services/firebase/families";
+import type { Family } from "@services/firebase/models/types";
+import { doc } from "firebase/firestore";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 // Sort order type
 type Order = "asc" | "desc";

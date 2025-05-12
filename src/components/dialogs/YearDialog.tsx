@@ -12,8 +12,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import type { Year } from "@services/firebase/years";
 import { useEffect, useState } from "react";
-import type { Year } from "../../services/firebase/years";
 import YearForm from "../YearForm";
 import YearTuitionChart from "../YearTuitionChart";
 

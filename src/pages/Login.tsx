@@ -1,3 +1,4 @@
+import { useAuth } from "@contexts/useAuth";
 import GoogleIcon from "@mui/icons-material/Google";
 import {
   Alert,
@@ -16,7 +17,6 @@ import {
 import type { FirebaseError } from "firebase/app";
 import { type FormEvent, useEffect, useState } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
