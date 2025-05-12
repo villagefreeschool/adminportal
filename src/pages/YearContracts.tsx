@@ -202,7 +202,7 @@ function YearContracts() {
     ];
 
     // Add data rows
-    sortedContracts.forEach((contract) => {
+    for (const contract of sortedContracts) {
       worksheet.addRow({
         family: contract.familyName || "",
         signed: contract.isSigned ? "Signed" : "",
@@ -210,7 +210,7 @@ function YearContracts() {
         fullTime: contract.fullTimeNames || "",
         partTime: contract.partTimeNames || "",
       });
-    });
+    }
 
     // Make the header row bold
     worksheet.getRow(1).font = { bold: true };
