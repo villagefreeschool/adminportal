@@ -145,7 +145,6 @@ export async function fetchPreviousYearContract(
     const previousYearID = await findPreviousYearId(yearID);
 
     if (!previousYearID) {
-      console.log("No previous year found for year ID:", yearID);
       return null;
     }
 

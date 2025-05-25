@@ -45,8 +45,6 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
     setGenerating(true);
 
     try {
-      console.log("Starting to generate directory PDF for year:", year.id);
-
       // Dynamically load pdfMake only when needed
       const pdfMake = await loadPdfMake();
 
@@ -56,10 +54,8 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
 
       try {
         families = await enrolledFamiliesInYear(year.id);
-        console.log(`Successfully fetched ${families.length} families`);
       } catch (fetchError) {
         console.error("Error fetching families:", fetchError);
-        console.log("Using fallback content for the directory");
         useFallback = true;
       }
 
@@ -103,7 +99,6 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
           })
           .download(fileName);
 
-        console.log("Fallback PDF generation completed");
         return;
       }
 
@@ -123,8 +118,6 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
         return;
       }
 
-      console.log(`Processing ${validFamilies.length} valid families for PDF`);
-
       const familyStacks = validFamilies.map((f) => ({
         stack: familyContent(f),
         unbreakable: true,
@@ -141,8 +134,6 @@ const DirectoryPDFGenerator = ({ year }: DirectoryPDFGeneratorProps) => {
           // No need to specify fonts here as they're configured in the loader
         })
         .download(fileName);
-
-      console.log("PDF generation completed successfully");
     } catch (error) {
       console.error("Error generating directory PDF:", error);
       console.error("Failed to generate the directory PDF. Check console for details.");

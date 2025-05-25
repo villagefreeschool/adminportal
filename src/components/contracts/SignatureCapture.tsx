@@ -73,7 +73,6 @@ function SignatureCapture({
       };
       img.src = initialSignature;
     } else {
-      console.log("No initial signature, clearing canvas");
       clearCanvas();
     }
   }, [initialSignature, clearCanvas]);
@@ -154,10 +153,7 @@ function SignatureCapture({
 
   // Save the signature as data URL
   const saveSignature = () => {
-    console.log("Save signature clicked. Canvas ref:", !!canvasRef.current, "isEmpty:", isEmpty);
-
     if (!canvasRef.current) {
-      console.log("No canvas reference found");
       return;
     }
 
@@ -168,7 +164,6 @@ function SignatureCapture({
 
     try {
       const dataUrl = canvasRef.current.toDataURL("image/png");
-      console.log("Generated signature data URL, length:", dataUrl.length);
       onSave(dataUrl);
     } catch (err) {
       console.error("Error generating signature data URL:", err);

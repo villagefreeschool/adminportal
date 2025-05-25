@@ -97,9 +97,7 @@ export default function Login() {
     setErrorMessage(null);
 
     try {
-      console.log("Starting Google login from Login component");
       await loginWithGooglePopup();
-      console.log("Google login completed");
       setIsLoading(false);
     } catch (error) {
       console.error("Google login error:", error);

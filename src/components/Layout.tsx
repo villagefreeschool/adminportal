@@ -77,7 +77,6 @@ function Layout({ children }: LayoutProps) {
     const loadYears = async () => {
       try {
         const yearsList = await fetchYears();
-        console.log("Years loaded:", yearsList);
         setYears(yearsList);
       } catch (error) {
         console.error("Error fetching years:", error);
@@ -89,13 +88,8 @@ function Layout({ children }: LayoutProps) {
 
   // Debug information
   useEffect(() => {
-    console.log("Auth state:", {
-      isAdmin,
-      isAuthenticated,
-      currentUser,
-      currentYear: _.find(years, { isAcceptingRegistrations: true }),
-    });
-  }, [isAdmin, isAuthenticated, currentUser, years]);
+    // Auth state is tracked internally
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

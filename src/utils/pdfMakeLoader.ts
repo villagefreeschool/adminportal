@@ -63,7 +63,6 @@ export const loadPdfMake = async (): Promise<PDFMakeStatic> => {
   try {
     // Check if pdfMake is already loaded globally
     if (window.pdfMake) {
-      console.log("Using already loaded pdfMake instance");
       const pdfMake: PDFMakeStatic = window.pdfMake;
       pdfMake.fonts = pdfFonts;
       pdfMakeInstance = pdfMake;

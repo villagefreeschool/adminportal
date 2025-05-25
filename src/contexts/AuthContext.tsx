@@ -34,7 +34,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Set up the auth state listener
     const unsubscribe = subscribeToAuthChanges(async (user) => {
-      console.log("Auth state changed:", user ? "User logged in" : "No user");
       setCurrentUser(user);
 
       if (user?.email) {

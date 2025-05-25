@@ -79,11 +79,8 @@ function ContractSignDialog({
 
   // Handle signature save
   const handleSaveSignature = (guardianId: string, signatureData: string) => {
-    console.log("Saving signature for guardian:", guardianId);
-
     // If signature data is empty, remove the signature
     if (!signatureData) {
-      console.log("Removing signature for guardian:", guardianId);
       const updatedSignatures = { ...signatures };
       delete updatedSignatures[guardianId];
       setSignatures(updatedSignatures);
@@ -107,8 +104,6 @@ function ContractSignDialog({
 
     // Reset active guardian state after successful save
     setActiveGuardian(null);
-
-    console.log("Updated signatures:", Object.keys(updatedSignatures));
   };
 
   // Handle final saving of all signatures
@@ -126,15 +121,6 @@ function ContractSignDialog({
       setSaving(false);
     }
   };
-
-  // Log information for debugging
-  console.log("Contract Dialog Debug:", {
-    guardianIds,
-    guardianNames,
-    signedGuardians,
-    remainingGuardians,
-    activeGuardian,
-  });
 
   return (
     <Dialog

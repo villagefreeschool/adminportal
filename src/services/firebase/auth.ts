@@ -72,7 +72,6 @@ export async function signInWithGoogleRedirect(): Promise<void> {
     await signInWithRedirect(auth, provider);
 
     // No code past this point will execute in the current page load
-    console.log("This log should not appear - redirect happened");
   } catch (error: unknown) {
     console.error("Error signing in with Google redirect:", error);
     throw error;
@@ -86,13 +85,10 @@ export async function signInWithGoogleRedirect(): Promise<void> {
  */
 export async function getAuthRedirectResult(): Promise<User | null> {
   try {
-    console.log("Getting redirect result...");
-
     // Get the redirect result from Firebase auth
     const result = await getRedirectResult(auth);
 
     if (result) {
-      console.log("Redirect auth successful for user:", result.user.email);
       // Get extended user data from Firestore
       const extendedUser = await getUserData(result.user);
       return extendedUser;
@@ -101,11 +97,9 @@ export async function getAuthRedirectResult(): Promise<User | null> {
     // Check if we already have an authenticated user
     const currentUser = auth.currentUser;
     if (currentUser) {
-      console.log("No redirect result but user is already authenticated:", currentUser.email);
       return currentUser as User;
     }
 
-    console.log("No redirect result and no current user");
     return null;
   } catch (error: unknown) {
     // Handle specific Firebase auth errors
@@ -118,7 +112,6 @@ export async function getAuthRedirectResult(): Promise<User | null> {
 
     // Let's not throw for certain error types that happen during normal flow
     if (firebaseError.code === "auth/no-auth-event") {
-      console.log("No auth event found - this is normal for initial page load");
       return null;
     }
 

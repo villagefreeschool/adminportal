@@ -46,7 +46,6 @@ export async function fetchFamily(id: string): Promise<Family | null> {
     if (docSnapshot.exists()) {
       return { id: docSnapshot.id, ...docSnapshot.data() } as Family;
     }
-    console.log(`No family found with ID: ${id}`);
     return null;
   } catch (error) {
     console.error("Error fetching family:", error);
@@ -114,7 +113,7 @@ export async function saveFamily(family: Family): Promise<Family> {
         familyID: familyID,
         familyName: family.name,
       }).catch(() => {
-        console.log("Failed to set userFamilyRecord for ", email);
+        // Failed to set user family record
       });
     }
 
@@ -152,23 +151,19 @@ export async function deleteFamily(family: Family): Promise<void> {
   // Delete student records
   const studentIDs = _.map(family.students || [], "id");
   for (let i = 0; i < studentIDs.length; i++) {
-    console.log(`Deleting students/${studentIDs[i]}`);
     await deleteDoc(doc(studentDB, studentIDs[i]));
   }
 
   const yearSnap = await getDocs(yearDB);
   for (const yearDoc of yearSnap.docs) {
     const yearID = yearDoc.id;
-    console.log(`Deleting years/${yearID}/contracts/${familyID}`);
     deleteDoc(doc(collection(doc(yearDB, yearID), "contracts"), familyID));
     for (let i = 0; i < studentIDs.length; i++) {
-      console.log(`Deleting years/${yearID}/enrollments/${studentIDs[i]}`);
       deleteDoc(doc(collection(doc(yearDB, yearID), "enrollments"), studentIDs[i]));
     }
   }
 
   // Finally delete the actual family
-  console.log(`Deleting families/${familyID}`);
   await deleteDoc(doc(familyDB, familyID));
 }
 
@@ -208,8 +203,6 @@ export async function fetchFamiliesWithIDs(ids: string[]): Promise<Family[]> {
  * @returns An array of Family objects.
  */
 export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> {
-  console.log(`Fetching enrolled families for year ${yearID}`);
-
   try {
     // Verify yearID is not empty
     if (!yearID) {
@@ -223,10 +216,8 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
     try {
       // Get the contracts collection for this year
       const contractsRef = collection(doc(yearDB, yearID), "contracts");
-      console.log(`Querying contracts collection for year ${yearID}`);
 
       const contractsDocs = await getDocs(contractsRef);
-      console.log(`Found ${contractsDocs.size} contracts`);
 
       // First pass, we just collect the IDs of families attending
       for (const contract of contractsDocs.docs) {
@@ -236,8 +227,6 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
           familyIDs.push(contract.id); // Contract IDs are the ID of the family
         }
       }
-
-      console.log(`Found ${familyIDs.length} families with enrolled students`);
     } catch (error) {
       console.error("Error fetching contracts:", error);
       throw new Error(`Failed to fetch contracts for year ${yearID}: ${error}`);
@@ -245,14 +234,11 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
 
     // If no families found, return empty array
     if (familyIDs.length === 0) {
-      console.log("No enrolled families found");
       return [];
     }
 
     // Fetch the full family data for each family ID
-    console.log(`Fetching full family data for ${familyIDs.length} families`);
     const results = await fetchFamiliesWithIDs(familyIDs);
-    console.log(`Successfully fetched ${results.length} families`);
 
     return results;
   } catch (error) {

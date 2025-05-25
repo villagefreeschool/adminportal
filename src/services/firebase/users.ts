@@ -13,7 +13,6 @@ export async function fetchUsers(): Promise<VFSAdminUser[]> {
     const users: VFSAdminUser[] = [];
 
     if (querySnapshot.empty) {
-      console.log("No users found in the database");
       return [];
     }
 
@@ -47,7 +46,6 @@ export async function fetchUser(email: string): Promise<VFSAdminUser | null> {
     const userDoc = await getDoc(doc(collection(db, "users"), email));
 
     if (!userDoc.exists()) {
-      console.log(`User ${email} not found in database`);
       return null;
     }
 
