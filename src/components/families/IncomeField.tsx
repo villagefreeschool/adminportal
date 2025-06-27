@@ -10,7 +10,7 @@ import { type ChangeEvent, useEffect, useState } from "react";
 
 interface IncomeFieldProps {
   value: number | null | undefined;
-  onChange: (value: number | null) => void;
+  onChange: (value: number | null | "OPT_OUT") => void;
   label?: string;
   required?: boolean;
   error?: boolean;
@@ -35,6 +35,7 @@ function IncomeField({
   const [displayedValue, setDisplayedValue] = useState<number | null | undefined>(null);
 
   // Initialize component state
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This should only run once.
   useEffect(() => {
     setDisplayedValue(value);
 
@@ -42,13 +43,27 @@ function IncomeField({
     if (value !== null && value !== undefined) {
       setInitialValue(value);
       setIsLocked(true);
+    } else {
+      // If no initial value, start unlocked
+      setInitialValue(null);
+      setIsLocked(false);
     }
-  }, [value]);
+  }, []);
 
-  // Update displayed value when parent value changes
+  // Handle external value changes (like clearing from opt-out)
   useEffect(() => {
-    setDisplayedValue(value);
-  }, [value]);
+    // If value becomes null/undefined from outside (like opt-out), reset component
+    if (value === null || value === undefined) {
+      setDisplayedValue(null);
+      setInitialValue(null);
+      setIsLocked(false);
+    }
+    // If component is locked and value changes externally, update displayed value
+    else if (isLocked && value !== displayedValue) {
+      setDisplayedValue(value);
+      setInitialValue(value);
+    }
+  }, [value, isLocked, displayedValue]);
 
   // Handle unlocking the field for editing
   const handleUnlock = () => {
@@ -58,10 +73,18 @@ function IncomeField({
 
   // Handle canceling edits
   const handleCancel = () => {
-    setIsLocked(true);
-    setDisplayedValue(null);
-    // Ensure we don't pass undefined to onChange
-    onChange(initialValue !== undefined ? initialValue : null);
+    if (initialValue !== null && initialValue !== undefined) {
+      // If there was a previous value, revert to locked state showing that value
+      setIsLocked(true);
+      setDisplayedValue(initialValue);
+      onChange(initialValue);
+    } else {
+      // If no previous value, clear the field and trigger opt-out
+      setDisplayedValue(null);
+      setIsLocked(false);
+      // Signal to parent to opt out (clear income and check opt-out)
+      onChange("OPT_OUT");
+    }
   };
 
   // Handle confirming edits
@@ -138,7 +161,7 @@ function IncomeField({
         </Grid>
       )}
 
-      {!isLocked && initialValue !== null && initialValue !== undefined && (
+      {!isLocked && (
         <Grid size={{ xs: 12 }}>
           <Box display="flex" justifyContent="flex-end" gap={1}>
             <Button

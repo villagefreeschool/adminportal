@@ -5,7 +5,7 @@
   },
 
   "files": {
-    "ignore": [".husky/**", "dist/**", "node_modules/**", "coverage/**"]
+    "ignore": [".husky/**", "dist/**", "node_modules/**", "coverage/**", ".claude/**"]
   },
 
   "linter": {

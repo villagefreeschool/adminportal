@@ -163,10 +163,13 @@ function FamilyForm({ family, onChange }: FamilyFormProps) {
 
   // Sliding scale opt out handler
   const handleSlidingScaleOptOutChange = (checked: boolean) => {
-    handleChange("slidingScaleOptOut", checked);
-    if (checked) {
-      handleChange("grossFamilyIncome", null);
-    }
+    // Update both fields in a single state update to avoid batching issues
+    const updatedFamily = {
+      ...family,
+      slidingScaleOptOut: checked,
+      ...(checked && { grossFamilyIncome: null }), // Only set to null if opting out
+    };
+    onChange(updatedFamily);
   };
 
   // Initialize emergency contacts if not present
@@ -593,7 +596,19 @@ function FamilyForm({ family, onChange }: FamilyFormProps) {
               >
                 <IncomeField
                   value={family.grossFamilyIncome}
-                  onChange={(value) => handleChange("grossFamilyIncome", value)}
+                  onChange={(value: number | null | "OPT_OUT") => {
+                    if (value === "OPT_OUT") {
+                      // Handle opt-out signal from IncomeField cancel button
+                      const updatedFamily = {
+                        ...family,
+                        slidingScaleOptOut: true,
+                        grossFamilyIncome: null,
+                      };
+                      onChange(updatedFamily);
+                    } else {
+                      handleChange("grossFamilyIncome", value);
+                    }
+                  }}
                   label="Gross Family Income"
                 />
               </Grid>
