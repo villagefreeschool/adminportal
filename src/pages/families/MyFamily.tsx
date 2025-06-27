@@ -1,7 +1,7 @@
 import FamilyDialog from "@/components/families/FamilyDialog";
-import Guardian from "@components/Guardian";
 import LabeledData from "@components/LabeledData";
-import Student from "@components/Student";
+import Guardian from "@components/families/Guardian";
+import Student from "@components/families/Student";
 import { useAuth } from "@contexts/useAuth";
 import EditIcon from "@mui/icons-material/Edit";
 import {

@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import type { Family } from "@services/firebase/models/types";
 import { useEffect, useState } from "react";
-import FamilyForm from "../FamilyForm";
+import FamilyForm from "./FamilyForm";
 
 interface FamilyDialogProps {
   open: boolean;

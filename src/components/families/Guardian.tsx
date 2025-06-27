@@ -1,7 +1,7 @@
+import LabeledData from "@components/LabeledData";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import type { Guardian as GuardianType } from "@services/firebase/models/types";
-import LabeledData from "./LabeledData";
 
 interface GuardianProps {
   guardian: GuardianType;
