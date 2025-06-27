@@ -570,16 +570,40 @@ function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: Contrac
             }}
           >
             <Box sx={{ flex: "1 1 30%", minWidth: "120px", textAlign: "center" }}>
-              <Typography variant="body-sm">Full Time</Typography>
-              <Typography variant="body-md">{formatCurrency(fullTimeTuition)}</Typography>
+              <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+                {formatCurrency(fullTimeTuition)}
+              </Typography>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ mt: 0.5, display: "block" }}
+              >
+                Full Time
+              </Typography>
             </Box>
             <Box sx={{ flex: "1 1 30%", minWidth: "120px", textAlign: "center" }}>
-              <Typography variant="body-sm">Full Time Sibling</Typography>
-              <Typography variant="body-md">{formatCurrency(siblingTuition)}</Typography>
+              <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+                {formatCurrency(siblingTuition)}
+              </Typography>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ mt: 0.5, display: "block" }}
+              >
+                Full Time Sibling
+              </Typography>
             </Box>
             <Box sx={{ flex: "1 1 30%", minWidth: "120px", textAlign: "center" }}>
-              <Typography variant="body-sm">Part Time</Typography>
-              <Typography variant="body-md">{formatCurrency(partTimeTuition)}</Typography>
+              <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+                {formatCurrency(partTimeTuition)}
+              </Typography>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ mt: 0.5, display: "block" }}
+              >
+                Part Time
+              </Typography>
             </Box>
           </Box>
         </Paper>
@@ -636,12 +660,19 @@ function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: Contrac
                   gap: 2,
                 }}
               >
-                <Box sx={{ flex: "1 1 20%", minWidth: "100px" }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Over 10 Months
+                <Box sx={{ flex: "1 1 20%", minWidth: "100px", textAlign: "center" }}>
+                  <Typography variant="h6" sx={{ fontWeight: 500, mb: 0.5 }}>
+                    {formatCurrency(tuition / 10)}
                   </Typography>
-                  <Typography variant="body-sm" color="text.secondary">
-                    {formatCurrency(tuition / 10)}/mo
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.70rem" }}>
+                    per month
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: "block", fontSize: "0.65rem", opacity: 0.8 }}
+                  >
+                    over 10 months
                   </Typography>
                 </Box>
 
@@ -674,12 +705,19 @@ function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: Contrac
                   )}
                 </Box>
 
-                <Box sx={{ flex: "1 1 20%", minWidth: "100px" }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Over 12 Months
+                <Box sx={{ flex: "1 1 20%", minWidth: "100px", textAlign: "center" }}>
+                  <Typography variant="h6" sx={{ fontWeight: 500, mb: 0.5 }}>
+                    {formatCurrency(tuition / 12)}
                   </Typography>
-                  <Typography variant="body-sm" color="text.secondary">
-                    {formatCurrency(tuition / 12)}/mo
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.70rem" }}>
+                    per month
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: "block", fontSize: "0.65rem", opacity: 0.8 }}
+                  >
+                    over 12 months
                   </Typography>
                 </Box>
               </Box>
