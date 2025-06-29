@@ -23,7 +23,7 @@ import type { Family } from "@services/firebase/models/types";
 import React, { useState, useEffect } from "react";
 
 function MyFamily() {
-  const { myFamily: contextFamily, isLoading: authLoading } = useAuth();
+  const { myFamily: contextFamily, isLoading: authLoading, currentUser } = useAuth();
 
   // State variables
   const [family, setFamily] = useState<Family | null>(null);
@@ -31,6 +31,7 @@ function MyFamily() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   // Load family data when the component mounts
   useEffect(() => {
@@ -61,6 +62,43 @@ function MyFamily() {
     }
   };
 
+  // Create new family with user's email pre-populated
+  const createNewFamily = (): Family => {
+    return {
+      id: "",
+      name: "",
+      guardians: [
+        {
+          firstName: "",
+          lastName: "",
+          email: currentUser?.email || "",
+          cellPhone: "",
+          workPhone: "",
+          notes: "",
+        },
+      ],
+      students: [],
+      emergencyContacts: [],
+      medicalProviders: [],
+    };
+  };
+
+  // Handle creating new family
+  const handleCreateFamily = () => {
+    setCreateDialogOpen(true);
+  };
+
+  // Handle saving new family
+  const handleSaveNewFamily = async (newFamily: Family) => {
+    try {
+      await saveFamily(newFamily);
+      window.location.reload(); // Reload to pick up new family
+    } catch (err) {
+      console.error("Error creating family:", err);
+      throw err;
+    }
+  };
+
   // Update family
   const handleUpdateFamily = async (updatedFamily: Family) => {
     try {
@@ -85,16 +123,32 @@ function MyFamily() {
   // Show not logged in or no family state
   if (!family) {
     return (
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          No Family Profile Found
-        </Typography>
-        <Typography>
-          {authLoading
-            ? "Loading your profile..."
-            : "You do not have a family profile yet. Please contact the school to set up your account."}
-        </Typography>
-      </Paper>
+      <>
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h5" gutterBottom>
+            Create a New Family Profile?
+          </Typography>
+          <Typography sx={{ mb: 3 }}>
+            {authLoading
+              ? "Loading your profile..."
+              : `Hello ${currentUser?.email || "there"}! You don't have a family profile yet. Would you like to create one?`}
+          </Typography>
+          {!authLoading && (
+            <Button variant="contained" color="primary" onClick={handleCreateFamily} size="large">
+              Create Family Profile
+            </Button>
+          )}
+        </Paper>
+
+        <FamilyDialog
+          open={createDialogOpen}
+          title="New Family Profile"
+          family={createNewFamily()}
+          onClose={() => setCreateDialogOpen(false)}
+          onSave={handleSaveNewFamily}
+          fullScreen
+        />
+      </>
     );
   }
 

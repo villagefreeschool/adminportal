@@ -79,14 +79,6 @@ export async function saveFamily(family: Family): Promise<Family> {
       family.students[i].familyID = familyID;
     }
 
-    // Make a copy of the family to save to Firestore
-    const familyToSave = {
-      ...family,
-      id: familyID,
-    };
-
-    await setDoc(doc(familyDB, familyID), familyToSave);
-
     let emails: string[] = [];
     // Add Guardian email access
     emails.push(...family.guardians.map((g) => g.email));
@@ -105,6 +97,15 @@ export async function saveFamily(family: Family): Promise<Family> {
       .map((s) => (s || "").toLowerCase())
       .compact()
       .value();
+
+    // Make a copy of the family to save to Firestore with authorizedEmails
+    const familyToSave = {
+      ...family,
+      id: familyID,
+      authorizedEmails: emails, // Include authorizedEmails for Firebase security rules
+    };
+
+    await setDoc(doc(familyDB, familyID), familyToSave);
 
     // Save userFamily records
     for (let i = 0; i < emails.length; i++) {
