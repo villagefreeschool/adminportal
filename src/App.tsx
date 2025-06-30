@@ -11,6 +11,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 const Home = lazy(() => import("@pages/Home"));
 const Login = lazy(() => import("@pages/Login"));
 const ForgotPassword = lazy(() => import("@pages/ForgotPassword"));
+const CreateAccount = lazy(() => import("@pages/CreateAccount"));
 const MyFamily = lazy(() => import("@/pages/families/MyFamily"));
 const FamilyList = lazy(() => import("@/pages/families/FamilyList"));
 const FamilyShow = lazy(() => import("@/pages/families/FamilyShow"));
@@ -40,6 +41,14 @@ function App() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <ForgotPassword />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/create-account"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <CreateAccount />
               </Suspense>
             }
           />

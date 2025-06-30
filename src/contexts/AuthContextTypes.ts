@@ -10,6 +10,7 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  createAccount: (email: string, password: string) => Promise<void>;
   loginWithGooglePopup: () => Promise<void>;
   loginWithGoogleRedirect: () => Promise<void>;
   checkRedirectResult: () => Promise<User | null>;

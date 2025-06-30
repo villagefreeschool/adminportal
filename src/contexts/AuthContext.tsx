@@ -1,5 +1,6 @@
 import {
   type User,
+  createUserWithEmail,
   getAuthRedirectResult,
   logoutUser,
   resetPassword,
@@ -83,6 +84,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  // Create new account
+  const createAccount = async (email: string, password: string) => {
+    try {
+      setError(null);
+      await createUserWithEmail(email, password);
+      // Navigation happens in the auth state change listener
+    } catch (err) {
+      const firebaseError = err as FirebaseError;
+      setError(firebaseError.message);
+      throw err;
+    }
+  };
+
   // Login with Google (popup)
   const loginWithGooglePopup = async () => {
     try {
@@ -155,6 +169,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isAuthenticated: !!currentUser && !currentUser.isAnonymous,
     isLoading,
     login,
+    createAccount,
     loginWithGooglePopup,
     loginWithGoogleRedirect,
     checkRedirectResult,

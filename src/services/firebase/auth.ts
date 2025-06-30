@@ -2,6 +2,7 @@ import type { FirebaseError } from "firebase/app";
 import {
   type User as FirebaseUser,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   getRedirectResult,
   onAuthStateChanged,
   sendPasswordResetEmail,
@@ -34,6 +35,19 @@ export async function signInWithEmail(email: string, password: string): Promise<
     return userCredential.user as User;
   } catch (error: unknown) {
     console.error("Error signing in with email and password:", error);
+    throw error;
+  }
+}
+
+/**
+ * Create a new user account with email and password
+ */
+export async function createUserWithEmail(email: string, password: string): Promise<User> {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential.user as User;
+  } catch (error: unknown) {
+    console.error("Error creating user account:", error);
     throw error;
   }
 }
