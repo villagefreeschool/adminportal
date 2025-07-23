@@ -73,7 +73,7 @@ function FamilyDialog({
       onClose();
     } catch (err) {
       console.error("Error saving family:", err);
-      setError("An error occurred while saving. Please try again.");
+      setError(`An error occurred while saving: ${err}`);
     } finally {
       setSaving(false);
     }
