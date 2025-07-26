@@ -17,6 +17,32 @@ import type { EmergencyContact, Family } from "./models/types";
 import { familyDB, studentDB, userFamilyDB, yearDB } from "./collections";
 
 /**
+ * Recursively removes undefined fields from an object to prevent Firestore errors
+ * Also handles common problematic fields by converting them to appropriate defaults
+ */
+function removeUndefinedFields<T>(obj: T): T {
+  if (obj === null || obj === undefined) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => removeUndefinedFields(item)) as T;
+  }
+
+  if (typeof obj === "object") {
+    const cleaned: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        cleaned[key] = removeUndefinedFields(value);
+      }
+    }
+    return cleaned as T;
+  }
+
+  return obj;
+}
+
+/**
  * Fetches all families from Firestore
  */
 export async function fetchFamilies(): Promise<Family[]> {
@@ -72,23 +98,24 @@ export async function saveFamily(family: Family): Promise<Family> {
 
   try {
     // Assign missing student IDs and family ID
-    for (let i = 0; i < family.students.length; i++) {
-      if (!family.students[i].id) {
-        family.students[i].id = doc(studentDB).id;
+    const students = family.students || [];
+    for (let i = 0; i < students.length; i++) {
+      if (!students[i].id) {
+        students[i].id = doc(studentDB).id;
       }
-      family.students[i].familyID = familyID;
+      students[i].familyID = familyID;
     }
 
     let emails: string[] = [];
     // Add Guardian email access
-    emails.push(...family.guardians.map((g) => g.email));
+    emails.push(...(family.guardians || []).map((g) => g.email).filter((email) => email != null));
 
     // Process otherEmails from guardians
-    const otherEmails = family.guardians.flatMap((g) => _.split(g.otherEmails || "", ","));
+    const otherEmails = (family.guardians || []).flatMap((g) => _.split(g.otherEmails || "", ","));
     emails.push(...otherEmails);
 
-    // Add student email address
-    emails.push(...family.students.map((s) => s.email || ""));
+    // Add student email address - filter out undefined/null values
+    emails.push(...(family.students || []).map((s) => s.email).filter((email) => email != null));
 
     // Clean them up by flattening and trimming.
     emails = _.chain(emails)
@@ -98,32 +125,48 @@ export async function saveFamily(family: Family): Promise<Family> {
       .compact()
       .value();
 
+    // Clean the family object to remove undefined values before saving
+    const cleanFamily = removeUndefinedFields(family);
+
     // Make a copy of the family to save to Firestore with authorizedEmails
     const familyToSave = {
-      ...family,
+      ...cleanFamily,
       id: familyID,
       authorizedEmails: emails, // Include authorizedEmails for Firebase security rules
     };
 
-    await setDoc(doc(familyDB, familyID), familyToSave);
+    try {
+      await setDoc(doc(familyDB, familyID), familyToSave);
+    } catch (error) {
+      console.error("Error saving family to Firestore:", error);
+      console.error("Family data that failed to save:", JSON.stringify(familyToSave, null, 2));
+      throw error;
+    }
 
     // Save userFamily records
     for (let i = 0; i < emails.length; i++) {
       const email = emails[i];
-      await setDoc(doc(userFamilyDB, email), {
+      const userFamilyData = removeUndefinedFields({
         familyID: familyID,
-        familyName: family.name,
-      }).catch(() => {
+        familyName: family.name || "",
+      });
+      await setDoc(doc(userFamilyDB, email), userFamilyData).catch(() => {
         // Failed to set user family record
       });
     }
 
     // Save each student
-    for (let i = 0; i < family.students.length; i++) {
-      const student = family.students[i];
+    for (let i = 0; i < students.length; i++) {
+      const student = students[i];
       const studentID = student.id;
-      const studentData = { ...student, familyID: familyID };
-      await setDoc(doc(studentDB, studentID), studentData);
+      const studentData = removeUndefinedFields({ ...student, familyID: familyID });
+      try {
+        await setDoc(doc(studentDB, studentID), studentData);
+      } catch (error) {
+        console.error(`Error saving student ${studentID} to Firestore:`, error);
+        console.error("Student data that failed to save:", JSON.stringify(studentData, null, 2));
+        throw error;
+      }
     }
 
     // Save contracts
@@ -252,8 +295,9 @@ export async function enrolledFamiliesInYear(yearID: string): Promise<Family[]> 
  * Generates a family name based on the last names of guardians and students
  */
 export function calculatedNameForFamily(family: Family): string {
-  return `${_.chain([...family.students, ...family.guardians])
+  return `${_.chain([...(family.students || []), ...(family.guardians || [])])
     .map((s) => (s.lastName ? s.lastName : "").trim())
+    .compact() // Remove empty strings
     .sort()
     .uniq()
     .value()
@@ -264,8 +308,9 @@ export function calculatedNameForFamily(family: Family): string {
  * Returns a comma-separated list of guardian first names
  */
 export function guardianNamesForFamily(family: Family): string {
-  return _.chain(family.guardians)
+  return _.chain(family.guardians || [])
     .map((g) => g.firstName)
+    .compact() // Remove undefined/null values
     .join(", ")
     .value();
 }
