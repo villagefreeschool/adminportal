@@ -133,12 +133,46 @@ The application uses Firestore with the following main collections:
 ### Data Relationships
 
 ```
-User (email) → UserFamily → Family → Students
-                                  ↓
-Year ← Contract ← Family → Guardians
-                     ↓
-              Emergency Contacts
-              Medical Providers
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐
+│    users    │    │ userFamilies │    │  families   │
+│             │    │              │    │             │
+│ email (PK)  │◄───┤ email (PK)   │    │ id (PK)     │
+│ firstName   │    │ familyID ────┼───►│ name        │
+│ lastName    │    │ familyName   │    │ guardians[] │
+│ isAdmin     │    └──────────────┘    │ students[]  │
+│ isStaff     │                        │ authorized  │
+└─────────────┘                        │ Emails[]    │
+                                       └─────────────┘
+                                              │
+                                              │
+                    ┌─────────────┐          │
+                    │   years     │          │
+                    │             │          │
+                    │ id (PK)     │          │
+                    │ name        │          │
+                    │ tuition     │          │
+                    │ parameters  │          │
+                    └─────────────┘          │
+                           ▲                 │
+                           │                 │
+                    ┌─────────────┐          │
+                    │ contracts   │          │
+                    │             │          │
+                    │ id (PK)     │          │
+                    │ yearID ─────┘          │
+                    │ familyID ──────────────┘
+                    │ student                │
+                    │ Decisions{}            │
+                    │ tuition                │
+                    │ signatures{}           │
+                    │ isSigned               │
+                    └─────────────┘
+
+Key Relationships:
+• Users link to families via userFamilies collection
+• Families contain embedded guardians[] and students[]
+• Contracts link families to specific school years
+• Admin users can access all data; family users only their linked family
 ```
 
 ## Authentication & Permissions
