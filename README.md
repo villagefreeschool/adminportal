@@ -142,8 +142,7 @@ The application uses Firestore with the following main collections:
 │ isAdmin     │    └──────────────┘    │ students[]  │
 │ isStaff     │                        │ authorized  │
 └─────────────┘                        │ Emails[]    │
-                                       └─────────────┘
-                                              │
+                                       └──────┬──────┘
                                               │
                     ┌─────────────┐          │
                     │   years     │          │
@@ -152,10 +151,9 @@ The application uses Firestore with the following main collections:
                     │ name        │          │
                     │ tuition     │          │
                     │ parameters  │          │
-                    └─────────────┘          │
-                           ▲                 │
+                    └──────┬──────┘          │
                            │                 │
-                    ┌─────────────┐          │
+                    ┌──────┴──────┐          │
                     │ contracts   │          │
                     │             │          │
                     │ id (PK)     │          │
