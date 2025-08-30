@@ -12,6 +12,7 @@
     "format": "biome format --write .",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
+    "lint:fix:markdown": "prettier . --write",
     "lint:fix:unsafe": "biome check --write --unsafe .",
     "prepare": "husky",
     "preview": "npm run serve",
@@ -25,7 +26,8 @@
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
       "biome check --write --no-errors-on-unmatched"
-    ]
+    ],
+    "*.{md,markdown}": ["prettier --write"]
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

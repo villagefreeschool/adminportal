@@ -37,7 +37,7 @@ export default defineConfig({
         "vite.config.ts",
         "vitest.config.ts",
         "src/setupTests.ts",
-        ".prettierrc.ts",
+        ".prettierrc.js",
         "**/types.ts",
       ],
 

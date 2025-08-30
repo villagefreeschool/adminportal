@@ -3,9 +3,12 @@
  *
  * This config is set to ONLY format Markdown files since Biome handles other file types.
  */
-import type { Config } from "prettier";
 
-const config: Config = {
+/**
+ * @see https://prettier.io/docs/configuration
+ * @type {import("prettier").Config}
+ */
+const config = {
   overrides: [
     {
       /**
