@@ -10,7 +10,6 @@ import {
   AppBar,
   Box,
   Button,
-  CircularProgress,
   Fab,
   IconButton,
   InputAdornment,

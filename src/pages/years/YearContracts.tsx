@@ -16,7 +16,6 @@ import {
   Button,
   Card,
   CardContent,
-  CircularProgress,
   IconButton,
   InputAdornment,
   Link,
@@ -95,11 +94,8 @@ function YearContracts() {
   // State variables
   const [year, setYear] = useState<Year | null>(null);
   const [contracts, setContracts] = useState<Contract[]>([]);
-  // Need to reference unused state for correct data structure
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [families, setFamilies] = useState<Family[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [_families, setFamilies] = useState<Family[]>([]);
+  const [_enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");

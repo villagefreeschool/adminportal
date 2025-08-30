@@ -11,7 +11,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Divider,
   IconButton,
   Paper,
@@ -30,7 +29,7 @@ function MyFamily() {
   const [family, setFamily] = useState<Family | null>(null);
   const [loading, setLoading] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 

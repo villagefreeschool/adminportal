@@ -7,7 +7,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import {
   AppBar,
   Box,
-  CircularProgress,
   Fab,
   IconButton,
   Paper,

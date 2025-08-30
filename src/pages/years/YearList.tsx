@@ -8,7 +8,6 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import {
   AppBar,
   Box,
-  CircularProgress,
   Fab,
   IconButton,
   Link,
