@@ -1,3 +1,4 @@
+import LoadingSpinner from "@components/LoadingSpinner.tsx";
 import { useAuth } from "@contexts/useAuth";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -199,11 +200,7 @@ function YearRoster() {
 
   // Show loading state
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingSpinner title={"Loading"} description={"Loading roster information..."} />;
   }
 
   // Show error state

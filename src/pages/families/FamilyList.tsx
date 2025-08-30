@@ -1,4 +1,5 @@
 import FamilyDialog from "@/components/families/FamilyDialog";
+import LoadingSpinner from "@components/LoadingSpinner.tsx";
 import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -325,9 +326,11 @@ function FamilyList() {
 
         <Box sx={{ p: 2 }}>
           {loading ? (
-            <Box display="flex" justifyContent="center" my={3}>
-              <CircularProgress />
-            </Box>
+            <LoadingSpinner
+              title={"Loading"}
+              description={"Fetching family information"}
+              minHeight={"200px"}
+            />
           ) : (
             <TableContainer>
               <Table size="small" aria-label="families table">

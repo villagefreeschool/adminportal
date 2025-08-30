@@ -1,6 +1,7 @@
 import ContractEditDialog from "@/components/contracts/ContractEditDialog";
 import ContractPDFGenerator from "@/components/contracts/ContractPDFGenerator";
 import LabeledData from "@components/LabeledData";
+import LoadingSpinner from "@components/LoadingSpinner";
 import { useAuth } from "@contexts/useAuth";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -318,11 +319,7 @@ function YearContracts() {
 
   // Show loading state
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingSpinner title={"Loading Year & Contract Data"} minHeight={"200px"} />;
   }
 
   // Show error state
@@ -424,9 +421,11 @@ function YearContracts() {
         </Card>
 
         {loading ? (
-          <Box display="flex" justifyContent="center" my={3}>
-            <CircularProgress />
-          </Box>
+          <LoadingSpinner
+            title={"Loading"}
+            description={"Fetching contracts table data..."}
+            minHeight={"200px"}
+          />
         ) : (
           <TableContainer>
             <Table size="small" aria-label="contracts table">

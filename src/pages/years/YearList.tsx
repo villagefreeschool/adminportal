@@ -1,3 +1,4 @@
+import LoadingSpinner from "@components/LoadingSpinner.tsx";
 import YearDialog from "@components/years/YearDialog";
 import AddIcon from "@mui/icons-material/Add";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -221,9 +222,11 @@ function YearList() {
 
         <Box sx={{ p: 2 }}>
           {loading ? (
-            <Box display="flex" justifyContent="center" my={3}>
-              <CircularProgress />
-            </Box>
+            <LoadingSpinner
+              title={"Loading"}
+              description={"Fetching school year information..."}
+              minHeight={"200px"}
+            />
           ) : (
             <TableContainer>
               <Table size="small" aria-label="school years table">

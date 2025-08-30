@@ -1,3 +1,4 @@
+import LoadingSpinner from "@components/LoadingSpinner.tsx";
 import UserDialog from "@components/users/UserDialog";
 import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
@@ -205,9 +206,11 @@ function UserList() {
 
         <Box sx={{ p: 2 }}>
           {loading ? (
-            <Box display="flex" justifyContent="center" my={3}>
-              <CircularProgress />
-            </Box>
+            <LoadingSpinner
+              title={"Loading"}
+              description={"Fetching user information..."}
+              minHeight={"200px"}
+            />
           ) : error ? (
             <Typography color="error" align="center" sx={{ my: 2 }}>
               {error}

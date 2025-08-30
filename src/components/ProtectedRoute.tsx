@@ -1,6 +1,5 @@
+import LoadingSpinner from "@components/LoadingSpinner";
 import { useAuth } from "@contexts/useAuth";
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -20,18 +19,7 @@ export default function ProtectedRoute({
 
   // Show loading state while authentication is being determined
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingSpinner title={"Logging In"} description={"Verifying credentials..."} />;
   }
 
   // Check if the route requires admin privileges

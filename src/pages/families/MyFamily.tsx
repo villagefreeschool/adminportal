@@ -1,5 +1,6 @@
 import FamilyDialog from "@/components/families/FamilyDialog";
 import LabeledData from "@components/LabeledData";
+import LoadingSpinner from "@components/LoadingSpinner";
 import Guardian from "@components/families/Guardian";
 import Student from "@components/families/Student";
 import { useAuth } from "@contexts/useAuth";
@@ -113,11 +114,7 @@ function MyFamily() {
 
   // Show loading state
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingSpinner title="Loading Family Details" />;
   }
 
   // Show not logged in or no family state
