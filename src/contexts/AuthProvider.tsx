@@ -13,9 +13,27 @@ import { familyDB, userFamilyDB } from "@services/firebase/collections";
 import type { Family, UserFamily } from "@services/firebase/models/types";
 import type { FirebaseError } from "firebase/app";
 import { doc, getDoc } from "firebase/firestore";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContextTypes";
+
+export interface AuthContextType {
+  currentUser: User | null;
+  userFamily: UserFamily | null;
+  myFamily: Family | null;
+  isAdmin: boolean;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  createAccount: (email: string, password: string) => Promise<void>;
+  loginWithGooglePopup: () => Promise<void>;
+  loginWithGoogleRedirect: () => Promise<void>;
+  checkRedirectResult: () => Promise<User | null>;
+  logout: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
+  error: string | null;
+}
+
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -53,7 +71,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
               const familyDoc = await getDoc(familyDocRef);
 
               if (familyDoc.exists()) {
-                setMyFamily({ id: familyDoc.id, ...familyDoc.data() } as Family);
+                setMyFamily({
+                  id: familyDoc.id,
+                  ...familyDoc.data(),
+                } as Family);
               }
             }
           }
@@ -180,5 +201,3 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-// The useAuth hook has been moved to its own file: useAuth.ts

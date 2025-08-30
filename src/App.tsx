@@ -5,7 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "@components/Layout";
 import LoadingSpinner from "@components/LoadingSpinner";
 import ProtectedRoute from "@components/ProtectedRoute";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider } from "@contexts/AuthProvider";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("@pages/Home"));
