@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import { deleteFamily, fetchFamily, saveFamily } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FamilyDeleteDialog from "@/components/families/FamilyDeleteDialog";
 import FamilyDialog from "@/components/families/FamilyDialog";
@@ -46,15 +46,8 @@ function FamilyShow() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  // Fetch family on mount or when ID changes
-  useEffect(() => {
-    if (id) {
-      loadFamily(id);
-    }
-  }, [id]);
-
   // Load family data
-  const loadFamily = async (familyId: string) => {
+  const loadFamily = useCallback(async (familyId: string) => {
     setLoading(true);
     setError(null);
 
@@ -71,7 +64,14 @@ function FamilyShow() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Fetch family on mount or when ID changes
+  useEffect(() => {
+    if (id) {
+      loadFamily(id);
+    }
+  }, [id, loadFamily]);
 
   // Update family
   const handleUpdateFamily = async (familyData: Family) => {
