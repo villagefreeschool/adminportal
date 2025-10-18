@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import type { VFSAdminUser } from "@services/firebase/models/types";
 import { fetchUsers } from "@services/firebase/users";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 // Sort direction type
 type Order = "asc" | "desc";
@@ -64,13 +64,8 @@ function UserList() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState<string | undefined>(undefined);
 
-  // Load users on mount
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
   // Fetch all users
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -90,7 +85,12 @@ function UserList() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Load users on mount
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   // Handle column header click for sorting
   const handleRequestSort = (property: keyof VFSAdminUser) => {
