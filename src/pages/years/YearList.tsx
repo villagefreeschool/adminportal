@@ -34,7 +34,7 @@ import {
   updateYear,
   type Year,
 } from "@services/firebase/years";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 type Order = "asc" | "desc";
@@ -72,13 +72,8 @@ function YearList() {
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<OrderBy>("name");
 
-  // Initial data fetch
-  useEffect(() => {
-    loadYears();
-  }, []);
-
   // Function to load all years
-  const loadYears = async () => {
+  const loadYears = useCallback(async () => {
     setLoading(true);
     try {
       const data = await fetchYears();
@@ -88,7 +83,12 @@ function YearList() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Initial data fetch
+  useEffect(() => {
+    loadYears();
+  }, [loadYears]);
 
   // Handler for new year dialog
   const handleNewYear = () => {
