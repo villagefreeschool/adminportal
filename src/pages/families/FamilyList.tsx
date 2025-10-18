@@ -1,4 +1,3 @@
-import FamilyDialog from "@/components/families/FamilyDialog";
 import LoadingSpinner from "@components/LoadingSpinner.tsx";
 import { useAuth } from "@contexts/useAuth";
 import AddIcon from "@mui/icons-material/Add";
@@ -39,8 +38,9 @@ import {
 } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
 import { doc } from "firebase/firestore";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import FamilyDialog from "@/components/families/FamilyDialog";
 
 // Sort order type
 type Order = "asc" | "desc";

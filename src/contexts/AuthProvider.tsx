@@ -1,5 +1,4 @@
 import {
-  type User,
   createUserWithEmail,
   getAuthRedirectResult,
   logoutUser,
@@ -8,12 +7,13 @@ import {
   signInWithGooglePopup,
   signInWithGoogleRedirect,
   subscribeToAuthChanges,
+  type User,
 } from "@services/firebase/auth";
 import { familyDB, userFamilyDB } from "@services/firebase/collections";
 import type { Family, UserFamily } from "@services/firebase/models/types";
 import type { FirebaseError } from "firebase/app";
 import { doc, getDoc } from "firebase/firestore";
-import { type ReactNode, createContext, useEffect, useState } from "react";
+import { createContext, type ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export interface AuthContextType {

@@ -1,10 +1,9 @@
 import { documentId, getDocs, query, where } from "firebase/firestore";
 import _ from "lodash";
-import { CHUNK_SIZE } from "./core";
-import type { Student } from "./models/types";
-
 // Import collection references
 import { studentDB } from "./collections";
+import { CHUNK_SIZE } from "./core";
+import type { Student } from "./models/types";
 
 /**
  * fetchStudentsWithIDs is a utility function to get multiple *read-only*

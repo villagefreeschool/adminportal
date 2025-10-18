@@ -1,8 +1,7 @@
-import FamilyDialog from "@/components/families/FamilyDialog";
-import LabeledData from "@components/LabeledData";
-import LoadingSpinner from "@components/LoadingSpinner";
 import Guardian from "@components/families/Guardian";
 import Student from "@components/families/Student";
+import LabeledData from "@components/LabeledData";
+import LoadingSpinner from "@components/LoadingSpinner";
 import { useAuth } from "@contexts/useAuth";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -12,15 +11,16 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  Grid,
   IconButton,
   Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { Grid } from "@mui/material";
 import { calculatedNameForFamily, fetchFamily, saveFamily } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import FamilyDialog from "@/components/families/FamilyDialog";
 
 function MyFamily() {
   const { myFamily: contextFamily, isLoading: authLoading, currentUser } = useAuth();

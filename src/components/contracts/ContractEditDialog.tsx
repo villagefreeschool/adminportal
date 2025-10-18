@@ -38,12 +38,12 @@ import {
   saveEnrollment,
 } from "@services/firebase/years";
 import {
+  calculateTuitionOptions,
   FullTime,
+  formatCurrency,
   MaxYearOverYearChange,
   NotAttending,
   PartTime,
-  calculateTuitionOptions,
-  formatCurrency,
   tuitionForIncome,
 } from "@services/tuitioncalc";
 import { useEffect, useMemo, useState } from "react";

@@ -1,26 +1,25 @@
 import dayjs from "dayjs";
 import {
-  type DocumentData,
-  type Query,
-  type QueryDocumentSnapshot,
   addDoc,
   collection,
+  type DocumentData,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   orderBy,
+  type Query,
+  type QueryDocumentSnapshot,
   query,
   setDoc,
   where,
 } from "firebase/firestore";
 import _ from "lodash";
+// Import collection references
+import { yearDB } from "./collections";
 import { fetchFamiliesWithIDs } from "./families";
 import type { Enrollment, Family } from "./models/types";
 import { fetchStudentsWithIDs } from "./students";
-
-// Import collection references
-import { yearDB } from "./collections";
 
 // Default values for year properties
 export const DefaultMinimumIncome = 28000;

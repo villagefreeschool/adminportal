@@ -1,5 +1,3 @@
-import ContractEditDialog from "@/components/contracts/ContractEditDialog";
-import ContractPDFGenerator from "@/components/contracts/ContractPDFGenerator";
 import LabeledData from "@components/LabeledData";
 import LoadingSpinner from "@components/LoadingSpinner";
 import { useAuth } from "@contexts/useAuth";
@@ -16,6 +14,7 @@ import {
   Button,
   Card,
   CardContent,
+  Grid,
   IconButton,
   InputAdornment,
   Link,
@@ -32,21 +31,24 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Grid } from "@mui/material";
 import {
   fetchContracts,
   prepareContractsForDisplay,
   studentCountForContract,
 } from "@services/firebase/contracts";
 import type { Contract, Enrollment, Family, Year } from "@services/firebase/models/types";
-import { enrolledStudentsInYear, fetchYear } from "@services/firebase/years";
-import { enrolledFamiliesInYear } from "@services/firebase/years";
+import {
+  enrolledFamiliesInYear,
+  enrolledStudentsInYear,
+  fetchYear,
+} from "@services/firebase/years";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import _ from "lodash";
-import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import ContractEditDialog from "@/components/contracts/ContractEditDialog";
+import ContractPDFGenerator from "@/components/contracts/ContractPDFGenerator";
 
 // Format currency values
 const formatCurrency = (value: number | undefined): string => {

@@ -1,9 +1,8 @@
 // Export core Firebase functionality
-export { default as firebaseApp } from "./core";
-export { auth, db, storage, CHUNK_SIZE } from "./core";
 
 // Export collection references
-export { userDB, familyDB, studentDB, yearDB, userFamilyDB } from "./collections";
+export { familyDB, studentDB, userDB, userFamilyDB, yearDB } from "./collections";
+export { auth, CHUNK_SIZE, db, default as firebaseApp, storage } from "./core";
 
 // Export family-related functions
 export {
@@ -14,12 +13,9 @@ export {
   guardianNamesForFamily,
   saveFamily,
 } from "./families";
-
-// Export student-related functions
-export { fetchStudentsWithIDs } from "./students";
-
-// Export year-related functions
-export { enrolledStudentsInYear, enrolledFamiliesInYear } from "./years";
-
 // Export types
 export * from "./models/types";
+// Export student-related functions
+export { fetchStudentsWithIDs } from "./students";
+// Export year-related functions
+export { enrolledFamiliesInYear, enrolledStudentsInYear } from "./years";

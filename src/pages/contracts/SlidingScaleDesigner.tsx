@@ -6,8 +6,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
-import Select from "@mui/material/Select";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,10 +17,11 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 /* eslint-disable no-undef */
-import { type ChangeEvent, Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
 // Lazy load the Plot component to reduce initial bundle size
 const Plot = lazy(() => import("@components/PlotlySetup"));
+
 import { fetchContracts } from "@services/firebase/contracts";
 import type { Contract, Family, Year } from "@services/firebase/models/types";
 import { enrolledFamiliesInYear, fetchYears } from "@services/firebase/years";
@@ -29,8 +30,8 @@ import {
   DefaultMaximumTuition,
   DefaultMinimumIncome,
   DefaultMinimumTuition,
-  Steepness,
   formatCurrency,
+  Steepness,
 } from "@services/tuitioncalc";
 
 // Income steps for the table display

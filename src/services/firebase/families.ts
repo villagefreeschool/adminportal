@@ -10,11 +10,10 @@ import {
   where,
 } from "firebase/firestore";
 import _ from "lodash";
-import { CHUNK_SIZE } from "./core";
-import type { EmergencyContact, Family } from "./models/types";
-
 // Import collection references
 import { familyDB, studentDB, userFamilyDB, yearDB } from "./collections";
+import { CHUNK_SIZE } from "./core";
+import type { EmergencyContact, Family } from "./models/types";
 
 /**
  * Recursively removes undefined fields from an object to prevent Firestore errors

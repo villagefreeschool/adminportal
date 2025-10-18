@@ -1,4 +1,3 @@
-import Contract from "@/components/contracts/Contract";
 import { useAuth } from "@contexts/useAuth";
 import {
   Alert,
@@ -6,15 +5,16 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Grid,
   LinearProgress,
   Typography,
 } from "@mui/material";
-import { Grid } from "@mui/material";
 import { fetchFamily } from "@services/firebase/families";
 import type { Family, Year } from "@services/firebase/models/types";
 import { fetchYears } from "@services/firebase/years";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Contract from "@/components/contracts/Contract";
 
 /**
  * Registration page shows contract information for family registration

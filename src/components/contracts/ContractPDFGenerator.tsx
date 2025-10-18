@@ -5,14 +5,13 @@ import { useTheme } from "@mui/material/styles";
 import type { Contract, Family, Year } from "@services/firebase/models/types";
 import { loadPdfMake } from "@utils/pdfMakeLoader";
 import {
-  PDF_DEFAULT_STYLE,
-  PDF_STYLES,
   dataURLFromImagePath,
   normalizeSignatureForPdf,
+  PDF_DEFAULT_STYLE,
+  PDF_STYLES,
 } from "@utils/pdfUtil";
 import type { Content, TDocumentDefinitions } from "pdfmake/interfaces";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Currency formatter
 const formatter = new Intl.NumberFormat("en-US", {

@@ -1,11 +1,10 @@
-import { Suspense, lazy } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-
 // Components
 import Layout from "@components/Layout";
 import LoadingSpinner from "@components/LoadingSpinner";
 import ProtectedRoute from "@components/ProtectedRoute";
 import { AuthProvider } from "@contexts/AuthProvider";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("@pages/Home"));

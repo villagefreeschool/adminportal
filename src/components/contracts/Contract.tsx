@@ -1,11 +1,8 @@
-import ContractEditDialog from "@/components/contracts/ContractEditDialog";
-import ContractSignDialog from "@/components/contracts/ContractSignDialog";
-import LabeledData from "@components/LabeledData";
 import ContractPDFGenerator from "@components/contracts/ContractPDFGenerator";
+import LabeledData from "@components/LabeledData";
 import { useAuth } from "@contexts/useAuth";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import { Box, Button, Divider, LinearProgress, Typography } from "@mui/material";
-import { Grid } from "@mui/material";
+import { Box, Button, Divider, Grid, LinearProgress, Typography } from "@mui/material";
 import { fetchContract, saveContractSignatures } from "@services/firebase/contracts";
 import { fetchFamily } from "@services/firebase/families";
 import type {
@@ -17,6 +14,8 @@ import type {
 import { fetchYear } from "@services/firebase/years";
 import { formatCurrency } from "@services/tuitioncalc";
 import { useEffect, useState } from "react";
+import ContractEditDialog from "@/components/contracts/ContractEditDialog";
+import ContractSignDialog from "@/components/contracts/ContractSignDialog";
 
 interface ContractProps {
   familyId: string;

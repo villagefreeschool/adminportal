@@ -1,8 +1,6 @@
-import FamilyDeleteDialog from "@/components/families/FamilyDeleteDialog";
-import FamilyDialog from "@/components/families/FamilyDialog";
-import LabeledData from "@components/LabeledData";
 import Guardian from "@components/families/Guardian";
 import Student from "@components/families/Student";
+import LabeledData from "@components/LabeledData";
 import { useAuth } from "@contexts/useAuth";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,6 +11,7 @@ import {
   CardContent,
   Container,
   Divider,
+  Grid,
   LinearProgress,
   Paper,
   Table,
@@ -25,11 +24,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Grid } from "@mui/material";
 import { deleteFamily, fetchFamily, saveFamily } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import FamilyDeleteDialog from "@/components/families/FamilyDeleteDialog";
+import FamilyDialog from "@/components/families/FamilyDialog";
 
 function FamilyShow() {
   const { id } = useParams<{ id: string }>();

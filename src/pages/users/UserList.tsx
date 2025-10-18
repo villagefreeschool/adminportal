@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import type { VFSAdminUser } from "@services/firebase/models/types";
 import { fetchUsers } from "@services/firebase/users";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // Sort direction type
 type Order = "asc" | "desc";

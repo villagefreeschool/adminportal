@@ -1,8 +1,8 @@
 import type { FirebaseError } from "firebase/app";
 import {
+  createUserWithEmailAndPassword,
   type User as FirebaseUser,
   GoogleAuthProvider,
-  createUserWithEmailAndPassword,
   getRedirectResult,
   onAuthStateChanged,
   sendPasswordResetEmail,

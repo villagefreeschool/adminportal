@@ -24,15 +24,15 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  createYear,
   DefaultMaximumIncome,
   DefaultMaximumTuition,
   DefaultMinimumIncome,
   DefaultMinimumTuition,
-  type Year,
-  createYear,
   fetchYear,
   fetchYears,
   updateYear,
+  type Year,
 } from "@services/firebase/years";
 import { useEffect, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
