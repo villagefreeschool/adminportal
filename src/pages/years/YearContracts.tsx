@@ -45,7 +45,7 @@ import {
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import _ from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import ContractEditDialog from "@/components/contracts/ContractEditDialog";
 import ContractPDFGenerator from "@/components/contracts/ContractPDFGenerator";
@@ -106,15 +106,8 @@ function YearContracts() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
 
-  // Load data when component mounts or ID changes
-  useEffect(() => {
-    if (id) {
-      loadData(id);
-    }
-  }, [id]);
-
   // Load year and contracts data
-  const loadData = async (yearId: string) => {
+  const loadData = useCallback(async (yearId: string) => {
     setLoading(true);
     setError(null);
 
@@ -154,7 +147,14 @@ function YearContracts() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Load data when component mounts or ID changes
+  useEffect(() => {
+    if (id) {
+      loadData(id);
+    }
+  }, [id, loadData]);
 
   // Handle edit contract
   const handleEditContract = (familyId: string) => {
