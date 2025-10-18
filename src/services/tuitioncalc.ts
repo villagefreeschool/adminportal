@@ -46,14 +46,14 @@ export function tuitionForIncome(
 ): number {
   // Collect most basic algorithmic options
   const year = opts.year || {};
-  const inflationPeriods = Number.parseInt(String(opts.inflationPeriods || 0));
+  const inflationPeriods = Number.parseInt(String(opts.inflationPeriods || 0), 10);
   const minTuition = Number.parseFloat(String(year.minimumTuition || DefaultMinimumTuition));
   const maxTuition = Number.parseFloat(String(year.maximumTuition || DefaultMaximumTuition));
   const minIncome = Number.parseFloat(String(year.minimumIncome || DefaultMinimumIncome));
   const maxIncome = Number.parseFloat(String(year.maximumIncome || DefaultMaximumIncome));
-  const fullTimeCount = Number.parseInt(String(opts.fullTime || 0));
-  const partTimeCount = Number.parseInt(String(opts.partTime || 0));
-  const siblingCount = Number.parseInt(String(opts.siblings || 0));
+  const fullTimeCount = Number.parseInt(String(opts.fullTime || 0), 10);
+  const partTimeCount = Number.parseInt(String(opts.partTime || 0), 10);
+  const siblingCount = Number.parseInt(String(opts.siblings || 0), 10);
 
   // If income wasn't entered, assume the maximum
   let incomeValue = income;
