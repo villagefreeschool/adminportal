@@ -46,7 +46,7 @@ import {
   PartTime,
   tuitionForIncome,
 } from "@services/tuitioncalc";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface ContractEditDialogProps {
   open: boolean;
@@ -80,41 +80,8 @@ function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: Contrac
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load contract and family data when dialog opens
-  useEffect(() => {
-    if (open && yearId && familyId) {
-      loadData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, yearId, familyId]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: We're intentionally only reacting to studentDecisions changes
-  useEffect(() => {
-    if (allAttendanceDecisionsMade) {
-      // If decisions have changed from the saved contract, use suggested tuition
-      if (decisionsChangedFromContract) {
-        setTuition(suggestedTuition);
-      } else if (contract?.tuition) {
-        // Otherwise use the existing contract tuition
-        setTuition(contract.tuition);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentDecisions]);
-
-  // Update assistance amount when tuition changes
-  useEffect(() => {
-    if (tuition < minTuition) {
-      setAssistanceAmount(minTuition - tuition);
-    } else {
-      setTuitionAssistanceRequested(false);
-      setAssistanceAmount(0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tuition]);
-
   // Load contract, family and year data
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -191,7 +158,7 @@ function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: Contrac
     } finally {
       setLoading(false);
     }
-  };
+  }, [yearId, familyId]);
 
   // Handle student attendance selection change
   const handleStudentDecisionChange = (studentId: string, value: string) => {
@@ -506,6 +473,37 @@ function ContractEditDialog({ open, yearId, familyId, onClose, onSave }: Contrac
 
     return tuitionForIncome(family.grossFamilyIncome, opts);
   }, [family, year]);
+
+  // Load contract and family data when dialog opens
+  useEffect(() => {
+    if (open && yearId && familyId) {
+      loadData();
+    }
+  }, [open, yearId, familyId, loadData]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We're intentionally only reacting to studentDecisions changes
+  useEffect(() => {
+    if (allAttendanceDecisionsMade) {
+      // If decisions have changed from the saved contract, use suggested tuition
+      if (decisionsChangedFromContract) {
+        setTuition(suggestedTuition);
+      } else if (contract?.tuition) {
+        // Otherwise use the existing contract tuition
+        setTuition(contract.tuition);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [studentDecisions]);
+
+  // Update assistance amount when tuition changes
+  useEffect(() => {
+    if (tuition < minTuition) {
+      setAssistanceAmount(minTuition - tuition);
+    } else {
+      setTuitionAssistanceRequested(false);
+      setAssistanceAmount(0);
+    }
+  }, [tuition, minTuition]);
 
   // Show loading state
   if (loading) {
