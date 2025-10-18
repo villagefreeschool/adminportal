@@ -33,7 +33,7 @@ import { enrolledStudentsInYear, fetchYear } from "@services/firebase/years";
 import dayjs from "dayjs";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
-import React, { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 
 interface Column {
@@ -68,14 +68,7 @@ function YearRoster() {
   const [search, setSearch] = useState("");
 
   // Load year and enrolled students data
-  useEffect(() => {
-    if (id) {
-      loadData(id);
-    }
-  }, [id]);
-
-  // Load year and enrolled students data
-  const loadData = async (yearId: string) => {
+  const loadData = useCallback(async (yearId: string) => {
     setLoading(true);
     setError(null);
 
@@ -98,7 +91,14 @@ function YearRoster() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Load year and enrolled students data
+  useEffect(() => {
+    if (id) {
+      loadData(id);
+    }
+  }, [id, loadData]);
 
   // Computed values for enrollment counts
   const partTimeCount = useMemo(() => {
