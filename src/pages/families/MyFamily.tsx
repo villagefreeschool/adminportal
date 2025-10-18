@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { calculatedNameForFamily, fetchFamily, saveFamily } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FamilyDialog from "@/components/families/FamilyDialog";
 
 function MyFamily() {
@@ -33,17 +33,8 @@ function MyFamily() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
-  // Load family data when the component mounts
-  useEffect(() => {
-    if (contextFamily) {
-      loadFamily(contextFamily.id);
-    } else if (!authLoading) {
-      setLoading(false);
-    }
-  }, [contextFamily, authLoading]);
-
   // Load family data
-  const loadFamily = async (familyId: string) => {
+  const loadFamily = useCallback(async (familyId: string) => {
     setLoading(true);
     setError(null);
 
@@ -60,7 +51,16 @@ function MyFamily() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Load family data when the component mounts
+  useEffect(() => {
+    if (contextFamily) {
+      loadFamily(contextFamily.id);
+    } else if (!authLoading) {
+      setLoading(false);
+    }
+  }, [contextFamily, authLoading, loadFamily]);
 
   // Create new family with user's email pre-populated
   const createNewFamily = (): Family => {
