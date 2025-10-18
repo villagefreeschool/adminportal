@@ -2,15 +2,10 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 // Create a simple mock
+// Note: progressbar role should NOT have tabIndex - it's a status indicator, not an interactive element
 const MockApp = () => (
   <div>
-    <span
-      role="progressbar"
-      tabIndex={0}
-      aria-valuenow={50}
-      aria-valuemin={0}
-      aria-valuemax={100}
-    />
+    <span role="progressbar" aria-valuenow={50} aria-valuemin={0} aria-valuemax={100} />
   </div>
 );
 
