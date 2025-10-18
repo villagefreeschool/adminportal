@@ -44,8 +44,8 @@
     "lodash": "^4.17.21",
     "pdfmake": "^0.2.18",
     "plotly.js-basic-dist": "^3.0.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^7.6.0"
   },
