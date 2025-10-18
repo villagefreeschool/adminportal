@@ -68,7 +68,7 @@ export async function fetchContract(yearID: string, familyID: string): Promise<C
  */
 export async function saveContract(contract: Contract): Promise<Contract> {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // Destructure to exclude id, yearID, familyID from being saved as document fields
     const { id, yearID, familyID, ...contractData } = contract;
 
     // Use familyID as the document ID

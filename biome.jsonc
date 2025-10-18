@@ -12,7 +12,14 @@
     "rules": {
       "recommended": true,
 
-      "correctness": {},
+      "correctness": {
+        "noUnusedVariables": {
+          "level": "error",
+          "options": {
+            "ignoreRestSiblings": true
+          }
+        }
+      },
 
       "suspicious": {},
 

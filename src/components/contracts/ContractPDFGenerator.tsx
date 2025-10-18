@@ -13,12 +13,6 @@ import {
 import type { Content, TDocumentDefinitions } from "pdfmake/interfaces";
 import React, { useEffect, useState } from "react";
 
-// Currency formatter
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
 interface ContractPDFGeneratorProps {
   year: Year;
   family: Family;
