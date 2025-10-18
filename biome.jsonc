@@ -1,11 +1,9 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
 
   "files": {
-    "ignore": [".husky/**", "dist/**", "node_modules/**", "coverage/**", ".claude/**"]
+    "includes": ["**", "!**/.husky", "!**/dist", "!**/node_modules", "!**/coverage", "!**/.claude"]
   },
 
   "linter": {
@@ -23,14 +21,15 @@
       }
     },
 
-    "ignore": [
-      ".env",
-      ".env.local",
-      ".husky/**",
-      "dist/**",
-      "node_modules/**",
-      "coverage/**",
-      "package-lock.json"
+    "includes": [
+      "**",
+      "!**/.env",
+      "!**/.env.local",
+      "!**/.husky/**",
+      "!**/dist/**",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/package-lock.json"
     ]
   },
 
