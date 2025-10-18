@@ -38,7 +38,7 @@ import {
 } from "@services/firebase/families";
 import type { Family } from "@services/firebase/models/types";
 import { doc } from "firebase/firestore";
-import React, { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import FamilyDialog from "@/components/families/FamilyDialog";
 
@@ -90,13 +90,8 @@ function FamilyList() {
   const [selectedFamily, setSelectedFamily] = useState<Family | null>(null);
   const [fetchingFamily, setFetchingFamily] = useState(false);
 
-  // Fetch families on mount
-  useEffect(() => {
-    loadFamilies();
-  }, []);
-
   // Load all families
-  const loadFamilies = async () => {
+  const loadFamilies = useCallback(async () => {
     setLoading(true);
     try {
       const data = await fetchFamilies();
@@ -106,7 +101,12 @@ function FamilyList() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Fetch families on mount
+  useEffect(() => {
+    loadFamilies();
+  }, [loadFamilies]);
 
   // Create a new family
   const handleNewFamily = () => {
