@@ -637,19 +637,21 @@ function SlidingScaleDesigner() {
                 },
               ]}
               layout={{
-                title: "Tuition by Income",
+                title: { text: "Tuition by Income" },
                 autosize: true,
                 xaxis: {
-                  title: "Annual Income ($)",
+                  title: { text: "Annual Income ($)" },
                   tickformat: "$,.0f",
                 },
                 yaxis: {
-                  title: "Annual Tuition ($)",
+                  title: { text: "Annual Tuition ($)" },
                   tickformat: "$,.0f",
                 },
                 yaxis2: {
-                  title: "Number of Families",
-                  titlefont: { color: "rgb(148, 148, 148)" },
+                  title: {
+                    text: "Number of Families",
+                    font: { color: "rgb(148, 148, 148)" },
+                  },
                   tickfont: { color: "rgb(148, 148, 148)" },
                   overlaying: "y",
                   side: "right",
