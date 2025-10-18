@@ -210,7 +210,7 @@ function ContractPDFGenerator({
         {
           text: `\n${kids || allKids}\n\n`,
           colSpan: 2,
-          alignment: "center",
+          alignment: "center" as const,
         },
         {},
       ]);
