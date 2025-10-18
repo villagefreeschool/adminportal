@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { Year } from "@services/firebase/years";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 interface YearDialogProps {
   open: boolean;
@@ -34,6 +34,7 @@ export default function YearDialog({
   onClose,
   onSave,
 }: YearDialogProps) {
+  const titleId = useId();
   const [formData, setFormData] = useState<Partial<Year>>(year);
   const [saving, setSaving] = useState(false);
   const [formValid, setFormValid] = useState(false);
@@ -78,16 +79,10 @@ export default function YearDialog({
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="md"
-      aria-labelledby="year-dialog-title"
-    >
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" aria-labelledby={titleId}>
       <AppBar position="static" color="primary" sx={{ bgcolor: "green.900" }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} id="year-dialog-title">
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} id={titleId}>
             {title}
           </Typography>
           <IconButton edge="end" color="inherit" onClick={onClose} aria-label="close">

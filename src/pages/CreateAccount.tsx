@@ -14,10 +14,13 @@ import {
   Typography,
 } from "@mui/material";
 import type { FirebaseError } from "firebase/app";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useId, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function CreateAccount() {
+  const emailId = useId();
+  const passwordId = useId();
+  const passwordConfirmationId = useId();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -145,7 +148,7 @@ export default function CreateAccount() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id={emailId}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -163,7 +166,7 @@ export default function CreateAccount() {
               name="password"
               label="Password"
               type="password"
-              id="password"
+              id={passwordId}
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -178,7 +181,7 @@ export default function CreateAccount() {
               name="passwordConfirmation"
               label="Password Confirmation"
               type="password"
-              id="passwordConfirmation"
+              id={passwordConfirmationId}
               autoComplete="new-password"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}

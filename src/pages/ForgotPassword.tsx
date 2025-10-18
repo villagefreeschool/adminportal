@@ -13,10 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import type { FirebaseError } from "firebase/app";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useId, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function ForgotPassword() {
+  const emailId = useId();
   const [email, setEmail] = useState("");
   const [formErrors, setFormErrors] = useState<{ email?: string }>({});
   const [isSending, setIsSending] = useState(false);
@@ -115,7 +116,7 @@ export default function ForgotPassword() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id={emailId}
               label="Email Address"
               name="email"
               autoComplete="email"

@@ -17,7 +17,16 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 /* eslint-disable no-undef */
-import { type ChangeEvent, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  type ChangeEvent,
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from "react";
 
 // Lazy load the Plot component to reduce initial bundle size
 const Plot = lazy(() => import("@components/PlotlySetup"));
@@ -53,6 +62,8 @@ const generateIncomeDataPoints = (min: number, max: number, count = 100): number
 };
 
 function SlidingScaleDesigner() {
+  const yearSelectLabelId = useId();
+  const yearSelectId = useId();
   // State for the tuition calculation parameters
   const [minIncome, setMinIncome] = useState(DefaultMinimumIncome);
   const [maxIncome, setMaxIncome] = useState(DefaultMaximumIncome);
@@ -531,10 +542,10 @@ function SlidingScaleDesigner() {
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel id="year-select-label">Show Families from Year</InputLabel>
+              <InputLabel id={yearSelectLabelId}>Show Families from Year</InputLabel>
               <Select
-                labelId="year-select-label"
-                id="year-select"
+                labelId={yearSelectLabelId}
+                id={yearSelectId}
                 value={selectedYearId}
                 label="Show Families from Year"
                 onChange={handleYearChange}

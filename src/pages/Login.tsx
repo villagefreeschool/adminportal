@@ -15,10 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import type { FirebaseError } from "firebase/app";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useId, useState } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const emailId = useId();
+  const passwordId = useId();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
@@ -178,7 +180,7 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id={emailId}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -196,7 +198,7 @@ export default function Login() {
               name="password"
               label="Password"
               type="password"
-              id="password"
+              id={passwordId}
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
