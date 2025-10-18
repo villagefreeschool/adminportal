@@ -41,5 +41,9 @@ dist-ssr
 .env.test.local
 .env.production.local
 
+# IDE Settings
+.vscode
+
 # AI Agents
 .claude
+
