@@ -80,6 +80,7 @@ export async function signInWithGoogleRedirect(): Promise<void> {
     });
 
     // Configure auth to handle the login correctly
+    // biome-ignore lint/correctness/useHookAtTopLevel: auth.useDeviceLanguage() is a Firebase method, not a React hook
     auth.useDeviceLanguage();
 
     console.info("Using redirect authentication flow");
