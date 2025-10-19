@@ -1,24 +1,30 @@
 # Village Free School Admin Portal
 
-A comprehensive React application for managing the Village Free School's administrative operations, including family registration, student enrollment, tuition calculation with sliding scale support, and contract management.
+A comprehensive React application for managing the Village Free School's
+administrative operations, including family registration, student enrollment,
+tuition calculation with sliding scale support, and contract management.
 
 ## Overview
 
 The VFS Admin Portal serves two primary user groups:
-- **Administrative Staff**: Manage families, students, school years, and generate reports
-- **Families**: Register students, manage family information, and sign enrollment contracts
 
-The application features a role-based permission system, sliding scale tuition calculation, digital contract signing, and comprehensive reporting capabilities.
+- **Administrative Staff**: Manage families, students, school years, and
+  generate reports
+- **Families**: Register students, manage family information, and sign
+  enrollment contracts
+
+The application features a role-based permission system, sliding scale tuition
+calculation, digital contract signing, and comprehensive reporting capabilities.
 
 ## Tech Stack
 
-- **Frontend**: React 19.0.0 with TypeScript 5.8.2
-- **Build Tool**: Vite 6.2.2 for fast development and optimized builds
+- **Frontend**: React 19 with TypeScript 5
+- **Build Tool**: Vite 7 for fast development and optimized builds
 - **UI Framework**: Material-UI (MUI) v7 with custom theming
 - **Backend**: Firebase (Firestore, Authentication, Storage)
-- **Testing**: Vitest 3.0.9 with React Testing Library
+- **Testing**: Vitest 3 with React Testing Library
 - **Code Quality**: Biome for linting and formatting, Husky for git hooks
-- **Additional Libraries**: 
+- **Additional Libraries**:
   - React Router v7 for navigation
   - PDFMake for contract generation
   - Plotly.js for data visualization
@@ -28,7 +34,7 @@ The application features a role-based permission system, sliding scale tuition c
 
 ### Prerequisites
 
-- Node.js (v18 or higher recommended)
+- Node.js (v24 LTS or higher recommended)
 - npm or yarn
 - Firebase project with Firestore and Authentication enabled
 
@@ -68,7 +74,7 @@ VITE_FIREBASE_PROJECT_ID=your_project_id
 ### Available Scripts
 
 - `npm start` - Start development server
-- `npm run build` - Build for production  
+- `npm run build` - Build for production
 - `npm run build:analyze` - Build with bundle analysis
 - `npm run serve` - Preview production build
 - `npm test` - Run tests once
@@ -76,6 +82,7 @@ VITE_FIREBASE_PROJECT_ID=your_project_id
 - `npm run test:coverage` - Run tests with coverage report
 - `npm run lint` - Run Biome linter
 - `npm run lint:fix` - Fix linting issues automatically
+
 ## Architecture & Data Model
 
 ### Firebase Collections
@@ -83,17 +90,20 @@ VITE_FIREBASE_PROJECT_ID=your_project_id
 The application uses Firestore with the following main collections:
 
 #### `users` Collection
+
 - **Document ID**: User's email address (lowercase)
 - **Purpose**: Stores user account information and permissions
 - **Fields**:
   - `firstName`: User's first name
-  - `lastName`: User's last name  
+  - `lastName`: User's last name
   - `isAdmin`: Boolean - grants full administrative access
   - `isStaff`: Boolean - grants staff-level access (future use)
 
 #### `families` Collection
+
 - **Document ID**: Auto-generated Firestore ID
-- **Purpose**: Central family data including guardians, students, and contact information
+- **Purpose**: Central family data including guardians, students, and contact
+  information
 - **Key Fields**:
   - `name`: Family display name
   - `guardians[]`: Array of guardian objects with contact details
@@ -104,6 +114,7 @@ The application uses Firestore with the following main collections:
   - `authorizedEmails[]`: Users who can access this family's data
 
 #### `userFamilies` Collection
+
 - **Document ID**: User's email address (lowercase)
 - **Purpose**: Links user accounts to family records
 - **Fields**:
@@ -111,6 +122,7 @@ The application uses Firestore with the following main collections:
   - `familyName`: Cached family name for quick access
 
 #### `years` Collection
+
 - **Document ID**: Auto-generated Firestore ID
 - **Purpose**: School year configuration and tuition parameters
 - **Fields**:
@@ -120,6 +132,7 @@ The application uses Firestore with the following main collections:
   - `isAcceptingRegistrations`: Controls registration availability
 
 #### `contracts` Collection
+
 - **Document ID**: Auto-generated Firestore ID
 - **Purpose**: Enrollment contracts linking families to school years
 - **Fields**:
@@ -144,40 +157,43 @@ The application uses Firestore with the following main collections:
 └─────────────┘                        │ Emails[]    │
                                        └──────┬──────┘
                                               │
-                    ┌─────────────┐          │
-                    │   years     │          │
-                    │             │          │
-                    │ id (PK)     │          │
-                    │ name        │          │
-                    │ tuition     │          │
-                    │ parameters  │          │
-                    └──────┬──────┘          │
-                           │                 │
-                    ┌──────┴──────┐          │
-                    │ contracts   │          │
-                    │             │          │
-                    │ id (PK)     │          │
-                    │ yearID ─────┘          │
-                    │ familyID ──────────────┘
-                    │ student                │
-                    │ Decisions{}            │
-                    │ tuition                │
-                    │ signatures{}           │
-                    │ isSigned               │
+                    ┌─────────────┐           │
+                    │   years     │           │
+                    │             │           │
+                    │ id (PK)     │           │
+                    │ name        │           │
+                    │ tuition     │           │
+                    │ parameters  │           │
+                    └──────┬──────┘           │
+                           │                  │
+                           │                  │
+                    ┌──────┴──────┐           │
+                    │  contracts  │           │
+                    │             │           │
+                    │ id (PK)     │           │
+                    │ yearID ─────┤           │
+                    │ familyID ───┼───────────┘
+                    │ student     │
+                    │ Decisions{} │
+                    │ tuition     │
+                    │ signatures{}│
+                    │ isSigned    │
                     └─────────────┘
-
-Key Relationships:
-• Users link to families via userFamilies collection
-• Families contain embedded guardians[] and students[]
-• Contracts link families to specific school years
-• Admin users can access all data; family users only their linked family
 ```
+
+**Key Relationships:**
+
+- Users link to families via userFamilies collection
+- Families contain embedded guardians[] and students[]
+- Contracts link families to specific school years
+- Admin users can access all data; family users only their linked family
 
 ## Authentication & Permissions
 
 ### Authentication Methods
 
-The application supports multiple authentication providers through Firebase Auth:
+The application supports multiple authentication providers through Firebase
+Auth:
 
 - **Email/Password**: Traditional account creation and login
 - **Google OAuth**: Single sign-on with Google accounts
@@ -188,12 +204,14 @@ The application supports multiple authentication providers through Firebase Auth
 The application implements a role-based access control system:
 
 #### **Family Users** (Default)
+
 - Access to their own family information only
 - Can register students for school years
 - Can view and sign contracts
 - Can update family profile and student information
 
 #### **Admin Users** (`isAdmin: true`)
+
 - Full access to all families and students
 - Can create and manage school years
 - Can create and manage user accounts
@@ -202,6 +220,7 @@ The application implements a role-based access control system:
 - Access to administrative tools and settings
 
 #### **Staff Users** (`isStaff: true`)
+
 - Reserved for future use
 - Currently equivalent to family user permissions
 
@@ -215,7 +234,7 @@ Routes are protected using the `ProtectedRoute` component:
   <MyFamily />
 </ProtectedRoute>
 
-// Admin-only route  
+// Admin-only route
 <ProtectedRoute requireAdmin={true}>
   <FamilyList />
 </ProtectedRoute>
@@ -223,16 +242,19 @@ Routes are protected using the `ProtectedRoute` component:
 
 ### Data Access Control
 
-- **Family Data**: Users can only access families linked via `userFamilies` collection
+- **Family Data**: Users can only access families linked via `userFamilies`
+  collection
 - **Admin Override**: Admin users bypass family-specific restrictions
-- **Contract Access**: Users can only view/sign contracts for their linked families
+- **Contract Access**: Users can only view/sign contracts for their linked
+  families
 - **User Management**: Only admins can create/modify user accounts
 
 ## Firebase Integration
 
 ### Configuration
 
-Firebase configuration is handled through environment variables with fallback to hardcoded configs:
+Firebase configuration is handled through environment variables with fallback to
+hardcoded configs:
 
 ```typescript
 // Priority order:
@@ -244,6 +266,7 @@ Firebase configuration is handled through environment variables with fallback to
 ### Security Rules
 
 Firestore security rules should enforce:
+
 - Users can only read/write their own user document
 - Family access restricted to linked users or admins
 - Contract modifications require proper family association
@@ -252,6 +275,7 @@ Firestore security rules should enforce:
 ### Batch Operations
 
 The application uses chunked operations for large datasets:
+
 - `CHUNK_SIZE = 10` for Firestore 'in' query limits
 - Batch writes for bulk operations
 - Efficient pagination for large family lists
@@ -261,6 +285,7 @@ The application uses chunked operations for large datasets:
 ### Sliding Scale Tuition
 
 The tuition calculation system:
+
 1. Takes family income and school year parameters
 2. Calculates suggested tuition on sliding scale
 3. Allows families to pay above/below suggestion
@@ -270,6 +295,7 @@ The tuition calculation system:
 ### Digital Contracts
 
 Contract workflow:
+
 1. Family completes registration with student enrollment decisions
 2. System generates PDF contract with calculated tuition
 3. Guardians provide digital signatures
@@ -279,6 +305,7 @@ Contract workflow:
 ### Reporting & Analytics
 
 Built-in reporting features:
+
 - Family directory generation (PDF)
 - Enrollment rosters by school year
 - Contract completion tracking
@@ -314,12 +341,13 @@ function MyComponent({ prop }: MyComponentProps) {
 // Avoid React.FC pattern
 const MyComponent: React.FC<Props> = ({ prop }) => {
   // Component logic
-}
+};
 ```
 
 ### Firebase Service Pattern
 
 Each collection has a dedicated service file:
+
 - `families.ts` - Family CRUD operations
 - `users.ts` - User management
 - `years.ts` - School year operations
@@ -335,12 +363,14 @@ Each collection has a dedicated service file:
 ## Deployment
 
 The application is configured for deployment on Netlify with:
+
 - Automatic builds from Git repository
 - Environment variable configuration
 - Redirect rules for SPA routing
 - Build optimization and bundle analysis
 
 For other platforms, ensure:
+
 - Environment variables are properly configured
 - Build artifacts are served from `dist/` directory
 - SPA routing redirects are configured
@@ -348,11 +378,15 @@ For other platforms, ensure:
 
 ## Documentation
 
-- **[Firebase Integration](docs/FIREBASE.md)** - Detailed Firebase setup, collections, and security rules
-- **[Permissions & Security](docs/PERMISSIONS.md)** - Role-based access control and security model
+- **[Firebase Integration](docs/FIREBASE.md)** - Detailed Firebase setup,
+  collections, and security rules
+- **[Permissions & Security](docs/PERMISSIONS.md)** - Role-based access control
+  and security model
 - **[API Documentation](docs/API.md)** - Service layer APIs and data operations
-- **[Development Guide](docs/DEVELOPMENT.md)** - Coding standards, workflows, and best practices
-- **[Product Requirements](docs/prd.md)** - Original product requirements document
+- **[Development Guide](docs/DEVELOPMENT.md)** - Coding standards, workflows,
+  and best practices
+- **[Product Requirements](docs/prd.md)** - Original product requirements
+  document
 
 ## Contributing
 
