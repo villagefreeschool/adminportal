@@ -15,8 +15,13 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-// Set the chunk size for Firestore batch operations
-// This is set to 10 to match Firestore's limit on 'in' query operators
+/**
+ * Firestore limits 'in' queries to 10 items maximum.
+ * This constant is used throughout the codebase to chunk large ID arrays
+ * when fetching multiple documents by ID.
+ *
+ * @see https://firebase.google.com/docs/firestore/query-data/queries#in_not-in_and_array-contains-any
+ */
 export const CHUNK_SIZE = 10;
 
 // Export Firebase app instance

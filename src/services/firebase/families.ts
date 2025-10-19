@@ -16,8 +16,13 @@ import { CHUNK_SIZE } from "./core";
 import type { EmergencyContact, Family } from "./models/types";
 
 /**
- * Recursively removes undefined fields from an object to prevent Firestore errors
- * Also handles common problematic fields by converting them to appropriate defaults
+ * Recursively removes undefined fields from an object to prevent Firestore errors.
+ *
+ * Firestore throws an error if you try to save a document with undefined values.
+ * This utility strips them out before saving. Null values are preserved.
+ *
+ * @param obj - Object to clean
+ * @returns Cleaned object with no undefined values
  */
 function removeUndefinedFields<T>(obj: T): T {
   if (obj === null || obj === undefined) {
@@ -79,11 +84,25 @@ export async function fetchFamily(id: string): Promise<Family | null> {
 }
 
 /**
- * saveFamily is the central handler for saving a family, its guardians and
- * students. It updates the following FirestoreDB collections:
- * - families - The main family database
- * - students - An independent database of individual students
- * - userFamilies - The family lookup table for granting access to families
+ * Saves a family and all related data to Firestore.
+ *
+ * This is the primary function for creating or updating families. It handles:
+ * - Generating IDs for new families and students
+ * - Saving to families collection (with embedded guardians/students)
+ * - Saving to students collection (denormalized for efficient queries)
+ * - Creating userFamilies records (links user emails to this family for access control)
+ * - Building authorizedEmails array from guardian/student emails
+ *
+ * @param family - Family object with guardians and students arrays
+ * @returns Promise resolving to the saved family with generated IDs
+ *
+ * @example
+ * const newFamily = {
+ *   name: "Smith Family",
+ *   guardians: [{ firstName: "John", lastName: "Smith", email: "john@example.com" }],
+ *   students: [{ firstName: "Jane", lastName: "Smith", birthdate: "2015-03-15" }]
+ * };
+ * const saved = await saveFamily(newFamily);
  */
 export async function saveFamily(family: Family): Promise<Family> {
   let familyID = family.id;
@@ -105,18 +124,21 @@ export async function saveFamily(family: Family): Promise<Family> {
       students[i].familyID = familyID;
     }
 
+    // Build authorizedEmails array - determines who can access this family's data
+    // Includes: guardian emails, guardian otherEmails (comma-separated), and student emails
     let emails: string[] = [];
+
     // Add Guardian email access
     emails.push(...(family.guardians || []).map((g) => g.email).filter((email) => email != null));
 
-    // Process otherEmails from guardians
+    // Process otherEmails from guardians (comma-separated string)
     const otherEmails = (family.guardians || []).flatMap((g) => _.split(g.otherEmails || "", ","));
     emails.push(...otherEmails);
 
-    // Add student email address - filter out undefined/null values
+    // Add student email addresses
     emails.push(...(family.students || []).map((s) => s.email).filter((email) => email != null));
 
-    // Clean them up by flattening and trimming.
+    // Clean: flatten, trim whitespace, lowercase, remove empty strings
     emails = _.chain(emails)
       .flattenDeep()
       .map(_.trim)
@@ -127,11 +149,12 @@ export async function saveFamily(family: Family): Promise<Family> {
     // Clean the family object to remove undefined values before saving
     const cleanFamily = removeUndefinedFields(family);
 
-    // Make a copy of the family to save to Firestore with authorizedEmails
+    // Prepare family document for Firestore
+    // authorizedEmails is used by Firebase security rules to control access
     const familyToSave = {
       ...cleanFamily,
       id: familyID,
-      authorizedEmails: emails, // Include authorizedEmails for Firebase security rules
+      authorizedEmails: emails,
     };
 
     try {
@@ -224,6 +247,8 @@ export async function deleteFamily(family: Family): Promise<void> {
  */
 export async function fetchFamiliesWithIDs(ids: string[]): Promise<Family[]> {
   const families: Family[] = [];
+  // Firestore 'in' queries are limited to 10 items, so we chunk the IDs
+  // Also flatten (in case nested arrays), remove duplicates, and chunk into groups of 10
   const chunks = _.chain([ids]).flatten().uniq().chunk(CHUNK_SIZE).value();
 
   for (const chunk of chunks) {
